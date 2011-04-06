@@ -1,0 +1,9 @@
+{
+  identifier:"abbreviation",
+  label: "name",
+  items: [
+	{name:"URL", label:"URL",abbreviation:"URL"},
+	{name:"Google Image Search", label:"Google Image Search",abbreviation:"GOOGLE"},
+	{name:"Computer", label:"Computer",abbreviation:"CPU"}
+  ]
+}
