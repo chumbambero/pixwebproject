@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+    <head>
+        <title>PixWeb</title>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Procedural Drawing Tool"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true">
+        </script>
+        <script type="text/javascript" src="js/canvas.js">
+        </script>
+        <link rel="stylesheet" type="text/css" href="CSS/main.css"/>
+        <link rel="stylesheet" type="text/css" href="CSS/dojoClaro.css"/>
+    </head>
+    <body class="claro">
+    	<!--<div id="pixWeb"></div>-->
+        <div id="menuBar">
+        </div>
+        <div id="menu">
+            <div id="colors">
+                <p>COLORS</p>
+                <span id="placeHolder">this will be replaced</span>
+                <p>SELECTED COLOR</p>
+                <div id="selectedColor">
+                </div>
+            </div>
+            <div id="toolsMenu">
+                <p>TOOLS</p>
+                <div id="tools">
+                </div>
+            </div>
+        </div>
+        <div id="container">
+        	<div id="imageName"></div>
+            <div id="cont">
+                <canvas id="imageView" width="500" height="500">
+                    <p>
+                        Unfortunately, your browser is currently unsupported by our web 
+                        application.  We are sorry for the inconvenience. Please use one of the  
+                        supported browsers listed below, or draw the image you want using an 
+                        offline tool.
+                    </p>
+                    <p>
+                        Supported browsers: <a href="http://www.opera.com">Opera</a>, <a href="http://www.mozilla.com">Firefox</a>, <a href="http://www.apple.com/safari">Safari</a>, and <a href="http://www.konqueror.org">Konqueror</a>.
+                    </p>
+                </canvas>
+            </div>
+        </div>
+        <!-- New Img Form dialog -->
+        <div dojoType="dijit.Dialog" id="newDialog" title="New Image">
+            <table>
+                <tr>
+                    <td>
+                        <label for="name">
+                            Image Name:
+                        </label>
+                    </td>
+                    <td>
+                        <input dojoType="dijit.form.ValidationTextBox" value="undefined" trim="true" maxlength="10" type="text" name="name" id="name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="width">
+                            Width:
+                        </label>
+                    </td>
+                    <td>
+                        <input dojoType="dijit.form.ValidationTextBox" value="500" trim="true" regExp="/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/" invalidMessage="Invalid number" type="text" name="width" id="width">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="height">
+                            Height:
+                        </label>
+                    </td>
+                    <td>
+                        <input dojoType="dijit.form.ValidationTextBox" value="500" trim="true" regExp="/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/" invalidMessage="Invalid number" type="text" name="height" id="height">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <button dojoType="dijit.form.Button" id="newSubmit" type="submit">
+                            OK
+                        </button>
+                        <button dojoType="dijit.form.Button" type="button" onClick="dijit.byId('newDialog').hide();">
+                            Cancel
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Load Img Form dialog -->
+        <div dojoType="dijit.Dialog" id="loadDialog" title="Load Image">
+            <table>
+                <tr>
+                    <td>
+                        <label for="loadComboBox">
+                            From:
+                        </label>
+                    </td>
+                    <td align="center" colspan="2">
+                        <input dojoType="dijit.form.ComboBox" id="loadComboBox">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <button dojoType="dijit.form.Button" id="loadSubmit" type="submit">
+                            Next
+                        </button>
+                        <button dojoType="dijit.form.Button" type="button" onClick="dijit.byId('loadDialog').hide();">
+                            Cancel
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Load Img Url Form dialog -->
+        <div dojoType="dijit.Dialog" id="urlDialog" title="Load Image From URL">
+            <table>
+                <tr>
+                    <td>
+                        <label for="urlComboBox">
+                            Resising tipology:
+                        </label>
+                    </td>
+                    <td align="center" colspan="2">
+                        <input dojoType="dijit.form.ComboBox" id="urlComboBox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="urlTextBox">
+                            Source:
+                        </label>
+                    </td>
+                    <td>
+                        <input dojoType="dijit.form.ValidationTextBox" regExp="^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png)$" invalidMessage="Invalid image url" type="text" name="urlTextBox" id="urlTextBox">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <button dojoType="dijit.form.Button" id="urlSubmit" type="submit">
+                            OK
+                        </button>
+                        <button dojoType="dijit.form.Button" type="button" onClick="dijit.byId('urlDialog').hide();">
+                            Cancel
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Load Img Google Form dialog -->
+        <div dojoType="dijit.Dialog" id="googleDialog" title="Load Image From Google Image Seach">
+            <table>
+                <tr>
+                    <td>
+                        <label for="googleTextBox">
+                            Enter Search Text
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="" id="googleSearchInput">
+                        <button dojoType="dijit.form.Button" type="button" id="googleSearchButton">
+                            Search
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <div style="height: 150px; overflow: auto;">
+                <table id="googleResultTable" display: none;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Size
+                            </th>
+                            <th>
+                                Image
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <label for="googleComboBox">
+                            Resising tipology:
+                        </label>
+                    </td>
+                    <td align="center" colspan="2">
+                        <input dojoType="dijit.form.ComboBox" id="googleComboBox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="googleTextBox">
+                            Source:
+                        </label>
+                    </td>
+                    <td>
+                        <input dojoType="dijit.form.ValidationTextBox" regExp="^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png)$" invalidMessage="Invalid image url" type="text" name="googleTextBox" id="googleTextBox">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <button dojoType="dijit.form.Button" id="googleSubmit" type="submit">
+                            OK
+                        </button>
+                        <button dojoType="dijit.form.Button" type="button" onClick="dijit.byId('loadDialog').hide();">
+                            Cancel
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
+

@@ -1,0 +1,35 @@
+<!-- Load Img Url Form dialog -->
+<div dojoType="dijit.Dialog" id="urlDialog" title="Load Image From URL">
+    <table>
+        <tr>
+            <td>
+                <label for="urlComboBox">
+                    Resising tipology:
+                </label>
+            </td>
+            <td align="center" colspan="2">
+                <input dojoType="dijit.form.ComboBox" id="urlComboBox">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="urlTextBox">
+                    Source:
+                </label>
+            </td>
+            <td>
+                <input dojoType="dijit.form.ValidationTextBox" regExp="^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png)$" invalidMessage="Invalid image url" type="text" name="urlTextBox" id="urlTextBox">
+            </td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2">
+                <button dojoType="dijit.form.Button" id="urlSubmit" type="submit">
+                    OK
+                </button>
+                <button dojoType="dijit.form.Button" type="button" onClick="dijit.byId('urlDialog').hide();">
+                    Cancel
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
