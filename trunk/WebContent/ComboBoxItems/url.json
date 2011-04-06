@@ -1,0 +1,8 @@
+{
+  identifier:"abbreviation",
+  label: "name",
+  items: [
+	{name:"Automatically Resizing Image", label:"Automatically Resizing Image",abbreviation:"IMG"},
+	{name:"Automatically Resizing Canvas", label:"Automatically Resizing Canvas",abbreviation:"CNV"}
+  ]
+}
