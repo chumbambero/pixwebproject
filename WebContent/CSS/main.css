@@ -1,0 +1,99 @@
+#imageName {
+	width:100%;
+	text-align: center;
+	margin:auto;
+	}
+
+#container {
+	position: relative;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 15px;
+	width: 500px;
+	height: 500px;
+}
+
+#cont {
+	position: relative;
+}
+
+#imageView {
+	background: #fff;
+	border: 10px solid #333;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	cursor: crosshair;
+	box-shadow: 0 10px 20px #000;
+	-webkit-box-shadow: 0 10px 20px #000;
+	-moz-box-shadow: 0 10px 20px #000;
+}
+
+#imageTemp {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	cursor: crosshair;
+}
+
+#menu {
+	float: left;
+	margin-left: 3%;
+}
+
+#colors,#toolsMenu {
+	margin-top: 15px;
+	border: 10px solid #333;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px;
+	text-align: center;
+	box-shadow: 0 10px 20px #000;
+	-webkit-box-shadow: 0 10px 20px #000;
+	-moz-box-shadow: 0 10px 20px #000;
+}
+
+#colors p,#toolsMenu p {
+	display: block;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	padding: 3px;
+	margin: 3px;
+}
+
+#selectedColor {
+	width: 15px;
+	height:15px;
+	display: block;
+	margin: auto;
+	border: 1px solid #000;
+}
+
+#googleResultTable {
+	border-bottom: 7px solid #9BAFF1;
+	border-collapse: collapse;
+	border-top: 7px solid #9BAFF1;
+	font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+	font-size: 12px;
+	text-align: center;
+	width: 100%;
+}
+
+#googleResultTable th {
+	background: #E8EDFF;
+	border-left: 1px solid #9BAFF1;
+	border-right: 1px solid #9BAFF1;
+	color: #039;
+	font-size: 13px;
+	font-weight: normal;
+	padding: 8px;
+}
+
+#googleResultTable td {
+	background: #E8EDFF;
+	border-left: 1px solid #AABCFE;
+	border-right: 1px solid #AABCFE;
+	color: #669;
+	padding: 8px;
+}
