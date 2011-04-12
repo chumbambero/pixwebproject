@@ -1,38 +1,132 @@
 // Keep everything in anonymous function, called on window load.
 if (window.addEventListener) {
-	window
-			.addEventListener('load', function() {
+		window.addEventListener('load', function() {
+			// layout
+			dojo.require("dijit.layout.BorderContainer");	    
+			// color palette
+			dojo.require("dijit.ColorPalette");
+			// menu
+			dojo.require("dijit.MenuBar");
+			dojo.require("dijit.MenuBarItem");
+			dojo.require("dijit.PopupMenuBarItem");
+			dojo.require("dijit.Menu");
+			dojo.require("dijit.MenuItem");
+			dojo.require("dijit.PopupMenuItem");
+			// dialog
+			dojo.require("dijit.form.Button");
+			dojo.require("dijit.Dialog");
+			dojo.require("dijit.form.TextBox");
+			dojo.require("dijit.form.ValidationTextBox");
+			// combobox
+			dojo.require("dijit.form.ComboBox");
+			dojo.require("dojo.data.ItemFileReadStore");
+			// google search engine
+			dojo.require("dojox.data.GoogleSearchStore");
+			// layout
+			dojo.require("dijit.layout.ContentPane");
+			// external files
+			dojo.require("dojo.cache");
+		
+			var bc, cp1, cp2, cp3, pMenuBar, pSubMenu, pSubMenuItem1, pSubMenuItem2, pSubMenuItem3, pSubMenu2, myPalette, f1, f2, f3, f4;
+			
+			dojo.addOnLoad(function() {
+				// create a BorderContainer as the top widget in the hierarchy
+				bc = new dijit.layout.BorderContainer({style: "height: 100%; width: 100%;"});
 				
-				dojo.require("dijit.ColorPalette");
-				// menu
-				dojo.require("dijit.MenuBar");
-				dojo.require("dijit.MenuBarItem");
-				dojo.require("dijit.PopupMenuBarItem");
-				dojo.require("dijit.Menu");
-				dojo.require("dijit.MenuItem");
-				dojo.require("dijit.PopupMenuItem");
-				// dialog
-				 dojo.require("dijit.form.Button");
-				 dojo.require("dijit.Dialog");
-				 dojo.require("dijit.form.TextBox");
-				 dojo.require("dijit.form.ValidationTextBox");
-				 
-				 dojo.require("dijit.form.ComboBox");
-				 dojo.require("dojo.data.ItemFileReadStore");
-				 
-				 dojo.require("dojox.data.GoogleSearchStore");
+				// //////////////////////////////////////////////////////////////////////////////////////////////
+				// MENU BAR START
+				// //////////////////////////////////////////////////////////////////////////////////////////////
+				pMenuBar = new dijit.MenuBar( {});
+				// -----------------------------------
+				// File Menu
+				// -----------------------------------
+				pSubMenu = new dijit.Menu( {});
+				// New Image
+				pSubMenuItem1 = new dijit.MenuItem( {label : "New Image"});
+				pSubMenu.addChild(pSubMenuItem1);
+				// Load Image
+				pSubMenuItem2 = new dijit.MenuItem( {label : "Load Image"});
+				pSubMenu.addChild(pSubMenuItem2);
+				// Save Image
+				pSubMenuItem3 = new dijit.MenuItem( {label : "Save Image",
+					onClick : function(ev) {
+						window.open(canvaso.toDataURL("image/png"));
+						ev.preventDefault();}
+				});
+				pSubMenu.addChild(pSubMenuItem3);
+				pMenuBar.addChild(new dijit.PopupMenuBarItem( {
+					label : "File",
+					popup : pSubMenu
+				}));
+				// -----------------------------------
+				// Edit Menu
+				// -----------------------------------
+				pSubMenu2 = new dijit.Menu( {});
+				// Clear Canvas
+				pSubMenu2.addChild(new dijit.MenuItem( {
+					label : "Clear Canvas",
+					onClick : function() {
+						contexto.clearRect(0, 0, canvas.width, canvas.height);
+					}	
+				}));
+				pMenuBar.addChild(new dijit.PopupMenuBarItem( {
+					label : "Edit",
+					popup : pSubMenu2
+				}));
+				pMenuBar.startup();
+				// //////////////////////////////////////////////////////////////////////////////////////////////
+				// MENU BAR END
+				// //////////////////////////////////////////////////////////////////////////////////////////////
 				
-// function initHTML(){
-// var content = document.getElementById("pixWeb");
-// include(content, "menu_bar.html");
-// include(content, "menu.html");
-// include(content, "canvas.html");
-// include(content, "new_img_form.html");
-// include(content, "load_img_form.html");
-// include(content, "load_img_url_form.html");
-// include(content, "load_img_google_form.html");
-// }
-				 
+				// create a ContentPane as the top pane in the
+				// BorderContainer
+				cp1 = new dijit.layout.ContentPane({
+					region: "top",
+					content: pMenuBar
+				});		 
+				bc.addChild(cp1);
+				
+				// create a ContentPane as the top pane in the
+				// BorderContainer
+				cp2 = new dijit.layout.ContentPane({
+					region: "leading",
+					content: dojo["cache"](new dojo._Url("menu.html"), {sanitize: true})
+				});
+				bc.addChild(cp2);
+				
+				// create a ContentPane as the center pane in the
+				// BorderContainer
+				cp3 = new dijit.layout.ContentPane({
+					region: "center",
+					content: dojo["cache"](new dojo._Url("canvas.html"), {sanitize: true})
+				});
+				bc.addChild(cp3);
+				
+				// put the top level widget into the document, and then call
+				// startup()
+				document.body.appendChild(bc.domNode);
+				bc.startup();
+				
+				// create the new image dialog form and then append the dialog
+				// to the body
+				f1 = new dijit.Dialog({title: "New Image", id: "newDialog", content: dojo["cache"](new dojo._Url("new_img_form.html"), {sanitize: true})});
+				document.body.appendChild(f1.domNode);
+				// create the load image dialog form and then append the dialog
+				// to the body
+				f2 = new dijit.Dialog({title: "Load Image", id: "loadDialog", content: dojo["cache"](new dojo._Url("load_img_form.html"), {sanitize: true})});
+				document.body.appendChild(f2.domNode);
+				// create the load image from an URL dialog form and then append
+				// the dialog to the body
+				f3 = new dijit.Dialog({title: "Load Image From URL", id: "urlDialog", content: dojo["cache"](new dojo._Url("load_img_url_form.html"), {sanitize: true})});
+				document.body.appendChild(f3.domNode);
+				// create the load image from the google search engine dialog
+				// form and then append the dialog to the body
+				f4 = new dijit.Dialog({title: "Load Image From Google Image Seach", id:"googleDialog", content: dojo["cache"](new dojo._Url("load_img_google_form.html"), {sanitize: true})});
+				document.body.appendChild(f4.domNode);
+				
+				init();
+			});
+			
 				 var canvas, context, canvaso, contexto;
 
 				// The active tool instance.
@@ -128,12 +222,6 @@ if (window.addEventListener) {
 					}
 				}
 
-				// The event handler for any changes made to the tool selector.
-// function ev_color_change(ev) {
-// alert(this.value);
-// context.strokeStyle = val;
-// }
-
 				// This function draws the #imageTemp canvas on top of
 				// #imageView, after which
 				// #imageTemp is cleared. This function is called each time when
@@ -144,64 +232,12 @@ if (window.addEventListener) {
 					context.clearRect(0, 0, canvas.width, canvas.height);
 				}
 
-				// //////////////////////////////////////////////////////////////////////////////////////////////
-				// MENU BAR
-				// //////////////////////////////////////////////////////////////////////////////////////////////
-				var pMenuBar;
-				dojo.addOnLoad(function() {
-					pMenuBar = new dijit.MenuBar( {});
-					// ///////////////////////////////////
-					// File Menu
-					// ///////////////////////////////////
-					var pSubMenu = new dijit.Menu( {});
-					// New Image
-					pSubMenu.addChild(new dijit.MenuItem( {
-						label : "New Image",
-							}));
-					// Load Image
-					pSubMenu.addChild(new dijit.MenuItem( {
-						label : "Load Image"
-					}));
-					// Save Image
-					pSubMenu.addChild(new dijit.MenuItem( {
-						label : "Save Image",
-						onClick : function(ev) {
-							window.open(canvaso.toDataURL("image/png"));
-							ev.preventDefault();
-						}
-					}));
-					pMenuBar.addChild(new dijit.PopupMenuBarItem( {
-						label : "File",
-						popup : pSubMenu
-					}));
-					// ///////////////////////////////////
-					// Edit Menu
-					// ///////////////////////////////////
-					var pSubMenu2 = new dijit.Menu( {});
-					// Clear Canvas
-					pSubMenu2.addChild(new dijit.MenuItem( {
-						label : "Clear Canvas",
-						onClick : function() {
-							contexto.clearRect(0, 0, canvas.width,
-									canvas.height);
-						}
-					}));
-					pMenuBar.addChild(new dijit.PopupMenuBarItem( {
-						label : "Edit",
-						popup : pSubMenu2
-					}));
-
-					pMenuBar.placeAt("menuBar");
-					pMenuBar.startup();
-				});
-
 				// ///////////////////////////////////
 				// New Dialog
 				// ///////////////////////////////////
 				dojo.addOnLoad(function() {
-					newDlg = dijit.byId("newDialog");
-					dojo.connect(dijit.byId("dijit_MenuItem_0"), "onClick",
-							newDlg, "show");
+					dojo.connect(pSubMenuItem1, "onClick",
+							f1, "show");
 					imgSub = dijit.byId("newSubmit");
 					dojo.connect(imgSub, "onClick", function() {
 						checkData();
@@ -211,7 +247,7 @@ if (window.addEventListener) {
 				// This function check if the data in the new image dialog have
 				// a correct format
 				function checkData() {
-					var data = newDlg.attr('value');
+					var data = f1.attr('value');
 					if (!validateNumeric(data.width)) {
 						alert(data.width
 								+ " for width input is not a valid number");
@@ -251,9 +287,9 @@ if (window.addEventListener) {
 				// Load Dialog
 				// ///////////////////////////////////
 				dojo.addOnLoad(function() {
-					loadDlg = dijit.byId("loadDialog");
-					dojo.connect(dijit.byId("dijit_MenuItem_1"), "onClick",
-							loadDlg, "show");
+					// loadDlg = dijit.byId("loadDialog");
+					dojo.connect(pSubMenuItem2, "onClick",
+							f2, "show");
 					dojo.addOnLoad(function() {
 						
 						var loadSource = new dojo.data.ItemFileReadStore({
@@ -280,8 +316,8 @@ if (window.addEventListener) {
 						// ///////////////////////////////////
 						// Url Dialog
 						// ///////////////////////////////////
-						urlDlg = dijit.byId("urlDialog");
-						urlDlg.show();
+						// urlDlg = dijit.byId("urlDialog");
+						f3.show();
 						dojo.addOnLoad(function() {
 							var urlSource = new dojo.data.ItemFileReadStore({
 								url: "ComboBoxItems/url.json"
@@ -294,15 +330,15 @@ if (window.addEventListener) {
 						});
 						urlSub = dijit.byId("urlSubmit");
 						dojo.connect(urlSub, "onClick", function() {
-							urlOk("urlComboBox", urlDlg);
+							urlOk("urlComboBox", f3);
 						});
 					} 
 					else if(loadComboBoxValue == 'Google Image Search'){
 						// ///////////////////////////////////
 						// Google Dialog
 						// ///////////////////////////////////
-						googleDlg = dijit.byId("googleDialog");
-						googleDlg.show();
+						// googleDlg = dijit.byId("googleDialog");
+						f4.show();
 						dojo.addOnLoad(function() {
 							var googleSource = new dojo.data.ItemFileReadStore({
 								url: "ComboBoxItems/url.json"
@@ -319,7 +355,7 @@ if (window.addEventListener) {
 						});
 						googleSub = dijit.byId("googleSubmit");
 						dojo.connect(googleSub, "onClick", function() {
-							urlOk("googleComboBox", googleDlg);
+							urlOk("googleComboBox", f4);
 						});
 					} else {
 						alert("Sorry but the selected type of loading is not implemented");
@@ -452,23 +488,25 @@ if (window.addEventListener) {
 				}
 
 				// //////////////////////////////////////////////////////////////////////////////////////////////
-				// COLOR PALETTE
+				// COLOR PALETTE START
 				// //////////////////////////////////////////////////////////////////////////////////////////////
-
 				dojo.addOnLoad(function() {
-					var myPalette = new dijit.ColorPalette( {
+					myPalette = new dijit.ColorPalette( {
 						palette : "7x10",
 						onChange : function(val) {
 							context.strokeStyle = val;
 							document.getElementById("selectedColor").setAttribute("style", "background:"+val);
 						}
 					}, "placeHolder");
+					bc.resize();
 				});
+				// //////////////////////////////////////////////////////////////////////////////////////////////
+				// COLOR PALETTE END
+				// //////////////////////////////////////////////////////////////////////////////////////////////
 
 				// //////////////////////////////////////////////////////////////////////////////////////////////
-				// TOOLS
+				// TOOLS START
 				// //////////////////////////////////////////////////////////////////////////////////////////////
-
 				// This object holds the implementation of each drawing tool.
 				var tools = {};
 
@@ -579,41 +617,9 @@ if (window.addEventListener) {
 						}
 					};
 				};
-
-				function include(element, filename) {
-					var txtFile = new XMLHttpRequest();
-					var url = "" + window.location;
-					var arr = url.split("/");
-					url = ""
-					for (part in arr) {
-						if (arr[part] != "index.html")
-							url += arr[part] + "/";
-					}
-					txtFile.open("GET", url + filename, true);
-					txtFile.send(null);
-					txtFile.onreadystatechange = function() {
-						// Makes sure the document is ready to parse.
-						if (txtFile.readyState === 4) {
-							// When running the code locally I would get
-							// XMLHttpRequest status 0, and XMLHttpRequest
-							// statusText unknown.
-							// Makes sure it's
-							// found the file.
-							if (txtFile.status === 200) {
-								allText = txtFile.responseText;
-								var elementHtml = element.innerHTML;
-								element.innerHTML+=elementHtml+allText;
-								// element.innerHTML = allText;
-								// Will separate each line into an array
-								// lines = txtFile.responseText.split("\n");
-							}
-						}
-					}
-				}
-
-// initHTML();
-				
-				init();
+				// //////////////////////////////////////////////////////////////////////////////////////////////
+				// TOOLS END
+				// //////////////////////////////////////////////////////////////////////////////////////////////
 
 			}, false);
 }
