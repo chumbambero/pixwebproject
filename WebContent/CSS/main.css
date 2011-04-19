@@ -27,7 +27,7 @@ html,body {
 	-moz-box-shadow: 0 10px 20px #000;
 }
 
-#imageTemp {
+#imageTemp, #ghost, #ghosto {
 	background: none;
 	position: absolute;
 	top: 75px;
