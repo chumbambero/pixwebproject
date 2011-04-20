@@ -152,3 +152,7 @@ html,body {
 .iconRectangle {
 	background-image: url("images/icons/rectangle.png");
 }
+
+.iconCircle {
+	background-image: url("images/icons/circle.png");
+}
