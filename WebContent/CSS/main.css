@@ -145,6 +145,10 @@ html,body {
 	background-image: url("images/icons/pencil.png");
 }
 
+.iconBrush {
+	background-image: url("images/icons/brush.png");
+}
+
 .iconLine {
 	background-image: url("images/icons/line.png");
 }

@@ -1,18 +1,19 @@
 var line_width = 1;
 var hasStroke = true;
 var hasFill = false;
+var brush_type = 'circleBrush';
 
 function setLineWidth(val){
-	line_width = val;
+    line_width = val;
 }
-
-function hasStroke(){
-	hasStroke = true;
-}
-
-function hasFill(){
-	hasFill = true;
-}
+//
+//function hasStroke(){
+//    hasStroke = true;
+//}
+//
+//function hasFill(){
+//    hasFill = true;
+//}
 
 
 //Keep everything in anonymous function, called on window load.
@@ -103,8 +104,10 @@ if (window.addEventListener) {
             pSubMenu2.addChild(new dijit.MenuItem({
                 label: "Clear Canvas",
                 onClick: function(){
-                    contexto.clearRect(0, 0, canvas.width, canvas.height);
-                    context.clearRect(0, 0, canvas.width, canvas.height);
+					clear(context);
+					clear(contexto);
+					clear(ghostcontext);
+					clear(ghostcontexto);
                 }
             }));
             pMenuBar.addChild(new dijit.PopupMenuBarItem({
@@ -145,7 +148,7 @@ if (window.addEventListener) {
             });
             bc.addChild(cp3);
             
-         // create a ContentPane as the center pane in the
+            // create a ContentPane as the center pane in the
             // BorderContainer
             cp4 = new dijit.layout.ContentPane({
                 region: "top",
@@ -265,11 +268,11 @@ if (window.addEventListener) {
             draw: function(ctx, optionalColor){
                 if (ctx === context) {
                     ctx.fillStyle = 'black'; // always want black for the
-												// temp canvas
+                    // temp canvas
                 }
                 
                 // We can skip the drawing of elements that have moved off the
-				// screen:
+                // screen:
                 if (this.x > canvas.width || this.y > canvas.height) 
                     return;
                 if (this.x + this.w < 0 || this.y + this.h < 0) 
@@ -284,11 +287,11 @@ if (window.addEventListener) {
                 
                 // draw selection
                 // this is a stroke along the box and also 8 new selection
-				// handles
+                // handles
                 if (mySel === this) {
                     ctx.strokeStyle = mySelColor;
                     ctx.lineWidth = mySelWidth;
-                    ctx.strokeRect(this.x - mySelPadding, this.y - mySelPadding, this.w + mySelPadding*2, this.h + mySelPadding*2);
+                    ctx.strokeRect(this.x - mySelPadding, this.y - mySelPadding, this.w + mySelPadding * 2, this.h + mySelPadding * 2);
                     // draw the boxes
                     var half = mySelBoxSize / 2;
                     // 0 1 2
@@ -333,30 +336,30 @@ if (window.addEventListener) {
             el.shape = shape;
             el.obj = obj;
             if (mousedownx <= mouseupx && mousedowny <= mouseupy) {
-                el.x = el.new_x = mousedownx - Math.ceil(el.strokesize/2);
-                el.y = el.new_y = mousedowny - Math.ceil(el.strokesize/2);
-                el.w = el.new_w = mouseupx - mousedownx + Math.ceil(el.strokesize/2)*2;
-                el.h = el.new_h = mouseupy - mousedowny + Math.ceil(el.strokesize/2)*2;
+                el.x = el.new_x = mousedownx - Math.ceil(el.strokesize / 2);
+                el.y = el.new_y = mousedowny - Math.ceil(el.strokesize / 2);
+                el.w = el.new_w = mouseupx - mousedownx + Math.ceil(el.strokesize / 2) * 2;
+                el.h = el.new_h = mouseupy - mousedowny + Math.ceil(el.strokesize / 2) * 2;
             }
             else 
                 if (mousedownx > mouseupx && mousedowny <= mouseupy) {
-                    el.x = el.new_x = mouseupx - Math.ceil(el.strokesize/2);
-                    el.y = el.new_y = mousedowny - Math.ceil(el.strokesize/2);
-                    el.w = el.new_w = mousedownx - mouseupx + Math.ceil(el.strokesize/2)*2;
-                    el.h = el.new_h = mouseupy - mousedowny + Math.ceil(el.strokesize/2)*2;
+                    el.x = el.new_x = mouseupx - Math.ceil(el.strokesize / 2);
+                    el.y = el.new_y = mousedowny - Math.ceil(el.strokesize / 2);
+                    el.w = el.new_w = mousedownx - mouseupx + Math.ceil(el.strokesize / 2) * 2;
+                    el.h = el.new_h = mouseupy - mousedowny + Math.ceil(el.strokesize / 2) * 2;
                 }
                 else 
                     if (mousedownx <= mouseupx && mousedowny > mouseupy) {
-                        el.x = el.new_x = mousedownx - Math.ceil(el.strokesize/2);
-                        el.y = el.new_y = mouseupy - Math.ceil(el.strokesize/2);
-                        el.w = el.new_w = mouseupx - mousedownx + Math.ceil(el.strokesize/2)*2;
-                        el.h = el.new_h = mousedowny - mouseupy + Math.ceil(el.strokesize/2)*2;
+                        el.x = el.new_x = mousedownx - Math.ceil(el.strokesize / 2);
+                        el.y = el.new_y = mouseupy - Math.ceil(el.strokesize / 2);
+                        el.w = el.new_w = mouseupx - mousedownx + Math.ceil(el.strokesize / 2) * 2;
+                        el.h = el.new_h = mousedowny - mouseupy + Math.ceil(el.strokesize / 2) * 2;
                     }
                     else {
-                        el.x = el.new_x = mouseupx - Math.ceil(el.strokesize/2);
-                        el.y = el.new_y = mouseupy - Math.ceil(el.strokesize/2);
-                        el.w = el.new_w = mousedownx - mouseupx + Math.ceil(el.strokesize/2)*2;
-                        el.h = el.new_h = mousedowny - mouseupy + Math.ceil(el.strokesize/2)*2;
+                        el.x = el.new_x = mouseupx - Math.ceil(el.strokesize / 2);
+                        el.y = el.new_y = mouseupy - Math.ceil(el.strokesize / 2);
+                        el.w = el.new_w = mousedownx - mouseupx + Math.ceil(el.strokesize / 2) * 2;
+                        el.h = el.new_h = mousedowny - mouseupy + Math.ceil(el.strokesize / 2) * 2;
                     }
             // try {
             // try {
@@ -374,12 +377,12 @@ if (window.addEventListener) {
             invalidate();
         }
         
-     // Rectangle object to hold data
+        // Rectangle object to hold data
         function Rectangle(){
             this.type = "rectangle";
         }
         
-     // Line object to hold data
+        // Line object to hold data
         function Line(sx, sy, ex, ey){
             this.sx = sx;
             this.sy = sy;
@@ -388,7 +391,7 @@ if (window.addEventListener) {
             this.type = "line";
         }
         
-     // Circle object to hold data
+        // Circle object to hold data
         function Circle(){
             this.type = "circle";
         }
@@ -584,7 +587,7 @@ if (window.addEventListener) {
         // Main draw loop.
         // While draw is called as often as the INTERVAL variable demands,
         // It only ever does something if the canvas gets invalidated by our
-		// code
+        // code
         function mainDraw(){
             if (canvasValid == false) {
                 clear(contexto);
@@ -605,110 +608,115 @@ if (window.addEventListener) {
         // unfortunately this can be tricky, we have to worry about
         // padding and borders
         function getMouse(ev){
-//            var elem = canvaso, offsetX = 0, offsetY = 0;
-//            if (elem.offsetParent) {
-//                do {
-//                    offsetX += elem.offsetLeft;
-//                    offsetY += elem.offsetTop;
-//                }
-//                while ((elem = elem.offsetParent));
-//            }
-//            // Add padding and border style widths to offset
-//            offsetX += stylePaddingLeft;
-//            offsetY += stylePaddingTop;
-//            offsetX += styleBorderLeft;
-//            offsetY += styleBorderTop;
-//            mx = ev.pageX - offsetX;
-//            my = ev.pageY - offsetY;
-        	mx = ev._x;
-        	my = ev._y;
+            //            var elem = canvaso, offsetX = 0, offsetY = 0;
+            //            if (elem.offsetParent) {
+            //                do {
+            //                    offsetX += elem.offsetLeft;
+            //                    offsetY += elem.offsetTop;
+            //                }
+            //                while ((elem = elem.offsetParent));
+            //            }
+            //            // Add padding and border style widths to offset
+            //            offsetX += stylePaddingLeft;
+            //            offsetY += stylePaddingTop;
+            //            offsetX += styleBorderLeft;
+            //            offsetY += styleBorderTop;
+            //            mx = ev.pageX - offsetX;
+            //            my = ev.pageY - offsetY;
+            mx = ev._x;
+            my = ev._y;
         }
         
         function adjustDrawingTemp(ctx, element){
             if (element.new_w != element.w || element.new_h != element.h) {
-            	if(element.new_x > element.x || element.new_y > element.y){
-            		if(element.new_x>=element.x+element.w-(1+element.strokesize)){
-                		element.new_x = element.x+element.w-(1+element.strokesize);
-                	}
-                	if(element.new_y>=element.y+element.h-(1+element.strokesize)){
-                		element.new_y = element.y+element.h-(1+element.strokesize);
-                	}
-            	}
-            	element.x = element.new_x;
-            	element.y = element.new_y;
-            	if(element.new_w<=1+element.strokesize*2){
-            		element.new_w =1+element.strokesize*2;
-            	}
-            	if(element.new_h<1+element.strokesize*2){
-            		element.new_h = 1+element.strokesize*2;
-            	}
-            	if(element.shape){
-            		ghostcontext.strokeStyle = element.strokecolor;
-        			ghostcontext.fillStyle = element.fillcolor;
-        			ghostcontext.lineWidth = element.strokesize;
-            		if (element.new_w != element.w) {
-            			element.w = element.new_w;
-            		}
-            		if (element.new_h != element.h) {
-            			element.h = element.new_h;
-            		}
-            		if(element.obj.type == 'rectangle'){
-            			ghostcontext.fillRect(element.x, element.y, element.w, element.h);
-            			ghostcontext.strokeRect(element.x, element.y, element.w, element.h);
-            		}
-            		if(element.obj.type == 'line'){
-            			ghostcontext.beginPath();
-            			if(element.obj.sy==element.obj.ey){
-            				element.obj.sx = element.x;
-            				element.obj.ex = element.x+element.w;
-            				element.obj.sy = element.obj.ey = element.y+element.h;
-            			} else if(element.obj.sx==element.obj.ex){
-            				element.obj.sy = element.y;
-            				element.obj.ey = element.y+element.h;
-            				element.obj.sx = element.obj.ex = element.x+element.w;
-            			} else if(element.obj.sx<element.obj.ex&&element.obj.sy<element.obj.ey){
-            				element.obj.sx = element.x;
-            				element.obj.sy = element.y;
-            				element.obj.ex = element.x+element.w;
-            				element.obj.ey = element.y+element.h;
-            			} else {
-            				element.obj.sx = element.x;
-            				element.obj.sy = element.y+element.h;
-            				element.obj.ex = element.x+element.w;
-            				element.obj.ey = element.y;
-            			}
-            			ghostcontext.moveTo(element.obj.sx, element.obj.sy);
-            			ghostcontext.lineTo(element.obj.ex, element.obj.ey);
-            			ghostcontext.stroke();
-            			ghostcontext.closePath();
-            		}
-            		if(element.obj.type == 'circle'){
-//            			element.w = element.h = Math.min(element.w, element.h);
-            			var r = Math.min(element.w, element.h) / 2;
-            			ghostcontext.beginPath();
-            			ghostcontext.arc(element.x + r, element.y + r, r, 0, Math.PI * 2, true);
-            			ghostcontext.closePath();
-            			ghostcontext.stroke();
-            		}
-            		ctx.drawImage(ghostcanvas, 0, 0);
-            	}
-            	else{
-            		ghostcanvas.width = element.w;
-            		ghostcanvas.height = element.h;
-            		ghostcontext.putImageData(element.data, 0, 0);
-            		if (element.new_w != element.w) {
-            			element.w = element.new_w;
-            		}
-            		if (element.new_h != element.h) {
-            			element.h = element.new_h;
-            		}
-            		ctx.drawImage(ghostcanvas, element.x, element.y, element.w, element.h);
-            		
-            		ghostcanvas.width = canvaso.width;
-            		ghostcanvas.height = canvaso.height;
-            	}
-            	element.data = ctx.getImageData(element.x, element.y, element.w, element.h);
-            	clear(ghostcontext);
+                if (element.new_x > element.x || element.new_y > element.y) {
+                    if (element.new_x >= element.x + element.w - (1 + element.strokesize)) {
+                        element.new_x = element.x + element.w - (1 + element.strokesize);
+                    }
+                    if (element.new_y >= element.y + element.h - (1 + element.strokesize)) {
+                        element.new_y = element.y + element.h - (1 + element.strokesize);
+                    }
+                }
+                element.x = element.new_x;
+                element.y = element.new_y;
+                if (element.new_w <= 1 + element.strokesize * 2) {
+                    element.new_w = 1 + element.strokesize * 2;
+                }
+                if (element.new_h < 1 + element.strokesize * 2) {
+                    element.new_h = 1 + element.strokesize * 2;
+                }
+                if (element.shape) {
+                    ghostcontext.strokeStyle = element.strokecolor;
+                    ghostcontext.fillStyle = element.fillcolor;
+                    ghostcontext.lineWidth = element.strokesize;
+                    if (element.new_w != element.w) {
+                        element.w = element.new_w;
+                    }
+                    if (element.new_h != element.h) {
+                        element.h = element.new_h;
+                    }
+                    if (element.obj.type == 'rectangle') {
+                        ghostcontext.fillRect(element.x, element.y, element.w, element.h);
+                        ghostcontext.strokeRect(element.x, element.y, element.w, element.h);
+                    }
+                    if (element.obj.type == 'line') {
+                        ghostcontext.beginPath();
+                        if (element.obj.sy == element.obj.ey) {
+                            element.obj.sx = element.x;
+                            element.obj.ex = element.x + element.w;
+                            element.obj.sy = element.obj.ey = element.y + element.h;
+                        }
+                        else 
+                            if (element.obj.sx == element.obj.ex) {
+                                element.obj.sy = element.y;
+                                element.obj.ey = element.y + element.h;
+                                element.obj.sx = element.obj.ex = element.x + element.w;
+                            }
+                            else 
+                                if (element.obj.sx < element.obj.ex && element.obj.sy < element.obj.ey) {
+                                    element.obj.sx = element.x;
+                                    element.obj.sy = element.y;
+                                    element.obj.ex = element.x + element.w;
+                                    element.obj.ey = element.y + element.h;
+                                }
+                                else {
+                                    element.obj.sx = element.x;
+                                    element.obj.sy = element.y + element.h;
+                                    element.obj.ex = element.x + element.w;
+                                    element.obj.ey = element.y;
+                                }
+                        ghostcontext.moveTo(element.obj.sx, element.obj.sy);
+                        ghostcontext.lineTo(element.obj.ex, element.obj.ey);
+                        ghostcontext.stroke();
+                        ghostcontext.closePath();
+                    }
+                    if (element.obj.type == 'circle') {
+                        //            			element.w = element.h = Math.min(element.w, element.h);
+                        var r = Math.min(element.w, element.h) / 2;
+                        ghostcontext.beginPath();
+                        ghostcontext.arc(element.x + r, element.y + r, r, 0, Math.PI * 2, true);
+                        ghostcontext.closePath();
+                        ghostcontext.stroke();
+                    }
+                    ctx.drawImage(ghostcanvas, 0, 0);
+                }
+                else {
+                    ghostcanvas.width = element.w;
+                    ghostcanvas.height = element.h;
+                    ghostcontext.putImageData(element.data, 0, 0);
+                    if (element.new_w != element.w) {
+                        element.w = element.new_w;
+                    }
+                    if (element.new_h != element.h) {
+                        element.h = element.new_h;
+                    }
+                    ctx.drawImage(ghostcanvas, element.x, element.y, element.w, element.h);
+                    
+                    ghostcanvas.width = canvaso.width;
+                    ghostcanvas.height = canvaso.height;
+                }
+                element.data = ctx.getImageData(element.x, element.y, element.w, element.h);
+                clear(ghostcontext);
             }
             else {
                 ghostcontext.putImageData(element.data, element.x, element.y);
@@ -730,7 +738,7 @@ if (window.addEventListener) {
         // completes a drawing operation.
         function img_update(){
             contexto.drawImage(canvas, 0, 0);
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            clear(context);
         }
         
         // ///////////////////////////////////
@@ -762,6 +770,10 @@ if (window.addEventListener) {
                 else {
                     canvas.width = data.width;
                     canvas.height = data.height;
+					ghostcanvas.width = data.width;
+                    ghostcanvas.height = data.height;
+					ghostcanvaso.width = data.width;
+                    ghostcanvaso.height = data.height;
                     canvaso.width = data.width;
                     canvaso.height = data.height;
                     document.getElementById("imageName").lastChild.removeChild(document.getElementById("imageName").lastChild.lastChild);
@@ -773,12 +785,12 @@ if (window.addEventListener) {
         
         function validateNumeric(strValue){
             /*******************************************************************
-			 * DESCRIPTION: Validates that a string contains only valid numbers.
-			 * 
-			 * PARAMETERS: strValue - String to be tested for validity
-			 * 
-			 * RETURNS: True if valid, otherwise false.
-			 ******************************************************************/
+             * DESCRIPTION: Validates that a string contains only valid numbers.
+             *
+             * PARAMETERS: strValue - String to be tested for validity
+             *
+             * RETURNS: True if valid, otherwise false.
+             ******************************************************************/
             var objRegExp = /(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/;
             // check for numeric characters
             return objRegExp.test(strValue);
@@ -957,13 +969,13 @@ if (window.addEventListener) {
         
         function validateImageUrl(strValue){
             /*******************************************************************
-			 * DESCRIPTION: Validates that a string contains only valid URL for
-			 * an image.
-			 * 
-			 * PARAMETERS: strValue - String to be tested for validity
-			 * 
-			 * RETURNS: True if valid, otherwise false.
-			 ******************************************************************/
+             * DESCRIPTION: Validates that a string contains only valid URL for
+             * an image.
+             *
+             * PARAMETERS: strValue - String to be tested for validity
+             *
+             * RETURNS: True if valid, otherwise false.
+             ******************************************************************/
             var objRegExp = new RegExp("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png)$");
             // check for numeric characters
             return objRegExp.test(strValue);
@@ -977,12 +989,12 @@ if (window.addEventListener) {
                 palette: "7x10",
                 onChange: function(val){
                     if (strokeColorSelected) {
-                    	color_stroke = val;
+                        color_stroke = val;
                         context.strokeStyle = val;
                         document.getElementById("selectedStrokeColor").setAttribute("style", "background:" + val);
                     }
                     else {
-                    	color_fill = val;
+                        color_fill = val;
                         context.fillStyle = val;
                         document.getElementById("selectedFillColor").setAttribute("style", "background:" + val);
                     }
@@ -1028,6 +1040,22 @@ if (window.addEventListener) {
                     bc.resize();
                 }
             });
+            brushButton = new dijit.form.Button({
+                iconClass: "icons iconBrush",
+                showLabel: false,
+                onClick: function(){
+                    ev_tool_change("brush");
+                    cp4.attr('style', 'display: block');
+                    dojo.byId('sizeLabel').removeAttribute("style", "display:none");
+                    dojo.byId('sizeLabel').innerHTML = "Brush Size";
+                    dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+                    dojo.byId('fillDrop').setAttribute("style", "display:none");
+                    dojo.byId('brushDrop').removeAttribute("style", "display:none");
+                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('delete').setAttribute("style", "display:none");
+                    bc.resize();
+                }
+            });
             lineButton = new dijit.form.Button({
                 iconClass: "icons iconLine",
                 showLabel: false,
@@ -1060,7 +1088,7 @@ if (window.addEventListener) {
                     bc.resize();
                 }
             });
-			circleButton = new dijit.form.Button({
+            circleButton = new dijit.form.Button({
                 iconClass: "icons iconCircle",
                 showLabel: false,
                 onClick: function(){
@@ -1069,7 +1097,7 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-                    dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width)/2-10);
+                    dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width) / 2 - 10);
                     dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
@@ -1078,7 +1106,7 @@ if (window.addEventListener) {
                     bc.resize();
                 }
             });
-            var items = [pointerButton, pencilButton, lineButton, rectangleButton, circleButton];
+            var items = [pointerButton, pencilButton, brushButton, lineButton, rectangleButton, circleButton];
             var counter = 0;
             var row = 0;
             dojo.forEach(items, function(data){
@@ -1106,17 +1134,21 @@ if (window.addEventListener) {
                         pencilButton.attr('disabled', false);
                     }
                     else 
-                        if (selected_tool == 'line') {
-                            lineButton.attr('disabled', false);
+                        if (selected_tool == 'brush') {
+                            brushButton.attr('disabled', false);
                         }
                         else 
-                            if (selected_tool == 'rect') {
-                                rectangleButton.attr('disabled', false);
+                            if (selected_tool == 'line') {
+                                lineButton.attr('disabled', false);
                             }
-							else
-								if (selected_tool == 'circle') {
-									circleButton.attr('disabled', false);
-								}
+                            else 
+                                if (selected_tool == 'rect') {
+                                    rectangleButton.attr('disabled', false);
+                                }
+                                else 
+                                    if (selected_tool == 'circle') {
+                                        circleButton.attr('disabled', false);
+                                    }
                 if (value == 'pointer') {
                     pointerButton.attr('disabled', true);
                 }
@@ -1125,17 +1157,21 @@ if (window.addEventListener) {
                         pencilButton.attr('disabled', true);
                     }
                     else 
-                        if (value == 'line') {
-                            lineButton.attr('disabled', true);
+                        if (value == 'brush') {
+                            brushButton.attr('disabled', true);
                         }
                         else 
-                            if (value == 'rect') {
-                                rectangleButton.attr('disabled', true);
+                            if (value == 'line') {
+                                lineButton.attr('disabled', true);
                             }
-							else
-								if (value == 'circle') {
-									circleButton.attr('disabled', true);
-								}
+                            else 
+                                if (value == 'rect') {
+                                    rectangleButton.attr('disabled', true);
+                                }
+                                else 
+                                    if (value == 'circle') {
+                                        circleButton.attr('disabled', true);
+                                    }
                 selected_tool = value;
             }
         }
@@ -1167,10 +1203,10 @@ if (window.addEventListener) {
                     return;
                 }
                 if (mySel != null) {
-                	console.log(mx+">"+mySel.x+" "+(mx > mySel.x)+", "+my+">"+mySel.y+" "+(my > mySel.y)+", "+mx+"<"+(mySel.x+mySel.w)+" "+(mx<(mySel.x + mySel.w))+", "+my+"<"+(mySel.y+mySel.h)+" "+(my<(mySel.x + mySel.w)));
+                    console.log(mx + ">" + mySel.x + " " + (mx > mySel.x) + ", " + my + ">" + mySel.y + " " + (my > mySel.y) + ", " + mx + "<" + (mySel.x + mySel.w) + " " + (mx < (mySel.x + mySel.w)) + ", " + my + "<" + (mySel.y + mySel.h) + " " + (my < (mySel.x + mySel.w)));
                     // we are over a selection
                     if (mx > mySel.x && my > mySel.y && mx < (mySel.x + mySel.w) && my < (mySel.y + mySel.h)) {
-                    	tool.offsetx = mx - mySel.x;
+                        tool.offsetx = mx - mySel.x;
                         tool.offsety = my - mySel.y;
                         mySel.x = mx - tool.offsetx;
                         mySel.y = my - tool.offsety;
@@ -1179,6 +1215,8 @@ if (window.addEventListener) {
                     }
                 }
                 clear(context);
+				clear(ghostcontext);
+				clear(ghostcontexto);
                 var l = elements.length;
                 for (var i = l - 1; i >= 0; i--) {
                     // draw element onto temp context
@@ -1190,23 +1228,25 @@ if (window.addEventListener) {
                     if (imageData.data[3] > 0) {
                         mySel = elements[i];
                         tool.offsetx = mx - mySel.x;
-                        console.log("mx: "+mx);
-                        console.log("mySel.x: "+mySel.x);
-                        console.log("offsetx: "+tool.offsetx);
+                        console.log("mx: " + mx);
+                        console.log("mySel.x: " + mySel.x);
+                        console.log("offsetx: " + tool.offsetx);
                         tool.offsety = my - mySel.y;
-                        console.log("my: "+my);
-                        console.log("mySel.y: "+mySel.y);
-                        console.log("offsety: "+tool.offsety);
+                        console.log("my: " + my);
+                        console.log("mySel.y: " + mySel.y);
+                        console.log("offsety: " + tool.offsety);
                         mySel.x = mx - tool.offsetx;
-                        console.log("mySel.x: "+mySel.x);
+                        console.log("mySel.x: " + mySel.x);
                         mySel.y = my - tool.offsety;
-                        console.log("mySel.y: "+mySel.y);
+                        console.log("mySel.y: " + mySel.y);
                         tool.started = true;
                         tool.isDrag = true;
                         // make mainDraw() fire every INTERVAL milliseconds.
                         setInterval(mainDraw, INTERVAL);
                         invalidate();
                         clear(context);
+						clear(ghostcontext);
+						clear(ghostcontexto);
                         return;
                     }
                 }
@@ -1214,8 +1254,10 @@ if (window.addEventListener) {
                 mySel = null;
                 // clear the ghost canvas for next time
                 clear(context);
+				clear(ghostcontext);
+				clear(ghostcontexto);
                 // invalidate because we might need the selection border to
-				// disappear
+                // disappear
                 invalidate();
                 clearInterval(mainDraw);
                 tool.started = false;
@@ -1228,10 +1270,10 @@ if (window.addEventListener) {
                 if (tool.started) {
                     if (tool.isDrag) {
                         getMouse(ev);
-                        mySel.x = mx - tool.offsetx;
-                        mySel.y = my - tool.offsety;
+                        mySel.x = mySel.new_x = mx - tool.offsetx;
+                        mySel.y = mySel.new_y = my - tool.offsety;
                         // something is changing position so we better
-						// invalidate the canvas!
+                        // invalidate the canvas!
                         invalidate();
                     }
                     else 
@@ -1282,7 +1324,7 @@ if (window.addEventListener) {
                         }
                     getMouse(ev);
                     // if there's a selection see if we grabbed one of the
-					// selection handles
+                    // selection handles
                     if (mySel !== null && !tool.isResizeDrag) {
                         for (var i = 0; i < 8; i++) {
                             // 0 1 2
@@ -1353,6 +1395,7 @@ if (window.addEventListener) {
             this.started = false;
             this.smallerx, this.smallery, this.biggerx, this.biggery;
             context.lineWidth = 1;
+			context.strokeStyle = color_stroke;
             // This is called when you start holding down the mouse
             // button.
             // This starts the pencil drawing.
@@ -1409,26 +1452,132 @@ if (window.addEventListener) {
             };
         };
         
+        // The drawing brush.
+        tools.brush = function(){
+            var tool = this;
+            this.started = false;
+            this.smallerx, this.smallery, this.biggerx, this.biggery, this.oldmx, this.oldmy;
+            // This is called when you start holding down the mouse
+            // button.
+            // This starts the brush drawing.
+            this.mousedown = function(ev){
+                tool.started = true;
+                context.lineWidth = line_width;
+				context.strokeStyle = color_stroke;
+                context.fillStyle = color_stroke;
+                getMouse(ev);
+                tool.smallerx = mx - Math.ceil(line_width / 2);
+				tool.biggerx = mx + Math.ceil(line_width / 2);
+				
+                tool.smallery = my - Math.ceil(line_width / 2);
+				tool.biggery = my + Math.ceil(line_width / 2);
+                tool.oldmx = mx;
+                tool.oldmy = my;
+                mx = tool.smallerx;
+                my = tool.smallery;
+                if (brush_type == 'circleBrush') {
+                    drawCircleBrush(tool.oldmx, tool.oldmy, Math.ceil(line_width / 2));
+                }
+                else 
+                    if (brush_type == 'squareBrush') {
+                        drawSquareBrush()
+                    }
+            };
+            // This function is called every time you move the mouse.
+            // Obviously, it only
+            // draws if the tool.started state is set to true (when you
+            // are holding down
+            // the mouse button).
+            this.mousemove = function(ev){
+                if (tool.started) {
+                    getMouse(ev);
+                    tool.oldmx = mx;
+                    tool.oldmy = my;
+                    mx = mx - Math.ceil(line_width / 2);
+                    my = my - Math.ceil(line_width / 2);
+                    if (brush_type == 'circleBrush') {
+                        drawCircleBrush(tool.oldmx, tool.oldmy, Math.ceil(line_width / 2));
+                    }
+                    else 
+                        if (brush_type == 'squareBrush') {
+                            drawSquareBrush()
+                        }
+                    if (mx < tool.smallerx) {
+                        tool.smallerx = mx;
+                    }
+                    if (mx+line_width > tool.biggerx) {
+                        tool.biggerx = mx+line_width;
+                    }
+                    if (my < tool.smallery) {
+                        tool.smallery = my;
+                    }
+                    if (my+line_width > tool.biggery) {
+                        tool.biggery = my+line_width;
+                    }
+                }
+            };
+            // This is called when you release the mouse button.
+            this.mouseup = function(ev){
+                if (tool.started) {
+                    //tool.mousemove(ev);
+                    getMouse(ev);
+                    tool.started = false;
+                    if (mx < tool.smallerx) {
+                        tool.smallerx = mx;
+                    }
+                    if (mx+line_width > tool.biggerx) {
+                        tool.biggerx = mx+line_width;
+                    }
+                    if (my < tool.smallery) {
+                        tool.smallery = my;
+                    }
+                    if (my+line_width > tool.biggery) {
+                        tool.biggery = my+line_width;
+                    }
+                    addElement(tool.smallerx, tool.smallery, tool.biggerx, tool.biggery, line_width, color_stroke, false, null, null);
+                    img_update();
+                }
+            };
+        };
+        
+		//Auxiliary functions for the circle brush tool 
+        function drawCircleBrush(cx, cy, r){
+            context.beginPath();
+            context.arc(cx, cy, r, 0, Math.PI * 2, true);
+            context.closePath();
+            context.stroke();
+            context.fill();
+        }
+        
+		//Auxiliary functions for the square brush tool 
+        function drawSquareBrush(){
+            context.strokeRect(mx, my, line_width, line_width);
+            context.fillRect(mx, my, line_width, line_width);
+        }
+        
         // The rectangle tool.
         tools.rect = function(){
             var tool = this;
             this.started = false;
-            var mousedownx, mousedowny, mouseupx, mouseupy, x, y, w, h;
+            var mousedownx, mousedowny, mouseupx, mouseupy, x, y, w, h, stroke, fill;
             // This is called when you start holding down the mouse
             // button.
             this.mousedown = function(ev){
                 tool.started = true;
-                tool.stroke; tool.fill;
+                tool.stroke;
+                tool.fill;
                 context.lineWidth = line_width;
-                if(hasStroke){
-                	tool.stroke = color_stroke;
-                } else {
-                	tool.stroke = 'rgba(0, 0, 0, 0)';
+                if (hasStroke) {
+                    tool.stroke = color_stroke;
                 }
-                if(hasFill){
-                	tool.fill = color_fill;
-                } else {
-                	tool.fill = 'rgba(0, 0, 0, 0)';
+                else {
+                    tool.stroke = 'rgba(0, 0, 0, 0)';
+                }
+                if (hasFill) {
+                    tool.fill = color_fill;
+                }
+                else {
+                    tool.fill = 'rgba(0, 0, 0, 0)';
                 }
                 context.strokeStyle = tool.stroke;
                 context.fillStyle = tool.fill;
@@ -1442,7 +1591,7 @@ if (window.addEventListener) {
                 }
                 tool.x = Math.min(ev._x, tool.mousedownx), tool.y = Math.min(ev._y, tool.mousedowny), tool.w = Math.abs(ev._x - tool.mousedownx), tool.h = Math.abs(ev._y - tool.mousedowny);
                 
-                context.clearRect(0, 0, canvas.width, canvas.height);
+                clear(context);
                 if (!tool.w || !tool.h) {
                     return;
                 }
@@ -1458,7 +1607,7 @@ if (window.addEventListener) {
                     context.fillStyle = color_fill;
                     tool.mouseupx = ev._x;
                     tool.mouseupy = ev._y;
-                    addElement(tool.x, tool.y, tool.x+tool.w, tool.y+tool.h, line_width, tool.stroke, tool.fill, true, new Rectangle());
+                    addElement(tool.x, tool.y, tool.x + tool.w, tool.y + tool.h, line_width, tool.stroke, tool.fill, true, new Rectangle());
                     img_update();
                 }
             };
@@ -1481,7 +1630,7 @@ if (window.addEventListener) {
                 if (!tool.started) {
                     return;
                 }
-                context.clearRect(0, 0, canvas.width, canvas.height);
+                clear(context);
                 context.beginPath();
                 context.moveTo(tool.mousedownx, tool.mousedowny);
                 context.lineTo(ev._x, ev._y);
@@ -1504,11 +1653,28 @@ if (window.addEventListener) {
         tools.circle = function(){
             var tool = this;
             this.started = false;
-            var mousedownx, mousedowny, x, y, r;
+            var mousedownx, mousedowny, x, y, r, stroke, fill;
             // This is called when you start holding down the mouse
             // button.
             this.mousedown = function(ev){
                 tool.started = true;
+				tool.stroke;
+                tool.fill;
+                context.lineWidth = line_width;
+                if (hasStroke) {
+                    tool.stroke = color_stroke;
+                }
+                else {
+                    tool.stroke = 'rgba(0, 0, 0, 0)';
+                }
+                if (hasFill) {
+                    tool.fill = color_fill;
+                }
+                else {
+                    tool.fill = 'rgba(0, 0, 0, 0)';
+                }
+                context.strokeStyle = tool.stroke;
+                context.fillStyle = tool.fill;
                 tool.mousedownx = ev._x;
                 tool.mousedowny = ev._y;
             };
@@ -1518,9 +1684,9 @@ if (window.addEventListener) {
                     return;
                 }
                 var w = Math.abs(ev._x - tool.mousedownx), h = Math.abs(ev._y - tool.mousedowny);
-				tool.x = Math.min(ev._x, tool.mousedownx), tool.y = Math.min(ev._y, tool.mousedowny), tool.r = Math.min(w, h) / 2;
+                tool.x = Math.min(ev._x, tool.mousedownx), tool.y = Math.min(ev._y, tool.mousedowny), tool.r = Math.min(w, h) / 2;
                 
-                context.clearRect(0, 0, canvas.width, canvas.height);
+                clear(context);
                 if (!w || !h) {
                     return;
                 }
@@ -1528,6 +1694,7 @@ if (window.addEventListener) {
                 context.arc(tool.x + tool.r, tool.y + tool.r, tool.r, 0, Math.PI * 2, true);
                 context.closePath();
                 context.stroke();
+				context.fill();
             };
             // This is called when you release the mouse button.
             this.mouseup = function(ev){
