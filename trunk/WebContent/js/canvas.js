@@ -1432,7 +1432,7 @@ if (window.addEventListener) {
             // This is called when you release the mouse button.
             this.mouseup = function(ev){
                 if (tool.started) {
-                    tool.mousemove(ev);
+                    //tool.mousemove(ev);
                     tool.started = false;
                     if (ev._x < tool.smallerx) {
                         tool.smallerx = ev._x;
