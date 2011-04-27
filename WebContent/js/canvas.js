@@ -6,6 +6,7 @@ var brush_type = 'circleBrush';
 function setLineWidth(val){
     line_width = val;
 }
+
 //
 //function hasStroke(){
 //    hasStroke = true;
@@ -54,7 +55,7 @@ if (window.addEventListener) {
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // LAYOUT START
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        var bc, cp1, cp2, cp3, cp4, pMenuBar, pSubMenu, pSubMenuItem1, pSubMenuItem2, pSubMenuItem3, pSubMenu2, myPalette, strokeColorSelected, fillColorSelected, f1, f2, f3, f4;
+        var bc, cp1, cp2, cp3, cp4, pMenuBar, pSubMenu, pSubMenuItem1, pSubMenuItem2, pSubMenuItem3, pSubMenu2, myPalette, strokeColorSelected, fillColorSelected, f1, f2, f3, f4, f5;
         
         strokeColorSelected = true;
         fillColorSelected = false;
@@ -101,15 +102,21 @@ if (window.addEventListener) {
             // -----------------------------------
             pSubMenu2 = new dijit.Menu({});
             // Clear Canvas
-            pSubMenu2.addChild(new dijit.MenuItem({
+            pSubMenu2Item1 = new dijit.MenuItem({
                 label: "Clear Canvas",
                 onClick: function(){
-					clear(context);
-					clear(contexto);
-					clear(ghostcontext);
-					clear(ghostcontexto);
+                    clear(context);
+                    clear(contexto);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
                 }
-            }));
+            });
+            pSubMenu2.addChild(pSubMenu2Item1);
+            // Resize Canvas
+            pSubMenu2Item2 = new dijit.MenuItem({
+                label: "Resize Canvas"
+            });
+            pSubMenu2.addChild(pSubMenu2Item2);
             pMenuBar.addChild(new dijit.PopupMenuBarItem({
                 label: "Edit",
                 popup: pSubMenu2
@@ -152,7 +159,7 @@ if (window.addEventListener) {
             // BorderContainer
             cp4 = new dijit.layout.ContentPane({
                 region: "top",
-                style: "display: none; padding: 0px",
+                style: "padding: 0px",
                 content: dojo["cache"](new dojo._Url("toolbar.html"), {
                     sanitize: true
                 })
@@ -163,6 +170,12 @@ if (window.addEventListener) {
             // startup()
             document.body.appendChild(bc.domNode);
             bc.startup();
+            
+            dojo.byId('sizeLabel').setAttribute("style", "display:none");
+            dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
+            dojo.byId('fillDrop').setAttribute("style", "display:none");
+            dojo.byId('brushDrop').setAttribute("style", "display:none");
+            dojo.byId('ereaser').setAttribute("style", "display:none");
             
             // create the new image dialog form and then append the dialog
             // to the body
@@ -204,6 +217,16 @@ if (window.addEventListener) {
                 })
             });
             document.body.appendChild(f4.domNode);
+            // create the resize canvas dialog form and then append the dialog
+            // to the body
+            f5 = new dijit.Dialog({
+                title: "Resize Canvas",
+                id: "resizeCanvasDialog",
+                content: dojo["cache"](new dojo._Url("resize_canvas_form.html"), {
+                    sanitize: true
+                })
+            });
+            document.body.appendChild(f5.domNode);
             
             init();
         });
@@ -212,7 +235,10 @@ if (window.addEventListener) {
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         var canvas, context, canvaso, contexto, ghostcanvas, ghostcontext, ghostcanvaso, ghostcontexto;
+        var deleteImgx, deleteImgy;
         var ghostImage = new Image();
+        var deleteImg = new Image();
+        deleteImg.src = "CSS/images/icons/delete1.png";
         
         // The active tool instance.
         var name_default = 'undefined';
@@ -224,6 +250,11 @@ if (window.addEventListener) {
         
         // holds all our elements
         var elements = [];
+        Array.prototype.remove = function(from, to){
+            var rest = this.slice((to || from) + 1 || this.length);
+            this.length = from < 0 ? this.length + from : from;
+            return this.push.apply(this, rest);
+        };
         
         // New, holds the 8 tiny boxes that will be our selection handles
         // the selection handles will be in this order:
@@ -271,13 +302,6 @@ if (window.addEventListener) {
                     // temp canvas
                 }
                 
-                // We can skip the drawing of elements that have moved off the
-                // screen:
-                if (this.x > canvas.width || this.y > canvas.height) 
-                    return;
-                if (this.x + this.w < 0 || this.y + this.h < 0) 
-                    return;
-                
                 if (mySel === this) {
                     adjustDrawingTemp(ctx, this);
                 }
@@ -323,6 +347,10 @@ if (window.addEventListener) {
                         var cur = selectionHandles[i];
                         ctx.fillRect(cur.x, cur.y, mySelBoxSize, mySelBoxSize);
                     }
+                    
+                    deleteImgx = this.x + this.w / 2 - Math.ceil(deleteImg.width / 2);
+                    deleteImgy = this.y + this.h + mySelPadding * 2;
+                    ctx.drawImage(deleteImg, deleteImgx, deleteImgy);
                 }
             } // end draw
         };
@@ -413,6 +441,7 @@ if (window.addEventListener) {
         // If in the future we want to select multiple objects, this
         // will get turned into an array
         var mySel;
+        var mySelIndex = -1;
         
         // The selection color and width. Right now we have a black
         // selection with a small width
@@ -745,17 +774,42 @@ if (window.addEventListener) {
         // New Dialog
         // ///////////////////////////////////
         dojo.addOnLoad(function(){
-            dojo.connect(pSubMenuItem1, "onClick", f1, "show");
+            dojo.connect(pSubMenuItem1, "onClick", function(){
+                dojo.byId('resizeCanvasWidth').removeAttribute('value');
+                dojo.byId('resizeCanvasHeight').removeAttribute('value');
+                f1.show();
+            });
             imgSub = dijit.byId("newSubmit");
             dojo.connect(imgSub, "onClick", function(){
-                checkData();
+                checkData('new');
+            });
+        });
+        
+        // ///////////////////////////////////
+        // Resize Canvas Dialog
+        // ///////////////////////////////////
+        dojo.addOnLoad(function(){
+            dojo.connect(pSubMenu2Item2, "onClick", function(){
+                dojo.byId('resizeCanvasWidth').setAttribute('value', canvaso.width);
+                dojo.byId('resizeCanvasHeight').setAttribute('value', canvaso.height);
+                f5.show();
+            });
+            imgSub = dijit.byId("resizeCanvasSubmit");
+            dojo.connect(imgSub, "onClick", function(){
+                checkData('resizeCanvas');
             });
         });
         
         // This function check if the data in the new image dialog have
         // a correct format
-        function checkData(){
-            var data = f1.attr('value');
+        function checkData(form){
+            var data;
+            if (form == 'new') {
+                data = f1.attr('value');
+            }
+            else {
+                data = f5.attr('value');
+            }
             if (!validateNumeric(data.width)) {
                 alert(data.width +
                 " for width input is not a valid number");
@@ -770,15 +824,17 @@ if (window.addEventListener) {
                 else {
                     canvas.width = data.width;
                     canvas.height = data.height;
-					ghostcanvas.width = data.width;
+                    ghostcanvas.width = data.width;
                     ghostcanvas.height = data.height;
-					ghostcanvaso.width = data.width;
+                    ghostcanvaso.width = data.width;
                     ghostcanvaso.height = data.height;
                     canvaso.width = data.width;
                     canvaso.height = data.height;
-                    document.getElementById("imageName").lastChild.removeChild(document.getElementById("imageName").lastChild.lastChild);
-                    imageName = document.createTextNode(data.name);
-                    document.getElementById("imageName").lastChild.appendChild(imageName);
+                    if (form == 'new') {
+                        document.getElementById("imageName").lastChild.removeChild(document.getElementById("imageName").lastChild.lastChild);
+                        imageName = document.createTextNode(data.name);
+                        document.getElementById("imageName").lastChild.appendChild(imageName);
+                    }
                     return true;
                 }
         }
@@ -938,10 +994,14 @@ if (window.addEventListener) {
                             if (w > canvaso.width) {
                                 canvaso.width = w;
                                 canvas.width = w;
+                                ghostcanvas.width = w;
+                                ghostcanvaso.width = w;
                             }
                             if (h > canvaso.height) {
                                 canvaso.height = h;
                                 canvas.height = h;
+                                ghostcanvas.height = h;
+                                ghostcanvaso.height = h;
                             }
                         }
                         else {
@@ -1020,13 +1080,11 @@ if (window.addEventListener) {
                 showLabel: false,
                 onClick: function(){
                     ev_tool_change("pointer");
-                    cp4.attr('style', 'display: block');
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:inline");
-                    dojo.byId('delete').setAttribute("style", "display:inline");
+                    dojo.byId('ereaser').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -1035,8 +1093,18 @@ if (window.addEventListener) {
                 showLabel: false,
                 disabled: true,
                 onClick: function(){
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
                     ev_tool_change("pencil");
-                    cp4.attr('style', 'display: none');
+                    dojo.byId('sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
+                    dojo.byId('fillDrop').setAttribute("style", "display:none");
+                    dojo.byId('brushDrop').setAttribute("style", "display:none");
+                    dojo.byId('ereaser').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -1044,15 +1112,19 @@ if (window.addEventListener) {
                 iconClass: "icons iconBrush",
                 showLabel: false,
                 onClick: function(){
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
                     ev_tool_change("brush");
-                    cp4.attr('style', 'display: block');
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Brush Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').removeAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
-                    dojo.byId('delete').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -1060,15 +1132,19 @@ if (window.addEventListener) {
                 iconClass: "icons iconLine",
                 showLabel: false,
                 onClick: function(){
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
                     ev_tool_change("line");
-                    cp4.attr('style', 'display: block');
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Line Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
-                    dojo.byId('delete').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -1076,15 +1152,19 @@ if (window.addEventListener) {
                 iconClass: "icons iconRectangle",
                 showLabel: false,
                 onClick: function(){
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
                     ev_tool_change("rect");
-                    cp4.attr('style', 'display: block');
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
-                    dojo.byId('delete').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -1092,8 +1172,13 @@ if (window.addEventListener) {
                 iconClass: "icons iconCircle",
                 showLabel: false,
                 onClick: function(){
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
                     ev_tool_change("circle");
-                    cp4.attr('style', 'display: block');
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
@@ -1102,7 +1187,6 @@ if (window.addEventListener) {
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
-                    dojo.byId('delete').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -1191,6 +1275,7 @@ if (window.addEventListener) {
             this.started = false;
             this.isDrag = false;
             this.isResizeDrag = false;
+            this.isDelete = false;
             var offsetx, offsety;
             // will save the # of the selection handle if the mouse is over one.
             this.expectResize = -1;
@@ -1201,6 +1286,24 @@ if (window.addEventListener) {
                 if (tool.expectResize !== -1) {
                     tool.isResizeDrag = true;
                     return;
+                }
+                if (tool.isDelete) {
+                    elements.remove(mySelIndex);
+                    mySel = null;
+                    mySelIndex = -1;
+                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    // clear the ghost canvas for next time
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    // invalidate because we might need the selection border to
+                    // disappear
+                    invalidate();
+                    clearInterval(mainDraw);
+                    tool.started = false;
+                    canvas.style.cursor = 'crosshair';
+                    context.strokeStyle = color_stroke;
+                    context.fillStyle = color_fill;
                 }
                 if (mySel != null) {
                     console.log(mx + ">" + mySel.x + " " + (mx > mySel.x) + ", " + my + ">" + mySel.y + " " + (my > mySel.y) + ", " + mx + "<" + (mySel.x + mySel.w) + " " + (mx < (mySel.x + mySel.w)) + ", " + my + "<" + (mySel.y + mySel.h) + " " + (my < (mySel.x + mySel.w)));
@@ -1215,8 +1318,8 @@ if (window.addEventListener) {
                     }
                 }
                 clear(context);
-				clear(ghostcontext);
-				clear(ghostcontexto);
+                clear(ghostcontext);
+                clear(ghostcontexto);
                 var l = elements.length;
                 for (var i = l - 1; i >= 0; i--) {
                     // draw element onto temp context
@@ -1227,6 +1330,13 @@ if (window.addEventListener) {
                     // if the mouse pixel exists, select and break
                     if (imageData.data[3] > 0) {
                         mySel = elements[i];
+                        mySelIndex = i;
+                        if (!mySel.shape) {
+                            dojo.byId('ereaser').removeAttribute("style", "display:none");
+                        }
+                        else {
+                            dojo.byId('ereaser').setAttribute("style", "display:none");
+                        }
                         tool.offsetx = mx - mySel.x;
                         console.log("mx: " + mx);
                         console.log("mySel.x: " + mySel.x);
@@ -1245,17 +1355,19 @@ if (window.addEventListener) {
                         setInterval(mainDraw, INTERVAL);
                         invalidate();
                         clear(context);
-						clear(ghostcontext);
-						clear(ghostcontexto);
+                        clear(ghostcontext);
+                        clear(ghostcontexto);
                         return;
                     }
                 }
                 // haven't returned means we have selected nothing
                 mySel = null;
+                mySelIndex = -1;
+                dojo.byId('ereaser').setAttribute("style", "display:none");
                 // clear the ghost canvas for next time
                 clear(context);
-				clear(ghostcontext);
-				clear(ghostcontexto);
+                clear(ghostcontext);
+                clear(ghostcontexto);
                 // invalidate because we might need the selection border to
                 // disappear
                 invalidate();
@@ -1270,8 +1382,20 @@ if (window.addEventListener) {
                 if (tool.started) {
                     if (tool.isDrag) {
                         getMouse(ev);
-                        mySel.x = mySel.new_x = mx - tool.offsetx;
-                        mySel.y = mySel.new_y = my - tool.offsety;
+                        mySel.new_x = mx - tool.offsetx;
+                        mySel.new_y = my - tool.offsety;
+                        if (mySel.new_x < 0 || mySel.new_x + mySel.w > canvaso.width) {
+                            mySel.new_x = mySel.x;
+                        }
+                        else {
+                            mySel.x = mySel.new_x;
+                        }
+                        if (mySel.new_y < 0 || mySel.new_y + mySel.h > canvaso.height) {
+                            mySel.new_y = mySel.y;
+                        }
+                        else {
+                            mySel.y = mySel.new_y;
+                        }
                         // something is changing position so we better
                         // invalidate the canvas!
                         invalidate();
@@ -1379,6 +1503,12 @@ if (window.addEventListener) {
                         tool.isResizeDrag = false;
                         tool.expectResize = -1;
                     }
+                    if (mySel !== null && mx >= deleteImgx && my >= deleteImgy && mx <= deleteImgx + deleteImg.width && my <= deleteImgy + deleteImg.height) {
+                        tool.isDelete = true;
+                    }
+                    else {
+                        tool.isDelete = false;
+                    }
                 }
             };
             // This is called when you release the mouse button.
@@ -1386,6 +1516,7 @@ if (window.addEventListener) {
                 tool.isDrag = false;
                 tool.isResizeDrag = false;
                 tool.expectResize = -1;
+                tool.isDelete = false;
             };
         };
         
@@ -1395,7 +1526,7 @@ if (window.addEventListener) {
             this.started = false;
             this.smallerx, this.smallery, this.biggerx, this.biggery;
             context.lineWidth = 1;
-			context.strokeStyle = color_stroke;
+            context.strokeStyle = color_stroke;
             // This is called when you start holding down the mouse
             // button.
             // This starts the pencil drawing.
@@ -1463,14 +1594,14 @@ if (window.addEventListener) {
             this.mousedown = function(ev){
                 tool.started = true;
                 context.lineWidth = line_width;
-				context.strokeStyle = color_stroke;
+                context.strokeStyle = color_stroke;
                 context.fillStyle = color_stroke;
                 getMouse(ev);
                 tool.smallerx = mx - Math.ceil(line_width / 2);
-				tool.biggerx = mx + Math.ceil(line_width / 2);
-				
+                tool.biggerx = mx + Math.ceil(line_width / 2);
+                
                 tool.smallery = my - Math.ceil(line_width / 2);
-				tool.biggery = my + Math.ceil(line_width / 2);
+                tool.biggery = my + Math.ceil(line_width / 2);
                 tool.oldmx = mx;
                 tool.oldmy = my;
                 mx = tool.smallerx;
@@ -1505,14 +1636,14 @@ if (window.addEventListener) {
                     if (mx < tool.smallerx) {
                         tool.smallerx = mx;
                     }
-                    if (mx+line_width > tool.biggerx) {
-                        tool.biggerx = mx+line_width;
+                    if (mx + line_width > tool.biggerx) {
+                        tool.biggerx = mx + line_width;
                     }
                     if (my < tool.smallery) {
                         tool.smallery = my;
                     }
-                    if (my+line_width > tool.biggery) {
-                        tool.biggery = my+line_width;
+                    if (my + line_width > tool.biggery) {
+                        tool.biggery = my + line_width;
                     }
                 }
             };
@@ -1525,14 +1656,14 @@ if (window.addEventListener) {
                     if (mx < tool.smallerx) {
                         tool.smallerx = mx;
                     }
-                    if (mx+line_width > tool.biggerx) {
-                        tool.biggerx = mx+line_width;
+                    if (mx + line_width > tool.biggerx) {
+                        tool.biggerx = mx + line_width;
                     }
                     if (my < tool.smallery) {
                         tool.smallery = my;
                     }
-                    if (my+line_width > tool.biggery) {
-                        tool.biggery = my+line_width;
+                    if (my + line_width > tool.biggery) {
+                        tool.biggery = my + line_width;
                     }
                     addElement(tool.smallerx, tool.smallery, tool.biggerx, tool.biggery, line_width, color_stroke, false, null, null);
                     img_update();
@@ -1540,7 +1671,7 @@ if (window.addEventListener) {
             };
         };
         
-		//Auxiliary functions for the circle brush tool 
+        //Auxiliary functions for the circle brush tool 
         function drawCircleBrush(cx, cy, r){
             context.beginPath();
             context.arc(cx, cy, r, 0, Math.PI * 2, true);
@@ -1549,7 +1680,7 @@ if (window.addEventListener) {
             context.fill();
         }
         
-		//Auxiliary functions for the square brush tool 
+        //Auxiliary functions for the square brush tool 
         function drawSquareBrush(){
             context.strokeRect(mx, my, line_width, line_width);
             context.fillRect(mx, my, line_width, line_width);
@@ -1658,7 +1789,7 @@ if (window.addEventListener) {
             // button.
             this.mousedown = function(ev){
                 tool.started = true;
-				tool.stroke;
+                tool.stroke;
                 tool.fill;
                 context.lineWidth = line_width;
                 if (hasStroke) {
@@ -1694,7 +1825,7 @@ if (window.addEventListener) {
                 context.arc(tool.x + tool.r, tool.y + tool.r, tool.r, 0, Math.PI * 2, true);
                 context.closePath();
                 context.stroke();
-				context.fill();
+                context.fill();
             };
             // This is called when you release the mouse button.
             this.mouseup = function(ev){
