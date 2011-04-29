@@ -1,4 +1,7 @@
 <div id="toolbar" dojoType="dijit.Toolbar">
+	<div dojoType="dijit.form.ToggleButton" id="ereaser" iconClass="icons iconEraser" showLabel="false" onClick="eraserActive=!eraserActive;">
+        Eraser
+    </div>
     <label id="sizeLabel" for="size">
     </label>
     <div dojoType="dijit.form.NumberSpinner" intermediateChanges="true" id="sizeSpinner" constraints="{min:1,max:250}" value="1">
@@ -30,8 +33,5 @@
                 <img src="CSS/images/icons/squareBrush.png"/>
             </div>
         </div>
-    </div>
-    <div dojoType="dijit.form.ToggleButton" id="ereaser" iconClass="icons iconEraser" showLabel="false">
-        Eraser
     </div>
 </div>
