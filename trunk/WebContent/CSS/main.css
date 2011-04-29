@@ -16,6 +16,7 @@ html,body {
 
 #imageView {
 	background:url('images/backgrounds/transparent_background.png') repeat;
+	background-color: rgba(0, 0, 0, 0);
 	border: 10px solid #333;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -27,7 +28,7 @@ html,body {
 }
 
 #imageTemp, #ghost, #ghosto {
-	background: none;
+	background-color: rgba(0, 0, 0, 0);
 	position: absolute;
 	top: 75px;
 	left: 18px;

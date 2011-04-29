@@ -2,20 +2,11 @@ var line_width = 1;
 var hasStroke = true;
 var hasFill = false;
 var brush_type = 'circleBrush';
+var eraserActive = false;
 
 function setLineWidth(val){
     line_width = val;
 }
-
-//
-//function hasStroke(){
-//    hasStroke = true;
-//}
-//
-//function hasFill(){
-//    hasFill = true;
-//}
-
 
 //Keep everything in anonymous function, called on window load.
 if (window.addEventListener) {
@@ -625,7 +616,13 @@ if (window.addEventListener) {
                 // draw all elements
                 var l = elements.length;
                 for (var i = 0; i < l; i++) {
-                    elements[i].draw(contexto);
+					if (i == mySelIndex && eraserActive) {
+						console.log("mmm");
+						elements[i].draw(context);
+					}
+					else {
+						elements[i].draw(contexto);
+					}
                 }
                 // Add stuff you want drawn on top all the time here
                 canvasValid = true;
@@ -1210,53 +1207,55 @@ if (window.addEventListener) {
         function ev_tool_change(value){
             if (tools[value]) {
                 tool = new tools[value]();
-                if (selected_tool == 'pointer') {
-                    pointerButton.attr('disabled', false);
-                }
-                else 
-                    if (selected_tool == 'pencil') {
-                        pencilButton.attr('disabled', false);
+                if (!eraserActive) {
+                    if (selected_tool == 'pointer') {
+                        pointerButton.attr('disabled', false);
                     }
                     else 
-                        if (selected_tool == 'brush') {
-                            brushButton.attr('disabled', false);
+                        if (selected_tool == 'pencil') {
+                            pencilButton.attr('disabled', false);
                         }
                         else 
-                            if (selected_tool == 'line') {
-                                lineButton.attr('disabled', false);
+                            if (selected_tool == 'brush') {
+                                brushButton.attr('disabled', false);
                             }
                             else 
-                                if (selected_tool == 'rect') {
-                                    rectangleButton.attr('disabled', false);
+                                if (selected_tool == 'line') {
+                                    lineButton.attr('disabled', false);
                                 }
                                 else 
-                                    if (selected_tool == 'circle') {
-                                        circleButton.attr('disabled', false);
+                                    if (selected_tool == 'rect') {
+                                        rectangleButton.attr('disabled', false);
                                     }
-                if (value == 'pointer') {
-                    pointerButton.attr('disabled', true);
-                }
-                else 
-                    if (value == 'pencil') {
-                        pencilButton.attr('disabled', true);
+                                    else 
+                                        if (selected_tool == 'circle') {
+                                            circleButton.attr('disabled', false);
+                                        }
+                    if (value == 'pointer') {
+                        pointerButton.attr('disabled', true);
                     }
                     else 
-                        if (value == 'brush') {
-                            brushButton.attr('disabled', true);
+                        if (value == 'pencil') {
+                            pencilButton.attr('disabled', true);
                         }
                         else 
-                            if (value == 'line') {
-                                lineButton.attr('disabled', true);
+                            if (value == 'brush') {
+                                brushButton.attr('disabled', true);
                             }
                             else 
-                                if (value == 'rect') {
-                                    rectangleButton.attr('disabled', true);
+                                if (value == 'line') {
+                                    lineButton.attr('disabled', true);
                                 }
                                 else 
-                                    if (value == 'circle') {
-                                        circleButton.attr('disabled', true);
+                                    if (value == 'rect') {
+                                        rectangleButton.attr('disabled', true);
                                     }
-                selected_tool = value;
+                                    else 
+                                        if (value == 'circle') {
+                                            circleButton.attr('disabled', true);
+                                        }
+                    selected_tool = value;
+                }
             }
         }
         // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1272,7 +1271,13 @@ if (window.addEventListener) {
         // the pointer
         tools.pointer = function(){
             var tool = this;
-            this.started = false;
+            if (!eraserActive) {
+                this.started = false;
+            }
+            else {
+                console.log("pointer is just started");
+                this.started = true;
+            }
             this.isDrag = false;
             this.isResizeDrag = false;
             this.isDelete = false;
@@ -1307,15 +1312,22 @@ if (window.addEventListener) {
                 }
                 if (mySel != null) {
                     console.log(mx + ">" + mySel.x + " " + (mx > mySel.x) + ", " + my + ">" + mySel.y + " " + (my > mySel.y) + ", " + mx + "<" + (mySel.x + mySel.w) + " " + (mx < (mySel.x + mySel.w)) + ", " + my + "<" + (mySel.y + mySel.h) + " " + (my < (mySel.x + mySel.w)));
-                    // we are over a selection
-                    if (mx > mySel.x && my > mySel.y && mx < (mySel.x + mySel.w) && my < (mySel.y + mySel.h)) {
-                        tool.offsetx = mx - mySel.x;
-                        tool.offsety = my - mySel.y;
-                        mySel.x = mx - tool.offsetx;
-                        mySel.y = my - tool.offsety;
-                        tool.isDrag = true;
+                    if (eraserActive) {
+						invalidate();
+                        console.log("go to brush");
+                        ev_tool_change("brush");
                         return;
                     }
+                    // we are over a selection
+                    else 
+                        if (mx > mySel.x && my > mySel.y && mx < (mySel.x + mySel.w) && my < (mySel.y + mySel.h)) {
+                            tool.offsetx = mx - mySel.x;
+                            tool.offsety = my - mySel.y;
+                            mySel.x = mx - tool.offsetx;
+                            mySel.y = my - tool.offsety;
+                            tool.isDrag = true;
+                            return;
+                        }
                 }
                 clear(context);
                 clear(ghostcontext);
@@ -1333,6 +1345,12 @@ if (window.addEventListener) {
                         mySelIndex = i;
                         if (!mySel.shape) {
                             dojo.byId('ereaser').removeAttribute("style", "display:none");
+                            dojo.byId('sizeLabel').removeAttribute("style", "display:none");
+                            dojo.byId('sizeLabel').innerHTML = "Eraser Size";
+                            dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+                            dojo.byId('fillDrop').setAttribute("style", "display:none");
+                            dojo.byId('brushDrop').removeAttribute("style", "display:none");
+                            bc.resize();
                         }
                         else {
                             dojo.byId('ereaser').setAttribute("style", "display:none");
@@ -1492,7 +1510,7 @@ if (window.addEventListener) {
                                 return;
                             }
                         }
-                        if (mx > mySel.x && my > mySel.y && mx < (mySel.x + mySel.w) && my < (mySel.y + mySel.h)) {
+                        if (mx > mySel.x && my > mySel.y && mx < (mySel.x + mySel.w) && my < (mySel.y + mySel.h) && !eraserActive) {
                             canvas.style.cursor = 'move';
                         }
                         else {
@@ -1586,8 +1604,34 @@ if (window.addEventListener) {
         // The drawing brush.
         tools.brush = function(){
             var tool = this;
-            this.started = false;
             this.smallerx, this.smallery, this.biggerx, this.biggery, this.oldmx, this.oldmy;
+            if (!eraserActive) {
+                this.started = false;
+            }
+            else {
+                console.log("eraser in brush started");
+                this.started = true;
+                context.lineWidth = line_width;
+                //context.strokeStyle = 'rgba(0, 0, 0, 0)';
+                context.fillStyle = "rgba(0,0,0,0)";
+                tool.smallerx = mx - Math.ceil(line_width / 2);
+                tool.biggerx = mx + Math.ceil(line_width / 2);
+                
+                tool.smallery = my - Math.ceil(line_width / 2);
+                tool.biggery = my + Math.ceil(line_width / 2);
+                tool.oldmx = mx;
+                tool.oldmy = my;
+                mx = tool.smallerx;
+                my = tool.smallery;
+                if (brush_type == 'circleBrush') {
+                    drawCircleBrush(tool.oldmx, tool.oldmy, Math.ceil(line_width / 2));
+                }
+                else 
+                    if (brush_type == 'squareBrush') {
+                        drawSquareBrush()
+                    }
+//				tool.mousemove;
+            }
             // This is called when you start holding down the mouse
             // button.
             // This starts the brush drawing.
@@ -1621,6 +1665,9 @@ if (window.addEventListener) {
             // the mouse button).
             this.mousemove = function(ev){
                 if (tool.started) {
+					if(eraserActive){
+						console.log("mousemove of eraser is started");
+					}
                     getMouse(ev);
                     tool.oldmx = mx;
                     tool.oldmy = my;
@@ -1653,20 +1700,29 @@ if (window.addEventListener) {
                     //tool.mousemove(ev);
                     getMouse(ev);
                     tool.started = false;
-                    if (mx < tool.smallerx) {
-                        tool.smallerx = mx;
+                    if (!eraserActive) {
+                        if (mx < tool.smallerx) {
+                            tool.smallerx = mx;
+                        }
+                        if (mx + line_width > tool.biggerx) {
+                            tool.biggerx = mx + line_width;
+                        }
+                        if (my < tool.smallery) {
+                            tool.smallery = my;
+                        }
+                        if (my + line_width > tool.biggery) {
+                            tool.biggery = my + line_width;
+                        }
+                        addElement(tool.smallerx, tool.smallery, tool.biggerx, tool.biggery, line_width, color_stroke, false, null, null);
+                        img_update();
                     }
-                    if (mx + line_width > tool.biggerx) {
-                        tool.biggerx = mx + line_width;
+                    else {
+                        console.log("set new data from eraser");
+                        mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h);
+						img_update();
+                        console.log("return to pointer");
+                        ev_tool_change("pointer");
                     }
-                    if (my < tool.smallery) {
-                        tool.smallery = my;
-                    }
-                    if (my + line_width > tool.biggery) {
-                        tool.biggery = my + line_width;
-                    }
-                    addElement(tool.smallerx, tool.smallery, tool.biggerx, tool.biggery, line_width, color_stroke, false, null, null);
-                    img_update();
                 }
             };
         };
@@ -1676,13 +1732,13 @@ if (window.addEventListener) {
             context.beginPath();
             context.arc(cx, cy, r, 0, Math.PI * 2, true);
             context.closePath();
-            context.stroke();
+            //context.stroke();
             context.fill();
         }
         
         //Auxiliary functions for the square brush tool 
         function drawSquareBrush(){
-            context.strokeRect(mx, my, line_width, line_width);
+            //context.strokeRect(mx, my, line_width, line_width);
             context.fillRect(mx, my, line_width, line_width);
         }
         
