@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 // The circle tool.
 tools.circle = function() {
 	var tool = this;
@@ -52,7 +62,7 @@ tools.circle = function() {
 			tool.mousemove(ev);
 			tool.started = false;
 			addElement(tool.x, tool.y, tool.x + tool.r * 2,
-					tool.y + tool.r * 2, line_width, color_stroke, color_fill,
+					tool.y + tool.r * 2, line_width, tool.stroke, tool.fill,
 					true, new Circle());
 			img_update();
 		}

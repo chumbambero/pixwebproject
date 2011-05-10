@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 function IncludeJavaScript(jsFile){
     document.write('<script type="text/javascript" src="' +
     jsFile +
@@ -15,12 +25,14 @@ IncludeJavaScript("js/objects/element.js");
 IncludeJavaScript("js/objects/rectangle.js");
 IncludeJavaScript("js/objects/line.js");
 IncludeJavaScript("js/objects/circle.js");
+IncludeJavaScript("js/objects/ellipse.js");
 IncludeJavaScript("js/tools/pointer.js");
 IncludeJavaScript("js/tools/pencil.js");
 IncludeJavaScript("js/tools/brush.js");
 IncludeJavaScript("js/tools/line.js");
 IncludeJavaScript("js/tools/rectangle.js");
 IncludeJavaScript("js/tools/circle.js");
+IncludeJavaScript("js/tools/ellipse.js");
 
 function init(){
 
@@ -218,7 +230,7 @@ if (window.addEventListener) {
             // BorderContainer
             cp2 = new dijit.layout.ContentPane({
                 region: "leading",
-                content: dojo["cache"](new dojo._Url("menu.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/menu.html"), {
                     sanitize: true
                 })
             });
@@ -228,7 +240,7 @@ if (window.addEventListener) {
             // BorderContainer
             cp3 = new dijit.layout.ContentPane({
                 region: "center",
-                content: dojo["cache"](new dojo._Url("canvas.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/canvas.html"), {
                     sanitize: true
                 })
             });
@@ -239,11 +251,16 @@ if (window.addEventListener) {
             cp4 = new dijit.layout.ContentPane({
                 region: "top",
                 style: "padding: 0px",
-                content: dojo["cache"](new dojo._Url("toolbar.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/toolbar.html"), {
                     sanitize: true
                 })
             });
             bc.addChild(cp4);
+            
+            cp5 = new dijit.layout.ContentPane({
+                region: "trailing",
+            });
+            bc.addChild(cp5);
             
             // put the top level widget into the document, and then call
             // startup()
@@ -261,7 +278,7 @@ if (window.addEventListener) {
             f1 = new dijit.Dialog({
                 title: "New Image",
                 id: "newDialog",
-                content: dojo["cache"](new dojo._Url("new_img_form.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/form/new_img_form.html"), {
                     sanitize: true
                 })
             });
@@ -271,7 +288,7 @@ if (window.addEventListener) {
             f2 = new dijit.Dialog({
                 title: "Load Image",
                 id: "loadDialog",
-                content: dojo["cache"](new dojo._Url("load_img_form.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/form/load_img_form.html"), {
                     sanitize: true
                 })
             });
@@ -281,7 +298,7 @@ if (window.addEventListener) {
             f3 = new dijit.Dialog({
                 title: "Load Image From URL",
                 id: "urlDialog",
-                content: dojo["cache"](new dojo._Url("load_img_url_form.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/form/load_img_url_form.html"), {
                     sanitize: true
                 })
             });
@@ -291,7 +308,7 @@ if (window.addEventListener) {
             f4 = new dijit.Dialog({
                 title: "Load Image From Google Image Seach",
                 id: "googleDialog",
-                content: dojo["cache"](new dojo._Url("load_img_google_form.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/form/load_img_google_form.html"), {
                     sanitize: true
                 })
             });
@@ -301,7 +318,7 @@ if (window.addEventListener) {
             f5 = new dijit.Dialog({
                 title: "Resize Canvas",
                 id: "resizeCanvasDialog",
-                content: dojo["cache"](new dojo._Url("resize_canvas_form.html"), {
+                content: dojo["cache"](new dojo._Url("view/standard/form/resize_canvas_form.html"), {
                     sanitize: true
                 })
             });
@@ -731,7 +748,29 @@ if (window.addEventListener) {
                     bc.resize();
                 }
             });
-            var items = [pointerButton, pencilButton, brushButton, lineButton, rectangleButton, circleButton];
+            ellipseButton = new dijit.form.Button({
+                iconClass: "icons iconEllipse",
+                showLabel: false,
+                onClick: function(){
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
+                    ev_tool_change("ellipse");
+                    dojo.byId('sizeLabel').removeAttribute("style", "display:none");
+                    dojo.byId('sizeLabel').innerHTML = "Stroke Size";
+                    dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+                    dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width) / 2 - 10);
+                    dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
+                    dojo.byId('fillDrop').removeAttribute("style", "display:none");
+                    dojo.byId('brushDrop').setAttribute("style", "display:none");
+                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    bc.resize();
+                }
+            });
+            var items = [pointerButton, pencilButton, brushButton, lineButton, rectangleButton, circleButton, ellipseButton];
             var counter = 0;
             var row = 0;
             dojo.forEach(items, function(data){

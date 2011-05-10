@@ -1,14 +1,26 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 var line_width = 1;
 var hasStroke = true;
 var hasFill = false;
 var brush_type = 'circleBrush';
 var eraserActive = false;
-var bc, cp1, cp2, cp3, cp4, pMenuBar, pSubMenu, pSubMenuItem1, pSubMenuItem2, pSubMenuItem3, pSubMenu2, myPalette, strokeColorSelected, fillColorSelected, f1, f2, f3, f4, f5;
+var bc, cp1, cp2, cp3, cp4, cp5, pMenuBar, pSubMenu, pSubMenuItem1, pSubMenuItem2, pSubMenuItem3, pSubMenu2, myPalette, strokeColorSelected, fillColorSelected, f1, f2, f3, f4, f5;
 var canvas, context, canvaso, contexto, ghostcanvas, ghostcontext, ghostcanvaso, ghostcontexto;
-var deleteImgx, deleteImgy;
+var deleteImgx, deleteImgy, rotateImgx, rotateImgy;
 var ghostImage = new Image();
 var deleteImg = new Image();
-deleteImg.src = "CSS/images/icons/delete1.png";
+deleteImg.src = "CSS/images/icons/delete.png";
+var rotateImg = new Image();
+rotateImg.src = "CSS/images/icons/rotate.png";
 
 // The active tool instance.
 var name_default = 'undefined';
@@ -71,5 +83,5 @@ var selectionHandles = [];
 //This object holds the implementation of each drawing tool.
 var tools = {};
 
-var pointerButton, pencilButton, lineButton, rectangleButton, circleButton;
+var pointerButton, pencilButton, lineButton, rectangleButton, circleButton, ellipseButton;
 var selected_tool = tool_default;

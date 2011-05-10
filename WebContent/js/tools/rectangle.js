@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 // The rectangle tool.
 tools.rect = function() {
 	var tool = this;

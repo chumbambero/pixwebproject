@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 function invalidate(){
     canvasValid = false;
 }
@@ -24,7 +34,6 @@ function mainDraw(){
         var l = elements.length;
         for (var i = 0; i < l; i++) {
             if (i == mySelIndex && eraserActive) {
-                console.log("mmm");
                 elements[i].draw(context);
             }
             else {
@@ -121,17 +130,22 @@ function adjustDrawingTemp(ctx, element){
                 ghostcontext.moveTo(element.obj.sx, element.obj.sy);
                 ghostcontext.lineTo(element.obj.ex, element.obj.ey);
                 ghostcontext.stroke();
+                ghostcontext.fill();
                 ghostcontext.closePath();
             }
             if (element.obj.type == 'circle') {
-                //            			element.w = element.h = Math.min(element.w, element.h);
                 var r = Math.min(element.w, element.h) / 2;
                 ghostcontext.beginPath();
                 ghostcontext.arc(element.x + r, element.y + r, r, 0, Math.PI * 2, true);
                 ghostcontext.closePath();
                 ghostcontext.stroke();
+                ghostcontext.fill();
+            }
+            if (element.obj.type == 'ellipse') {
+            	drawEllipse(element.x, element.y, element.x+element.w, element.y+element.h, ghostcontext);
             }
             ctx.drawImage(ghostcanvas, 0, 0);
+            element.data = ctx.getImageData(element.x, element.y, element.w, element.h);
         }
         else {
             ghostcanvas.width = element.w;
@@ -143,12 +157,16 @@ function adjustDrawingTemp(ctx, element){
             if (element.new_h != element.h) {
                 element.h = element.new_h;
             }
-            ctx.drawImage(ghostcanvas, element.x, element.y, element.w, element.h);
+            //ctx.drawImage(ghostcanvas, element.x, element.y, element.w, element.h);
+            ghostcontexto.drawImage(ghostcanvas, element.x, element.y, element.w, element.h);
+            element.data = ghostcontexto.getImageData(element.x, element.y, element.w, element.h);
+            ctx.drawImage(ghostcanvaso, 0, 0);
             
             ghostcanvas.width = canvaso.width;
             ghostcanvas.height = canvaso.height;
+            clear(ghostcontexto);
         }
-        element.data = ctx.getImageData(element.x, element.y, element.w, element.h);
+        //element.data = ctx.getImageData(element.x, element.y, element.w, element.h);
         clear(ghostcontext);
     }
     else {

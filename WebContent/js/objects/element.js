@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 // Element object to hold data for all drawn elements
 function Element(){
     this.data = null;
@@ -80,6 +90,9 @@ Element.prototype = {
             deleteImgx = this.x + this.w / 2 - Math.ceil(deleteImg.width / 2);
             deleteImgy = this.y + this.h + mySelPadding * 2;
             ctx.drawImage(deleteImg, deleteImgx, deleteImgy);
+            rotateImgx = this.x + this.w / 2 - Math.ceil(rotateImg.width / 2);
+            rotateImgy = this.y - rotateImg.height - mySelPadding * 2;
+            ctx.drawImage(rotateImg, rotateImgx, rotateImgy);
         }
     } // end draw
 };

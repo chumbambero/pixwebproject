@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 // The general-purpose event handler. This function just
 // determines the mouse
 // position relative to the canvas element.
@@ -55,6 +65,8 @@ function ev_tool_change(value) {
 				rectangleButton.attr('disabled', false);
 			} else if (selected_tool == 'circle') {
 				circleButton.attr('disabled', false);
+			} else if (selected_tool == 'ellipse') {
+				ellipseButton.attr('disabled', false);
 			}
 			if (value == 'pointer') {
 				pointerButton.attr('disabled', true);
@@ -68,6 +80,8 @@ function ev_tool_change(value) {
 				rectangleButton.attr('disabled', true);
 			} else if (value == 'circle') {
 				circleButton.attr('disabled', true);
+			} else if (value == 'ellipse') {
+				ellipseButton.attr('disabled', true);
 			}
 			selected_tool = value;
 		}

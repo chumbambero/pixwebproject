@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 // the pointer
 tools.pointer = function() {
 	var tool = this;
@@ -90,6 +100,17 @@ tools.pointer = function() {
 					bc.resize();
 				} else {
 					dojo.byId('ereaser').setAttribute("style", "display:none");
+					dojo.byId('sizeLabel').removeAttribute("style", "display:none");
+					if(mySel.obj.type!="line"){
+						dojo.byId('sizeLabel').innerHTML = "Stroke Size";
+						dojo.byId('fillDrop').removeAttribute("style", "display:none");
+					}else{
+						dojo.byId('sizeLabel').innerHTML = "Line Size";
+						dojo.byId('fillDrop').setAttribute("style", "display:none");
+					}
+                    dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+                    dojo.byId('brushDrop').setAttribute("style", "display:none");
+                    bc.resize();
 				}
 				tool.offsetx = mx - mySel.x;
 				console.log("mx: " + mx);
@@ -112,12 +133,19 @@ tools.pointer = function() {
 				clear(ghostcontext);
 				clear(ghostcontexto);
 				return;
+			} else {
+				clear(context);
 			}
 		}
 		// haven't returned means we have selected nothing
 		mySel = null;
 		mySelIndex = -1;
 		dojo.byId('ereaser').setAttribute("style", "display:none");
+		dojo.byId('sizeLabel').setAttribute("style", "display:none");
+        dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
+        dojo.byId('fillDrop').setAttribute("style", "display:none");
+        dojo.byId('brushDrop').setAttribute("style", "display:none");
+        bc.resize();
 		// clear the ghost canvas for next time
 		clear(context);
 		clear(ghostcontext);
