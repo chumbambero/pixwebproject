@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2010, 2011 Alessandro Trombini
+ *
+ * This file is part of PixWeb.
+ */
+
+/**
+ * @author Alessandro Trombini
+ */
+
 // The drawing brush.
 tools.brush = function() {
 	var tool = this;
@@ -9,8 +19,6 @@ tools.brush = function() {
 		console.log("eraser in brush started");
 		this.started = true;
 		context.globalCompositeOperation = 'copy';
-		context.lineWidth = line_width;
-		context.strokeStyle = 'rgba(0, 0, 0, 0)';
 		context.fillStyle = "rgba(0,0,0,0)";
 		tool.smallerx = mx - Math.ceil(line_width / 2);
 		tool.biggerx = mx + Math.ceil(line_width / 2);
@@ -33,8 +41,6 @@ tools.brush = function() {
 	this.mousedown = function(ev) {
 		if (!eraserActive) {
 			tool.started = true;
-			context.lineWidth = line_width;
-			context.strokeStyle = color_stroke;
 			context.fillStyle = color_stroke;
 			getMouse(ev);
 			tool.smallerx = mx - Math.ceil(line_width / 2);
@@ -67,8 +73,8 @@ tools.brush = function() {
 			getMouse(ev);
 			tool.oldmx = mx;
 			tool.oldmy = my;
-			mx = mx - Math.ceil(line_width / 2);
-			my = my - Math.ceil(line_width / 2);
+			mx -= Math.ceil(line_width / 2);
+			my -= Math.ceil(line_width / 2);
 			if (brush_type == 'circleBrush') {
 				drawCircleBrush(tool.oldmx, tool.oldmy, Math
 						.ceil(line_width / 2));
@@ -93,6 +99,8 @@ tools.brush = function() {
 	this.mouseup = function(ev) {
 		if (tool.started) {
 			getMouse(ev);
+			mx -= Math.ceil(line_width / 2);
+			my -= Math.ceil(line_width / 2);
 			tool.started = false;
 			if (!eraserActive) {
 				if (mx < tool.smallerx) {
@@ -107,8 +115,21 @@ tools.brush = function() {
 				if (my + line_width > tool.biggery) {
 					tool.biggery = my + line_width;
 				}
+				if(tool.smallerx<0){
+					tool.smallerx = 0;
+				}
+				if(tool.smallery<0){
+					tool.smallery = 0;
+				}
+				if(tool.biggerx>canvaso.width){
+					tool.biggerx = canvaso.width;
+				}
+				if(tool.biggery>canvaso.height){
+					tool.biggery = canvaso.height;
+				}
+				console.log(tool.smallerx, tool.smallery, tool.biggerx, tool.biggery);
 				addElement(tool.smallerx, tool.smallery, tool.biggerx,
-						tool.biggery, line_width, color_stroke, false, null,
+						tool.biggery, 0, color_stroke, false, null,
 						null);
 				img_update();
 			} else {

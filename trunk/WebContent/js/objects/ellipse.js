@@ -8,7 +8,7 @@
  * @author Alessandro Trombini
  */
 
-// Circle object to hold data
-function Circle(){
-    this.type = "circle";
+// Ellipse object to hold data
+function Ellipse(){
+    this.type = "ellipse";
 }
