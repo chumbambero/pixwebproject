@@ -20,7 +20,10 @@ tools.pointer = function() {
 	this.isDrag = false;
 	this.isResizeDrag = false;
 	this.isDelete = false;
+	this.isRotate = false;
+	this.isRotateStart = false;
 	var offsetx, offsety;
+	var vertex_x, vertex_y, hypotenusa_x, hypotenusa_y, cateto_x, cateto_y, hypotenusa, adja_cathetus, anti_cathetus, angle;
 	// will save the # of the selection handle if the mouse is over one.
 	this.expectResize = -1;
 	// Happens when the mouse is clicked in the canvas
@@ -48,6 +51,11 @@ tools.pointer = function() {
 			canvas.style.cursor = 'crosshair';
 			context.strokeStyle = color_stroke;
 			context.fillStyle = color_fill;
+		}
+		if (tool.isRotate) {
+			vertex_x = mySel.x+mySel.w/2, vertex_y = mySel.y+mySel.h/2, hypotenusa_x = rotateImgx + rotateImg.width/2, hypotenusa_y = rotateImgy + rotateImg.height/2;
+			tool.isRotateStart = true;
+			return;
 		}
 		if (mySel != null) {
 			console.log(mx + ">" + mySel.x + " " + (mx > mySel.x) + ", " + my
@@ -223,6 +231,35 @@ tools.pointer = function() {
 					break;
 				}
 				invalidate();
+			} else if (tool.isRotateStart) {
+				getMouse(ev);
+				mySel.angle_change = true;
+				cateto_x = mx, cateto_y = my;
+				hypotenusa = Math.sqrt(Math.pow(hypotenusa_x-vertex_x, 2)+Math.pow(hypotenusa_y-vertex_y, 2));
+				adja_cathetus = Math.sqrt(Math.pow(cateto_x-vertex_x,2)+Math.pow(cateto_y-vertex_y, 2));
+				anti_cathetus = Math.sqrt(Math.pow(cateto_x-hypotenusa_x, 2)+Math.pow(cateto_y-hypotenusa_y, 2));
+				if(cateto_x>=vertex_x){
+					angle = Math.acos((Math.pow(hypotenusa, 2)+Math.pow(adja_cathetus, 2)-Math.pow(anti_cathetus, 2))/(2*hypotenusa*adja_cathetus))*(360/(2*Math.PI));
+				}
+				else{
+					angle=Math.acos((Math.pow(anti_cathetus, 2)+Math.pow(hypotenusa, 2)-Math.pow(adja_cathetus, 2))/(2*hypotenusa*anti_cathetus))*(360/(2*Math.PI))+180;	
+				}
+//				console.log(angle);
+				mySel.angle += angle;
+				if(mySel.ange >= 360){
+					mySel.angle -= 360;
+				}
+				mySel.angle = 2*Math.PI*(mySel.angle/360);
+				invalidate();
+//				clear(context);
+//				context.save();
+//				context.translate(vertex_x, vertex_y);
+//				context.rotate(angle);
+//				//console.log("rotation");
+//				invalidate();
+//				mainDraw();
+//				console.log("Redraw");
+//				context.restore();
 			}
 			getMouse(ev);
 			// if there's a selection see if we grabbed one of the
@@ -287,6 +324,11 @@ tools.pointer = function() {
 			} else {
 				tool.isDelete = false;
 			}
+			if (mySel !== null && mx >= rotateImgx && my >= rotateImgy && mx <= rotateImgx + rotateImg.width && my <= rotateImgy + rotateImg.height) {
+				tool.isRotate = true;
+			} else {
+				tool.isRotate = false;
+			}
 		}
 	};
 	// This is called when you release the mouse button.
@@ -295,5 +337,9 @@ tools.pointer = function() {
 		tool.isResizeDrag = false;
 		tool.expectResize = -1;
 		tool.isDelete = false;
+		if(tool.isRotateStart){
+			tool.isRotateStart = false;
+			mySel.angle_change = false;
+		}
 	};
 };
