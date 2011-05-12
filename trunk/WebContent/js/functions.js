@@ -170,16 +170,31 @@ function adjustDrawingTemp(ctx, element){
         clear(ghostcontext);
     }
     else {
-        ghostcontext.putImageData(element.data, element.x, element.y);
-        ctx.drawImage(ghostcanvas, 0, 0);
+    	ghostcontext.putImageData(element.data, element.x, element.y);
+    	if(mySel.angle!=0){
+    		ctx.drawImage(ghostcanvas, 0-element.x-element.w/2, 0-element.y-element.h/2);
+    	}else{
+    		ctx.drawImage(ghostcanvas, 0, 0);
+    	}
+//        ctx.drawImage(ghostcanvas, 0, 0);
         clear(ghostcontext);
     }
 }
 
 function adjustDrawing(ctx, element){
-    ghostcontexto.putImageData(element.data, element.x, element.y);
-    ctx.drawImage(ghostcanvaso, 0, 0);
-    clear(ghostcontexto);
+  //rotate the element if angle!=0
+  if(element.angle!=0){
+  	ghostcontexto.save();
+  	ghostcontexto.translate(element.x+element.w/2, element.y+element.h/2);
+  	ghostcontexto.rotate(element.angle);
+  	ghostcontexto.putImageData(element.data, element.x, element.y);
+  	ghostcontexto.restore();
+  }
+  else{
+	  ghostcontexto.putImageData(element.data, element.x, element.y);	
+  }
+  ctx.drawImage(ghostcanvaso, 0, 0);
+  clear(ghostcontexto);
 }
 
 // This function draws the #imageTemp canvas on top of
