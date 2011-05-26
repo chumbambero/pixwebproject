@@ -26,6 +26,7 @@ IncludeJavaScript("js/objects/rectangle.js");
 IncludeJavaScript("js/objects/line.js");
 IncludeJavaScript("js/objects/circle.js");
 IncludeJavaScript("js/objects/ellipse.js");
+IncludeJavaScript("js/objects/selection.js");
 IncludeJavaScript("js/tools/pointer.js");
 IncludeJavaScript("js/tools/pencil.js");
 IncludeJavaScript("js/tools/brush.js");
