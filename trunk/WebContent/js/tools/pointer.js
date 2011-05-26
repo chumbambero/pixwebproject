@@ -14,7 +14,6 @@ tools.pointer = function() {
 	if (!eraserActive) {
 		this.started = false;
 	} else {
-		console.log("pointer is just started");
 		this.started = true;
 	}
 	this.isDrag = false;
@@ -22,7 +21,7 @@ tools.pointer = function() {
 	this.isDelete = false;
 	this.isRotate = false;
 	this.isRotateStart = false;
-	var offsetx, offsety;
+	var offsetx, offsety, selectionoffsetx, selectionoffsety;
 	var vertex_x, vertex_y, hypotenusa_x, hypotenusa_y, cateto_x, cateto_y, hypotenusa, adja_cathetus, anti_cathetus, angle;
 	// will save the # of the selection handle if the mouse is over one.
 	this.expectResize = -1;
@@ -35,6 +34,9 @@ tools.pointer = function() {
 			return;
 		}
 		if (tool.isDelete) {
+//			if (mySel.angle != 0) {
+//				context.restore();
+//			}
 			elements.remove(mySelIndex);
 			mySel = null;
 			mySelIndex = -1;
@@ -53,25 +55,23 @@ tools.pointer = function() {
 			context.fillStyle = color_fill;
 		}
 		if (tool.isRotate) {
-			vertex_x = mySel.x+mySel.w/2, vertex_y = mySel.y+mySel.h/2, hypotenusa_x = rotateImgx + rotateImg.width/2, hypotenusa_y = rotateImgy + rotateImg.height/2;
+			vertex_x = mySel.selection.x+mySel.selection.w/2, vertex_y = mySel.selection.y+mySel.selection.h/2, hypotenusa_x = rotateImgx + rotateImg.width/2, hypotenusa_y = rotateImgy + rotateImg.height/2;
 			tool.isRotateStart = true;
 			return;
 		}
 		if (mySel != null) {
-			console.log(mx + ">" + mySel.x + " " + (mx > mySel.x) + ", " + my
-					+ ">" + mySel.y + " " + (my > mySel.y) + ", " + mx + "<"
-					+ (mySel.x + mySel.w) + " " + (mx < (mySel.x + mySel.w))
-					+ ", " + my + "<" + (mySel.y + mySel.h) + " "
-					+ (my < (mySel.x + mySel.w)));
 			if (eraserActive) {
 				invalidate();
-				console.log("go to brush");
 				ev_tool_change("brush");
 				return;
 			}
 			// we are over a selection
-			else if (mx > mySel.x && my > mySel.y && mx < (mySel.x + mySel.w)
-					&& my < (mySel.y + mySel.h)) {
+			else if (mx > mySel.selection.x && my > mySel.selection.y && mx < (mySel.selection.x + mySel.selection.w)
+					&& my < (mySel.selection.y + mySel.selection.h)) {
+				tool.selectionoffsetx = mx - mySel.selection.x;
+				tool.selectionoffsety = my - mySel.selection.y;
+				mySel.selection.x = mx - tool.selectionoffsetx;
+				mySel.selection.y = my - tool.selectionoffsety;
 				tool.offsetx = mx - mySel.x;
 				tool.offsety = my - mySel.y;
 				mySel.x = mx - tool.offsetx;
@@ -120,18 +120,14 @@ tools.pointer = function() {
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     bc.resize();
 				}
+				tool.selectionoffsetx = mx - mySel.selection.x;
+				tool.selectionoffsety = my - mySel.selection.y;
+				mySel.selection.x = mx - tool.selectionoffsetx;
+				mySel.selection.y = my - tool.selectionoffsety;
 				tool.offsetx = mx - mySel.x;
-				console.log("mx: " + mx);
-				console.log("mySel.x: " + mySel.x);
-				console.log("offsetx: " + tool.offsetx);
 				tool.offsety = my - mySel.y;
-				console.log("my: " + my);
-				console.log("mySel.y: " + mySel.y);
-				console.log("offsety: " + tool.offsety);
 				mySel.x = mx - tool.offsetx;
-				console.log("mySel.x: " + mySel.x);
 				mySel.y = my - tool.offsety;
-				console.log("mySel.y: " + mySel.y);
 				tool.started = true;
 				tool.isDrag = true;
 				// make mainDraw() fire every INTERVAL milliseconds.
@@ -172,15 +168,25 @@ tools.pointer = function() {
 		if (tool.started) {
 			if (tool.isDrag) {
 				getMouse(ev);
+				mySel.selection.x = mx - tool.selectionoffsetx;
+				mySel.selection.y = my - tool.selectionoffsety;
 				mySel.new_x = mx - tool.offsetx;
 				mySel.new_y = my - tool.offsety;
-				if (mySel.new_x < 0 || mySel.new_x + mySel.w > canvaso.width) {
-					mySel.new_x = mySel.x;
+				if (mySel.selection.x <= 0) {
+					mySel.selection.x = 0;
+					mySel.new_x = mySel.x = 0+mySelPadding;
+				} else if ((mySel.selection.x + mySel.selection.w) >= canvaso.width){
+					mySel.selection.x = canvaso.width-mySel.selection.w;
+					mySel.new_x = mySel.x = canvaso.width-mySel.selection.w + mySelPadding;
 				} else {
 					mySel.x = mySel.new_x;
 				}
-				if (mySel.new_y < 0 || mySel.new_y + mySel.h > canvaso.height) {
-					mySel.new_y = mySel.y;
+				if (mySel.selection.y <= 0) {
+					mySel.selection.y = 0;
+					mySel.new_y = mySel.y = 0+mySelPadding;
+				} else if ((mySel.selection.y + mySel.selection.h) >= canvaso.height){
+					mySel.selection.y = canvaso.height-mySel.selection.h;
+					mySel.new_y = mySel.y = canvaso.height-mySel.selection.h + mySelPadding;
 				} else {
 					mySel.y = mySel.new_y;
 				}
@@ -189,51 +195,371 @@ tools.pointer = function() {
 				invalidate();
 			} else if (tool.isResizeDrag) {
 				// time to resize!
-				var oldx = mySel.x;
-				var oldy = mySel.y;
+				var oldx = mySel.selection.x;
+				var oldy = mySel.selection.y;
+				var myangle = mySel.angle*360/(2*Math.PI);
+				var expectRotation;
+				if((myangle>=0&&myangle<=23)||(myangle>=339&&myangle<=359)){
+					expectRotation = 0;
+				} else if (myangle>=24&&myangle<=68){
+					expectRotation = 1;
+				} else if (myangle>=69&&myangle<=113){
+					expectRotation = 2;
+				} else if (myangle>=114&&myangle<=158){
+					expectRotation = 3;
+				} else if (myangle>=159&&myangle<=203){
+					expectRotation = 4;
+				} else if (myangle>=204&&myangle<=248){
+					expectRotation = 5;
+				} else if (myangle>=249&&myangle<=293){
+					expectRotation = 6;
+				} else {
+					expectRotation = 7;
+				}
 				// 0 1 2
 				// 3 4
 				// 5 6 7
 				switch (tool.expectResize) {
-				case 0:
-					mySel.new_x = mx;
-					mySel.new_y = my;
-					mySel.new_w += oldx - mx;
-					mySel.new_h += oldy - my;
+				case 0: 
+					mySel.selection.x = mx;
+					mySel.selection.y = my;
+					mySel.selection.w += oldx - mx;
+					mySel.selection.h += oldy - my;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					case 2:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.h + (oldy - my);
+						break;
+					case 3:
+						mySel.new_h = mySel.h + (oldy - my);
+						break;
+					case 4:
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_w = mySel.w + (oldx - mx);
+						break;
+					case 5:
+						mySel.new_w = mySel.w + (oldx - mx);
+						break;
+					case 6:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 7:
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					}
 					break;
 				case 1:
-					mySel.new_y = my;
-					mySel.new_h += oldy - my;
+					mySel.selection.y = my;
+					mySel.selection.h += oldy - my;
+					mySel.selection.centerx = mySel.selection.x+mySel.selection.w/2;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 2:
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 3:
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						mySel.new_h = mySel.h + (oldy - my);
+						break;
+					case 4:
+						mySel.new_h = mySel.h + (oldy - my);
+						break;
+					case 5:
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_h = mySel.h + (oldy - my);
+						break;
+					case 6:
+						mySel.new_w = mySel.w + (oldy - my);
+						break;
+					case 7:
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						mySel.new_w = mySel.w + (oldy - my);
+						break;
+					}
 					break;
 				case 2:
-					mySel.new_y = my;
-					mySel.new_w = mx - oldx;
-					mySel.new_h += oldy - my;
+					mySel.selection.y = my;
+					mySel.selection.w = mx - oldx;
+					mySel.selection.h += oldy - my;
+					mySel.selection.centerx = mySel.selection.x+mySel.selection.w/2;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 2:
+						mySel.new_y = mySel.selection.y + mySelPadding;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 3:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 4:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						mySel.new_h = mySel.h + (my - oldy);
+						break;
+					case 5:
+						mySel.new_h = mySel.h + (my - oldy);
+						break;
+					case 6:
+						mySel.new_h = mySel.h + (my - oldy);
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					case 7:
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					}
 					break;
 				case 3:
-					mySel.new_x = mx;
-					mySel.new_w += oldx - mx;
+					mySel.selection.x = mx;
+					mySel.selection.w += oldx - mx;
+					mySel.selection.centery = mySel.selection.y+mySel.selection.h/2;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.h + (oldx - mx);
+						break;
+					case 2:
+						mySel.new_h = mySel.h + (oldx - mx);
+						break;
+					case 3:
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_w = mySel.w + (oldx - mx);
+						break;
+					case 4:
+						mySel.new_w = mySel.w + (oldx - mx);
+						break;
+					case 5:
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						mySel.new_w = mySel.w + (oldx - mx);
+						break;
+					case 6:
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 7:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					}
 					break;
 				case 4:
-					mySel.new_w = mx - oldx;
+					mySel.selection.w = mx - oldx;
+					mySel.selection.centerx = mySel.selection.x+mySel.selection.w/2;
+					mySel.selection.centery = mySel.selection.y+mySel.selection.h/2;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 2:
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 3:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 4:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 5:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						mySel.new_h = mySel.h + (oldx - mx);
+						break;
+					case 6:
+						mySel.new_h = mySel.h + (oldx - mx);
+						break;
+					case 7:
+						mySel.new_h = mySel.h + (oldx - mx);
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					}
 					break;
 				case 5:
-					mySel.new_x = mx;
-					mySel.new_w += oldx - mx;
-					mySel.new_h = my - oldy;
+					mySel.selection.x = mx;
+					mySel.selection.w += oldx - mx;
+					mySel.selection.h = my - oldy;
+					mySel.selection.centery = mySel.selection.y+mySel.selection.h/2;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 2:
+						mySel.new_h = mySel.selection.h -  mySelPadding*2;
+						mySel.new_w = mySel.w + (oldx - mx);
+						break;
+					case 3:
+						mySel.new_w = mySel.w + (oldx - mx);
+						break;
+					case 4:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 5:
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 6:
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					case 7:
+						mySel.new_x = mySel.selection.x + mySelPadding;
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					}
 					break;
 				case 6:
-					mySel.new_h = my - oldy;
+					mySel.selection.h = my - oldy;
+					mySel.selection.centerx = mySel.selection.x+mySel.selection.w/2;
+					mySel.selection.centery = mySel.selection.y+mySel.selection.h/2;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						mySel.new_w = mySel.w + (oldy - my);
+						break;
+					case 2:
+						mySel.new_w = mySel.w + (oldy - my);
+						break;
+					case 3:
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 4:
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 5:
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 6:
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 7:
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						mySel.new_w = mySel.w + (oldy - my);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					}
 					break;
 				case 7:
-					mySel.new_w = mx - oldx;
-					mySel.new_h = my - oldy;
+					mySel.selection.w = mx - oldx;
+					mySel.selection.h = my - oldy;
+					mySel.selection.centerx = mySel.selection.x+mySel.selection.w/2;
+					mySel.selection.centery = mySel.selection.y+mySel.selection.h/2;
+					switch (expectRotation) {
+					case 0:
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 1:
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						break;
+					case 2:
+						mySel.new_w = mySel.selection.w - mySelPadding*2;
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 3:
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						break;
+					case 4:
+						mySel.new_h = mySel.h + (oldy - my);
+						mySel.new_y = mySel.selection.centery - mySel.new_h/2;
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 5:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						break;
+					case 6:
+						mySel.new_w = mySel.w + (oldx - mx);
+						mySel.new_x = mySel.selection.centerx - mySel.new_w/2;
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					case 7:
+						mySel.new_h = mySel.selection.h - mySelPadding*2;
+						break;
+					}
 					break;
 				}
+				compute_selection(mySel, mySel.selection.x+mySel.selection.w/2, mySel.selection.y+mySel.selection.h/2);
+//				console.log(tool.expectResize, expectRotation, mySel.selection.x, mySel.selection.y, mySel.x, mySel.y, (oldx-mx), (oldy-my));
 				invalidate();
 			} else if (tool.isRotateStart) {
 				getMouse(ev);
-				mySel.angle_change = true;
+				var angle = 0;
+				mySel.angle_changing = true;
 				cateto_x = mx, cateto_y = my;
 				hypotenusa = Math.sqrt(Math.pow(hypotenusa_x-vertex_x, 2)+Math.pow(hypotenusa_y-vertex_y, 2));
 				adja_cathetus = Math.sqrt(Math.pow(cateto_x-vertex_x,2)+Math.pow(cateto_y-vertex_y, 2));
@@ -242,24 +568,19 @@ tools.pointer = function() {
 					angle = Math.acos((Math.pow(hypotenusa, 2)+Math.pow(adja_cathetus, 2)-Math.pow(anti_cathetus, 2))/(2*hypotenusa*adja_cathetus))*(360/(2*Math.PI));
 				}
 				else{
-					angle=Math.acos((Math.pow(anti_cathetus, 2)+Math.pow(hypotenusa, 2)-Math.pow(adja_cathetus, 2))/(2*hypotenusa*anti_cathetus))*(360/(2*Math.PI))+180;	
+					angle = Math.acos((Math.pow(anti_cathetus, 2)+Math.pow(hypotenusa, 2)-Math.pow(adja_cathetus, 2))/(2*hypotenusa*anti_cathetus))*(360/(2*Math.PI))+180;	
 				}
-//				console.log(angle);
-				mySel.angle += angle;
-				if(mySel.ange >= 360){
-					mySel.angle -= 360;
+				mySel.selection.angle = angle;
+				mySel.tmp_angle = mySel.angle*(360/(2*Math.PI))+angle;
+				if(mySel.tmp_angle >= 360){
+					mySel.tmp_angle -= 360;
 				}
-				mySel.angle = 2*Math.PI*(mySel.angle/360);
+				if(mySel.selection.angle >= 360){
+					mySel.selection.angle -= 360;
+				}
+				mySel.tmp_angle = 2*Math.PI*(mySel.tmp_angle/360);
+				mySel.selection.angle = 2*Math.PI*(mySel.selection.angle/360);
 				invalidate();
-//				clear(context);
-//				context.save();
-//				context.translate(vertex_x, vertex_y);
-//				context.rotate(angle);
-//				//console.log("rotation");
-//				invalidate();
-//				mainDraw();
-//				console.log("Redraw");
-//				context.restore();
 			}
 			getMouse(ev);
 			// if there's a selection see if we grabbed one of the
@@ -306,8 +627,8 @@ tools.pointer = function() {
 						return;
 					}
 				}
-				if (mx > mySel.x && my > mySel.y && mx < (mySel.x + mySel.w)
-						&& my < (mySel.y + mySel.h) && !eraserActive) {
+				if (mx > mySel.selection.x && my > mySel.selection.y && mx < (mySel.selection.x + mySel.selection.w)
+						&& my < (mySel.selection.y + mySel.selection.h) && !eraserActive) {
 					canvas.style.cursor = 'move';
 				} else {
 					canvas.style.cursor = 'crosshair';
@@ -339,7 +660,27 @@ tools.pointer = function() {
 		tool.isDelete = false;
 		if(tool.isRotateStart){
 			tool.isRotateStart = false;
-			mySel.angle_change = false;
+			mySel.angle_changing = false;
+			mySel.angle = mySel.tmp_angle;
+//			Ax = (mySel.x-vertex_x)*Math.cos(-mySel.angle)-(mySel.y-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
+//			Ay = (mySel.x-vertex_x)*Math.sin(-mySel.angle)+(mySel.y-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
+//			Bx = ((mySel.x+mySel.w)-vertex_x)*Math.cos(-mySel.angle)-(mySel.y-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
+//			By = ((mySel.x+mySel.w)-vertex_x)*Math.sin(-mySel.angle)+(mySel.y-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
+//			Cx = (mySel.x-vertex_x)*Math.cos(-mySel.angle)-((mySel.y+mySel.h)-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
+//			Cy = (mySel.x-vertex_x)*Math.sin(-mySel.angle)+((mySel.y+mySel.h)-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
+//			Dx = ((mySel.x+mySel.w)-vertex_x)*Math.cos(-mySel.angle)-((mySel.y+mySel.h)-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
+//			Dy = ((mySel.x+mySel.w)-vertex_x)*Math.sin(-mySel.angle)+((mySel.y+mySel.h)-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
+//			mySel.selection.x = Math.min(Ax, Bx, Cx, Dx);
+//			mySel.selection.y = Math.min(Ay, By, Cy, Dy);
+//			mySel.selection.w = Math.max(Ax, Bx, Cx, Dx) - mySel.selection.x;
+//			mySel.selection.h = Math.max(Ay, By, Cy, Dy) - mySel.selection.y;
+//			mySel.selection.x -= mySelPadding;
+//			mySel.selection.y -= mySelPadding;
+//			mySel.selection.w += mySelPadding*2;
+//			mySel.selection.h += mySelPadding*2;
+			//mySel.selection.angle = 0;
+			compute_selection(mySel, vertex_x, vertex_y);
+			invalidate();
 		}
 	};
 };
