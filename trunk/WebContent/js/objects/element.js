@@ -11,6 +11,7 @@
 // Element object to hold data for all drawn elements
 function Element() {
 	this.data = null;
+	this.tmp_data = null;
 	this.x = null;
 	this.y = null;
 	this.w = null;
@@ -21,6 +22,7 @@ function Element() {
 	this.new_h = null;
 	this.angle = 0;
 	this.tmp_angle = 0;
+	this.final_angle = 0;
 	this.angle_changing = false;
 	this.shape = null;
 	this.strokesize = null;
@@ -135,7 +137,7 @@ Element.prototype = {
 				rotateImgy = 0 - rotateImg.height - this.selection.h/2;
 				ctx.drawImage(rotateImg, rotateImgx, rotateImgy);
 			} else {
-				ctx.restore();
+//				ctx.restore();
 				deleteImgx = this.selection.x + this.selection.w / 2 - Math.ceil(deleteImg.width / 2);
 				deleteImgy = this.selection.y + this.selection.h;
 				ctx.drawImage(deleteImg, deleteImgx, deleteImgy);
@@ -163,7 +165,7 @@ Element.prototype = {
 
 // add en element to elements
 function addElement(mousedownx, mousedowny, mouseupx, mouseupy, strokesize,
-		strokecolor, fillcolor, shape, obj) {
+		strokecolor, fillcolor, shape, img, obj) {
 	var el = new Element;
 	el.strokesize = strokesize;
 	el.strokecolor = strokecolor;
@@ -203,18 +205,22 @@ function addElement(mousedownx, mousedowny, mouseupx, mouseupy, strokesize,
 	el.selection.y -= mySelPadding;
 	el.selection.w += mySelPadding*2;
 	el.selection.h += mySelPadding*2;
-	// try {
-	// try {
-	// var imgd = context.getImageData(el.x, el.y, el.w, el.h);
-	// }
-	// catch (e) {
-	// netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-	// var imgd = context.getImageData(el.x, el.y, el.w, el.h);
-	// }
-	// } catch (e) {
-	// throw new Error("unable to access image data: " + e)
-	// }
-	el.data = context.getImageData(el.x, el.y, el.w, el.h);
+//	if(img){
+		try {
+			try {
+				var imgd = context.getImageData(el.x, el.y, el.w, el.h);
+			}
+			catch (e) {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+				var imgd = context.getImageData(el.x, el.y, el.w, el.h);
+			}
+		} catch (e) {
+			throw new Error("unable to access image data: " + e)
+		}
+		el.data = el.tmp_data = imgd;
+//	} else {
+//		el.data = el.tmp_data = context.getImageData(el.x, el.y, el.w, el.h);
+//	}
 	elements.push(el);
 	invalidate();
 }

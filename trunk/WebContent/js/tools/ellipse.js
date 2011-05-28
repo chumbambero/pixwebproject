@@ -58,7 +58,7 @@ tools.ellipse = function() {
 		if (tool.started) {
 			tool.mousemove(ev);
 			tool.started = false;
-			addElement(tool.x, tool.y, tool.x+tool.w, tool.y+tool.h, line_width, tool.stroke, tool.fill, true, new Ellipse());
+			addElement(tool.x, tool.y, tool.x+tool.w, tool.y+tool.h, line_width, tool.stroke, tool.fill, true, false, new Ellipse());
 			img_update();
 		}
 	};

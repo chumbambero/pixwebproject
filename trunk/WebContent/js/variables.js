@@ -13,6 +13,8 @@ var hasStroke = true;
 var hasFill = false;
 var brush_type = 'circleBrush';
 var eraserActive = false;
+var afterRotation = false;
+var resizing = false;
 var bc, cp1, cp2, cp3, cp4, cp5, pMenuBar, pSubMenu, pSubMenuItem1, pSubMenuItem2, pSubMenuItem3, pSubMenu2, myPalette, strokeColorSelected, fillColorSelected, f1, f2, f3, f4, f5;
 var canvas, context, canvaso, contexto, ghostcanvas, ghostcontext, ghostcanvaso, ghostcontexto;
 var deleteImgx, deleteImgy, rotateImgx, rotateImgy;
