@@ -30,13 +30,13 @@ tools.pointer = function() {
 		getMouse(ev);
 		// we are over a selection box
 		if (tool.expectResize !== -1) {
+			if(mySel.shape&&mySel.angle!=0){
+				return;
+			}
 			tool.isResizeDrag = true;
 			return;
 		}
 		if (tool.isDelete) {
-//			if (mySel.angle != 0) {
-//				context.restore();
-//			}
 			elements.remove(mySelIndex);
 			mySel = null;
 			mySelIndex = -1;
@@ -89,7 +89,18 @@ tools.pointer = function() {
 			elements[i].draw(context, 'black');
 			// get image data at the mouse x,y pixel
 			// var imageData = context.getImageData(mx, my, 1, 1);
-			var imageData = context.getImageData(ev._x, ev._y, 1, 1);
+			try {
+				try {
+					var imageData = context.getImageData(mx, my, 1, 1);
+				}
+				catch (e) {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+					var imageData = context.getImageData(mx, my, 1, 1);
+				}
+			} catch (e) {
+				throw new Error("unable to access image data: " + e)
+			}
+//			var imageData = context.getImageData(ev._x, ev._y, 1, 1);
 			// if the mouse pixel exists, select and break
 			if (imageData.data[3] > 0) {
 				mySel = elements[i];
@@ -267,9 +278,10 @@ tools.pointer = function() {
 					mySel.selection.h += oldy - my;
 					mySel.selection.centerx = mySel.selection.x+mySel.selection.w/2;
 					switch (expectRotation) {
-					case 0:
+					case 0:						
 						mySel.new_y = mySel.selection.y + mySelPadding;
 						mySel.new_h = mySel.selection.h - mySelPadding*2;
+//						console.log("x: "+mySel.x, "selextion.x: "+mySel.selection.x, "y: "+mySel.y,  "selection.y: "+mySel.selection.y, "w: "+mySel.w,  "selection.w: "+mySel.selection.w, "h: "+mySel.h, "selection.h: "+mySel.selection.h, mySel.angle, mySel.tmp_angle, mySel.selection.angle);
 						break;
 					case 1:
 						mySel.new_y = mySel.selection.y + mySelPadding;
@@ -655,31 +667,76 @@ tools.pointer = function() {
 	// This is called when you release the mouse button.
 	this.mouseup = function(ev) {
 		tool.isDrag = false;
-		tool.isResizeDrag = false;
+		if(tool.isResizeDrag){
+			if(!mySel.shape){ //((!mySel.shape) || (mySel.shape&&mySel.final_angle!=0))
+				mySel.data = mySel.tmp_data;
+				mySel.x = mySel.new_x;
+				mySel.y = mySel.new_y;
+				mySel.w = mySel.new_w;
+				mySel.h = mySel.new_h;
+			}
+			tool.isResizeDrag = false;
+		}
 		tool.expectResize = -1;
 		tool.isDelete = false;
 		if(tool.isRotateStart){
 			tool.isRotateStart = false;
 			mySel.angle_changing = false;
+			mySel.selection.angle = 0;
 			mySel.angle = mySel.tmp_angle;
-//			Ax = (mySel.x-vertex_x)*Math.cos(-mySel.angle)-(mySel.y-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
-//			Ay = (mySel.x-vertex_x)*Math.sin(-mySel.angle)+(mySel.y-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
-//			Bx = ((mySel.x+mySel.w)-vertex_x)*Math.cos(-mySel.angle)-(mySel.y-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
-//			By = ((mySel.x+mySel.w)-vertex_x)*Math.sin(-mySel.angle)+(mySel.y-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
-//			Cx = (mySel.x-vertex_x)*Math.cos(-mySel.angle)-((mySel.y+mySel.h)-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
-//			Cy = (mySel.x-vertex_x)*Math.sin(-mySel.angle)+((mySel.y+mySel.h)-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
-//			Dx = ((mySel.x+mySel.w)-vertex_x)*Math.cos(-mySel.angle)-((mySel.y+mySel.h)-vertex_y)*Math.sin(-mySel.angle)+vertex_x;
-//			Dy = ((mySel.x+mySel.w)-vertex_x)*Math.sin(-mySel.angle)+((mySel.y+mySel.h)-vertex_y)*Math.cos(-mySel.angle)+vertex_y;
-//			mySel.selection.x = Math.min(Ax, Bx, Cx, Dx);
-//			mySel.selection.y = Math.min(Ay, By, Cy, Dy);
-//			mySel.selection.w = Math.max(Ax, Bx, Cx, Dx) - mySel.selection.x;
-//			mySel.selection.h = Math.max(Ay, By, Cy, Dy) - mySel.selection.y;
-//			mySel.selection.x -= mySelPadding;
-//			mySel.selection.y -= mySelPadding;
-//			mySel.selection.w += mySelPadding*2;
-//			mySel.selection.h += mySelPadding*2;
-			//mySel.selection.angle = 0;
+			mySel.final_angle = mySel.tmp_angle;
 			compute_selection(mySel, vertex_x, vertex_y);
+			if(!mySel.shape){ //((!mySel.shape) || (mySel.shape&&mySel.final_angle!=0))
+				clearInterval(mainDraw);
+				afterRotation = true;
+				invalidate();
+				mainDraw();
+				var row = [];
+				var col = [];
+				for(var j=mySel.selection.x+mySelPadding+1; j<((mySel.selection.x+mySel.selection.w)-mySelPadding-1); j++){
+					for(var k=mySel.selection.y+mySelPadding+1; k<((mySel.selection.y+mySel.selection.h)-mySelPadding-1); k++){
+						try {
+							try {
+								var imgd = context.getImageData(j, k, 1, 1);
+							}
+							catch (e) {
+								netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+								var imgd = context.getImageData(j, k, 1, 1);
+							}
+						} catch (e) {
+							throw new Error("unable to access image data: " + e)
+						}
+//						if(context.getImageData(j, k, 1, 1).data[3]!=0){
+						if(imgd.data[3]!=0){
+							row.push(j);
+							col.push(k);
+						}
+					}
+				}
+				console.log("x: "+mySel.x, "y: "+mySel.y, "w: "+mySel.w, "h: "+mySel.h);
+				mySel.new_x = mySel.x = Math.min.apply(null, row);
+				mySel.new_y = mySel.y = Math.min.apply(null, col);
+				mySel.new_w = mySel.w = Math.max.apply(null, row)-mySel.x;
+				mySel.new_h = mySel.h = Math.max.apply(null, col)-mySel.y;
+				afterRotation = false;
+				mySel.angle = mySel.tmp_angle = 0;
+				try {
+					try {
+						var imgd = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h);
+					}
+					catch (e) {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+						var imgd = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h);
+					}
+				} catch (e) {
+					throw new Error("unable to access image data: " + e)
+				}
+				mySel.data = imgd;
+//				mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h);
+				clear(context);
+				console.log("x: "+mySel.x, "new_x: "+mySel.new_x, "y: "+mySel.y,  "new_y: "+mySel.new_y, "w: "+mySel.w,  "new_w: "+mySel.new_w, "h: "+mySel.h, "new_h: "+mySel.new_h);
+				setInterval(mainDraw, INTERVAL);
+			}
 			invalidate();
 		}
 	};

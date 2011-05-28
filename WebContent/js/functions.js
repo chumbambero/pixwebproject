@@ -33,7 +33,7 @@ function mainDraw(){
         // draw all elements
         var l = elements.length;
         for (var i = 0; i < l; i++) {
-            if (i == mySelIndex && eraserActive) {
+            if (i == mySelIndex && (eraserActive || afterRotation)) {
                 elements[i].draw(context);
             }
             else {
@@ -71,26 +71,28 @@ function getMouse(ev){
 
 function adjustDrawingTemp(ctx, element){
     if (element.new_w != element.w || element.new_h != element.h) {
-        if (element.new_x > element.x || element.new_y > element.y) {
-            if (element.new_x >= element.x + element.w - (1 + element.strokesize)) {
-                element.new_x = element.x + element.w - (1 + element.strokesize);
-            }
-            if (element.new_y >= element.y + element.h - (1 + element.strokesize)) {
-                element.new_y = element.y + element.h - (1 + element.strokesize);
-            }
-        }
-        element.x = element.new_x;
-        element.y = element.new_y;
-        if (element.new_w <= 1 + element.strokesize * 2) {
-            element.new_w = 1 + element.strokesize * 2;
-        }
-        if (element.new_h <= 1 + element.strokesize * 2) {
-            element.new_h = 1 + element.strokesize * 2;
-        }
-        if (element.shape) {
+//        if (element.new_x > element.x || element.new_y > element.y) {
+//            if (element.new_x >= element.x + element.w - (1 + element.strokesize)) {
+//                element.new_x = element.x + element.w - (1 + element.strokesize);
+//            }
+//            if (element.new_y >= element.y + element.h - (1 + element.strokesize)) {
+//                element.new_y = element.y + element.h - (1 + element.strokesize);
+//            }
+//        }
+//        element.x = element.new_x;
+//        element.y = element.new_y;
+//        if (element.new_w <= 1 + element.strokesize * 2) {
+//            element.new_w = 1 + element.strokesize * 2;
+//        }
+//        if (element.new_h <= 1 + element.strokesize * 2) {
+//            element.new_h = 1 + element.strokesize * 2;
+//        }
+        if (element.shape) { //element.shape&&element.final_angle==0
             ghostcontext.strokeStyle = element.strokecolor;
             ghostcontext.fillStyle = element.fillcolor;
             ghostcontext.lineWidth = element.strokesize;
+            element.x = element.new_x;
+            element.y = element.new_y;
             element.w = element.new_w;
             element.h = element.new_h;
             if (element.obj.type == 'rectangle') {
@@ -150,28 +152,57 @@ function adjustDrawingTemp(ctx, element){
             }
             if(element.angle!=0){
             	ghostcontexto.drawImage(ghostcanvas, 0, 0);
-            	element.data = ghostcontexto.getImageData(element.x, element.y, element.w, element.h);
+//            	element.data = ghostcontexto.getImageData(element.x, element.y, element.w, element.h);
+            	try {
+        			try {
+        				var imgd = ghostcontexto.getImageData(element.x, element.y, element.w, element.h);
+        			}
+        			catch (e) {
+        				netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+        				var imgd = ghostcontexto.getImageData(element.x, element.y, element.w, element.h);
+        			}
+        		} catch (e) {
+        			throw new Error("unable to access image data: " + e)
+        		}
+        		element.data = imgd;
             	clear(ghostcontexto);
             	ctx.drawImage(ghostcanvas, 0-element.x-element.w/2, 0-element.y-element.h/2);
         	} else {
         		ctx.drawImage(ghostcanvas, 0, 0);
-        		element.data = ctx.getImageData(element.x, element.y, element.w, element.h);
+        		try {
+        			try {
+        				var imgd = ctx.getImageData(element.x, element.y, element.w, element.h);
+        			}
+        			catch (e) {
+        				netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+        				var imgd = ctx.getImageData(element.x, element.y, element.w, element.h);
+        			}
+        		} catch (e) {
+        			throw new Error("unable to access image data: " + e)
+        		}
+        		element.data = imgd;
+//        		element.data = ctx.getImageData(element.x, element.y, element.w, element.h);
         	}
         }
         else {
             ghostcanvas.width = element.w;
             ghostcanvas.height = element.h;
             ghostcontext.putImageData(element.data, 0, 0);
-            element.w = element.new_w;
-            element.h = element.new_h;
-            ghostcontexto.drawImage(ghostcanvas, element.x, element.y, element.w, element.h);
-            element.data = ghostcontexto.getImageData(element.x, element.y, element.w, element.h);
-            if(element.angle!=0){
-            	ctx.drawImage(ghostcanvaso, 0-element.x-element.w/2, 0-element.y-element.h/2);
-            } else {
-            	ctx.drawImage(ghostcanvaso, 0, 0);
-            }
-            
+            ghostcontexto.drawImage(ghostcanvas, element.new_x, element.new_y, element.new_w, element.new_h);
+            try {
+    			try {
+    				var imgd = ghostcontexto.getImageData(element.new_x, element.new_y, element.new_w, element.new_h);
+    			}
+    			catch (e) {
+    				netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+    				var imgd = ghostcontexto.getImageData(element.new_x, element.new_y, element.new_w, element.new_h);
+    			}
+    		} catch (e) {
+    			throw new Error("unable to access image data: " + e)
+    		}
+    		element.tmp_data = imgd;
+//            element.tmp_data = ghostcontexto.getImageData(element.new_x, element.new_y, element.new_w, element.new_h);
+            ctx.drawImage(ghostcanvaso, 0, 0);
             ghostcanvas.width = canvaso.width;
             ghostcanvas.height = canvaso.height;
             clear(ghostcontexto);
@@ -269,15 +300,34 @@ function img_update(){
     clear(context);
 }
 
+//function compute_selection(el, vx, vy){
+//	Ax = (el.x-vx)*Math.cos(-el.angle)-(el.y-vy)*Math.sin(-el.angle)+vx;
+//	Ay = (el.x-vx)*Math.sin(-el.angle)+(el.y-vy)*Math.cos(-el.angle)+vy;
+//	Bx = ((el.x+el.w)-vx)*Math.cos(-el.angle)-(el.y-vy)*Math.sin(-el.angle)+vx;
+//	By = ((el.x+el.w)-vx)*Math.sin(-el.angle)+(el.y-vy)*Math.cos(-el.angle)+vy;
+//	Cx = (el.x-vx)*Math.cos(-el.angle)-((el.y+el.h)-vy)*Math.sin(-el.angle)+vx;
+//	Cy = (el.x-vx)*Math.sin(-el.angle)+((el.y+el.h)-vy)*Math.cos(-el.angle)+vy;
+//	Dx = ((el.x+el.w)-vx)*Math.cos(-el.angle)-((el.y+el.h)-vy)*Math.sin(-el.angle)+vx;
+//	Dy = ((el.x+el.w)-vx)*Math.sin(-el.angle)+((el.y+el.h)-vy)*Math.cos(-el.angle)+vy;
+//	el.selection.x = Math.min(Ax, Bx, Cx, Dx);
+//	el.selection.y = Math.min(Ay, By, Cy, Dy);
+//	el.selection.w = Math.max(Ax, Bx, Cx, Dx) - el.selection.x;
+//	el.selection.h = Math.max(Ay, By, Cy, Dy) - el.selection.y;
+//	el.selection.x -= mySelPadding;
+//	el.selection.y -= mySelPadding;
+//	mySel.selection.w += mySelPadding*2;
+//	mySel.selection.h += mySelPadding*2;
+//}
+
 function compute_selection(el, vx, vy){
-	Ax = (el.x-vx)*Math.cos(-el.angle)-(el.y-vy)*Math.sin(-el.angle)+vx;
-	Ay = (el.x-vx)*Math.sin(-el.angle)+(el.y-vy)*Math.cos(-el.angle)+vy;
-	Bx = ((el.x+el.w)-vx)*Math.cos(-el.angle)-(el.y-vy)*Math.sin(-el.angle)+vx;
-	By = ((el.x+el.w)-vx)*Math.sin(-el.angle)+(el.y-vy)*Math.cos(-el.angle)+vy;
-	Cx = (el.x-vx)*Math.cos(-el.angle)-((el.y+el.h)-vy)*Math.sin(-el.angle)+vx;
-	Cy = (el.x-vx)*Math.sin(-el.angle)+((el.y+el.h)-vy)*Math.cos(-el.angle)+vy;
-	Dx = ((el.x+el.w)-vx)*Math.cos(-el.angle)-((el.y+el.h)-vy)*Math.sin(-el.angle)+vx;
-	Dy = ((el.x+el.w)-vx)*Math.sin(-el.angle)+((el.y+el.h)-vy)*Math.cos(-el.angle)+vy;
+	Ax = (el.new_x-vx)*Math.cos(-el.angle)-(el.new_y-vy)*Math.sin(-el.angle)+vx;
+	Ay = (el.new_x-vx)*Math.sin(-el.angle)+(el.new_y-vy)*Math.cos(-el.angle)+vy;
+	Bx = ((el.new_x+el.new_w)-vx)*Math.cos(-el.angle)-(el.new_y-vy)*Math.sin(-el.angle)+vx;
+	By = ((el.new_x+el.new_w)-vx)*Math.sin(-el.angle)+(el.new_y-vy)*Math.cos(-el.angle)+vy;
+	Cx = (el.new_x-vx)*Math.cos(-el.angle)-((el.new_y+el.new_h)-vy)*Math.sin(-el.angle)+vx;
+	Cy = (el.new_x-vx)*Math.sin(-el.angle)+((el.new_y+el.new_h)-vy)*Math.cos(-el.angle)+vy;
+	Dx = ((el.new_x+el.new_w)-vx)*Math.cos(-el.angle)-((el.new_y+el.new_h)-vy)*Math.sin(-el.angle)+vx;
+	Dy = ((el.new_x+el.new_w)-vx)*Math.sin(-el.angle)+((el.new_y+el.new_h)-vy)*Math.cos(-el.angle)+vy;
 	el.selection.x = Math.min(Ax, Bx, Cx, Dx);
 	el.selection.y = Math.min(Ay, By, Cy, Dy);
 	el.selection.w = Math.max(Ax, Bx, Cx, Dx) - el.selection.x;

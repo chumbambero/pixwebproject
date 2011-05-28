@@ -129,7 +129,7 @@ tools.brush = function() {
 				}
 				console.log(tool.smallerx, tool.smallery, tool.biggerx, tool.biggery);
 				addElement(tool.smallerx, tool.smallery, tool.biggerx,
-						tool.biggery, 0, color_stroke, false, null,
+						tool.biggery, 0, color_stroke, false, false, false,
 						null);
 				img_update();
 			} else {

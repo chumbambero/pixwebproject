@@ -15,6 +15,10 @@ function IncludeJavaScript(jsFile){
     'ipt>');
 }
 
+document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
+document.write('<link rel="stylesheet" type="text/css" href="CSS/main.css"/>');
+document.write('<link rel="stylesheet" type="text/css" href="CSS/dojoClaro.css"/>');
+
 //include the others javascripts
 IncludeJavaScript("js/variables.js");
 IncludeJavaScript("js/events.js");
@@ -265,7 +269,8 @@ if (window.addEventListener) {
             
             // put the top level widget into the document, and then call
             // startup()
-            document.body.appendChild(bc.domNode);
+            document.getElementById('pixWeb').appendChild(bc.domNode);
+//            document.body.appendChild(bc.domNode);
             bc.startup();
             
             dojo.byId('sizeLabel').setAttribute("style", "display:none");
@@ -283,7 +288,8 @@ if (window.addEventListener) {
                     sanitize: true
                 })
             });
-            document.body.appendChild(f1.domNode);
+            document.getElementById('pixWeb').appendChild(f1.domNode);
+//            document.body.appendChild(f1.domNode);
             // create the load image dialog form and then append the dialog
             // to the body
             f2 = new dijit.Dialog({
@@ -293,7 +299,8 @@ if (window.addEventListener) {
                     sanitize: true
                 })
             });
-            document.body.appendChild(f2.domNode);
+            document.getElementById('pixWeb').appendChild(f2.domNode);
+//            document.body.appendChild(f2.domNode);
             // create the load image from an URL dialog form and then append
             // the dialog to the body
             f3 = new dijit.Dialog({
@@ -303,7 +310,8 @@ if (window.addEventListener) {
                     sanitize: true
                 })
             });
-            document.body.appendChild(f3.domNode);
+            document.getElementById('pixWeb').appendChild(f3.domNode);
+//            document.body.appendChild(f3.domNode);
             // create the load image from the google search engine dialog
             // form and then append the dialog to the body
             f4 = new dijit.Dialog({
@@ -313,7 +321,8 @@ if (window.addEventListener) {
                     sanitize: true
                 })
             });
-            document.body.appendChild(f4.domNode);
+            document.getElementById('pixWeb').appendChild(f4.domNode);
+//            document.body.appendChild(f4.domNode);
             // create the resize canvas dialog form and then append the dialog
             // to the body
             f5 = new dijit.Dialog({
@@ -323,7 +332,8 @@ if (window.addEventListener) {
                     sanitize: true
                 })
             });
-            document.body.appendChild(f5.domNode);
+            document.getElementById('pixWeb').appendChild(f5.domNode);
+//            document.body.appendChild(f5.domNode);
             
             init();
         });
@@ -580,9 +590,35 @@ if (window.addEventListener) {
                             }
                         }
                     }
+//                    var kw = {
+//                    		url: "../upload_file.php",
+//                    		load: function(data){
+//                    	    context.putImageData(data);
+//                    		},
+//                    		error: function(data){
+//                    		console.log("An error occurred: " + data);
+//                    		},
+//                    		timeout: 2000,
+//                    		form: "urlFile"
+//                    		};
+//                    		dojo.xhrPost(kw);
+//                    var xhrArgs = {
+//                    		url: "uploads",
+//                            postData: "some text",
+//                            handleAs: "text",
+//                            load: function(data) {
+//                    			console.log(data);
+//                            },
+//                            error: function(data) {
+//                            	console.log("An error occurred: " + data);
+//                            }
+//                        };
+//                        //Call the asynchronous xhrPost
+//                        console.log("Form being sent...");
+//                        dojo.xhrPost(xhrArgs);
                     // transfer image to context
-                    context.drawImage(img, 6, 6, w, h);
-                    // addElement(6, 6, w, h);
+                    context.drawImage(img, 0, 0, w, h);
+                    addElement(0, 0, w, h, 0, '#000', "#000", false, true, null);
                     img_update();
                 }
             }

@@ -42,7 +42,7 @@ tools.line = function() {
 			tool.mouseupy = ev._y;
 			addElement(tool.mousedownx, tool.mousedowny, tool.mouseupx,
 					tool.mouseupy, line_width, color_stroke,
-					"rgba(0, 0, 0, 0)", true, new Line(tool.mousedownx,
+					"rgba(0, 0, 0, 0)", true, false, new Line(tool.mousedownx,
 							tool.mousedowny, tool.mouseupx, tool.mouseupy));
 			img_update();
 		}
