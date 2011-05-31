@@ -178,3 +178,7 @@ html,body {
 .iconEraser {
 	background-image: url("images/icons/eraser.png");
 }
+
+.iconText {
+	background-image: url("images/icons/text.png");
+}

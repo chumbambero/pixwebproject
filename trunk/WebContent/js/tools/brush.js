@@ -16,7 +16,6 @@ tools.brush = function() {
 	if (!eraserActive) {
 		this.started = false;
 	} else {
-		console.log("eraser in brush started");
 		this.started = true;
 		context.globalCompositeOperation = 'copy';
 		context.fillStyle = "rgba(0,0,0,0)";
@@ -67,9 +66,6 @@ tools.brush = function() {
 	// the mouse button).
 	this.mousemove = function(ev) {
 		if (tool.started) {
-			if (eraserActive) {
-				console.log("mousemove of eraser is started");
-			}
 			getMouse(ev);
 			tool.oldmx = mx;
 			tool.oldmy = my;
@@ -127,17 +123,14 @@ tools.brush = function() {
 				if(tool.biggery>canvaso.height){
 					tool.biggery = canvaso.height;
 				}
-				console.log(tool.smallerx, tool.smallery, tool.biggerx, tool.biggery);
 				addElement(tool.smallerx, tool.smallery, tool.biggerx,
-						tool.biggery, 0, color_stroke, false, false, false,
+						tool.biggery, 0, color_stroke, false, false, false, false,
 						null);
 				img_update();
 			} else {
-				console.log("set new data from eraser");
 				mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w,
 						mySel.h);
 				context.globalCompositeOperation = 'source-over';
-				console.log("return to pointer");
 				ev_tool_change("pointer");
 			}
 		}

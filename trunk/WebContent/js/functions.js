@@ -16,6 +16,14 @@ function setLineWidth(val){
     line_width = val;
 }
 
+function setFont(val){
+	font_type = val;
+}
+
+function setTxt(val){
+	text_content = val.value;
+}
+
 // wipes the canvas context
 function clear(ctx){
     ctx.clearRect(0, 0, canvas.width, canvas.height);

@@ -66,7 +66,7 @@ tools.pencil = function() {
 				tool.biggery = ev._y;
 			}
 			addElement(tool.smallerx, tool.smallery, tool.biggerx,
-					tool.biggery, 1, color_stroke, false, false, false, null);
+					tool.biggery, 1, color_stroke, false, false, false, false, null);
 			img_update();
 		}
 	};

@@ -63,7 +63,7 @@ tools.circle = function() {
 			tool.started = false;
 			addElement(tool.x, tool.y, tool.x + tool.r * 2,
 					tool.y + tool.r * 2, line_width, tool.stroke, tool.fill,
-					true, false, new Circle());
+					true, false, false, new Circle());
 			img_update();
 		}
 	};

@@ -31,6 +31,7 @@ IncludeJavaScript("js/objects/line.js");
 IncludeJavaScript("js/objects/circle.js");
 IncludeJavaScript("js/objects/ellipse.js");
 IncludeJavaScript("js/objects/selection.js");
+IncludeJavaScript("js/objects/text.js");
 IncludeJavaScript("js/tools/pointer.js");
 IncludeJavaScript("js/tools/pencil.js");
 IncludeJavaScript("js/tools/brush.js");
@@ -38,6 +39,7 @@ IncludeJavaScript("js/tools/line.js");
 IncludeJavaScript("js/tools/rectangle.js");
 IncludeJavaScript("js/tools/circle.js");
 IncludeJavaScript("js/tools/ellipse.js");
+IncludeJavaScript("js/tools/text.js");
 
 function init(){
 
@@ -183,6 +185,12 @@ if (window.addEventListener) {
             pSubMenuItem3 = new dijit.MenuItem({
                 label: "Save Image",
                 onClick: function(ev){
+            		mySel = null;
+            		clear(context);
+            		clear(ghostcontext);
+            		clear(ghostcontexto);
+            		invalidate();
+            		mainDraw();
                     window.open(canvaso.toDataURL("image/png"));
                     ev.preventDefault();
                 }
@@ -278,6 +286,12 @@ if (window.addEventListener) {
             dojo.byId('fillDrop').setAttribute("style", "display:none");
             dojo.byId('brushDrop').setAttribute("style", "display:none");
             dojo.byId('ereaser').setAttribute("style", "display:none");
+            dojo.byId('bold').setAttribute("style", "display:none");
+            dojo.byId('italic').setAttribute("style", "display:none");
+            dojo.byId('widget_fonts').setAttribute("style", "display:none");
+            dojo.byId('separator').setAttribute("style", "display:none");
+            dojo.byId('separator1').setAttribute("style", "display:none");
+            dojo.byId('textarea').setAttribute("style", "display:none");
             
             // create the new image dialog form and then append the dialog
             // to the body
@@ -406,6 +420,8 @@ if (window.addEventListener) {
                         imageName = document.createTextNode(data.name);
                         document.getElementById("imageName").lastChild.appendChild(imageName);
                     }
+                    invalidate();
+                    mainDraw();
                     return true;
                 }
         }
@@ -675,11 +691,21 @@ if (window.addEventListener) {
                 showLabel: false,
                 onClick: function(){
                     ev_tool_change("pointer");
+                    eraserActive=false;
+                    clear(context);
+            		clear(ghostcontext);
+            		clear(ghostcontexto);
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').setAttribute("style", "display:none");
+                    dojo.byId('italic').setAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').setAttribute("style", "display:none");
+                    dojo.byId('separator').setAttribute("style", "display:none");
+                    dojo.byId('separator1').setAttribute("style", "display:none");
+                    dojo.byId('textarea').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -695,11 +721,18 @@ if (window.addEventListener) {
                     invalidate();
                     mainDraw();
                     ev_tool_change("pencil");
+                    eraserActive=false;
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').setAttribute("style", "display:none");
+                    dojo.byId('italic').setAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').setAttribute("style", "display:none");
+                    dojo.byId('separator').setAttribute("style", "display:none");
+                    dojo.byId('separator1').setAttribute("style", "display:none");
+                    dojo.byId('textarea').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -714,12 +747,19 @@ if (window.addEventListener) {
                     invalidate();
                     mainDraw();
                     ev_tool_change("brush");
+                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Brush Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').removeAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').setAttribute("style", "display:none");
+                    dojo.byId('italic').setAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').setAttribute("style", "display:none");
+                    dojo.byId('separator').setAttribute("style", "display:none");
+                    dojo.byId('separator1').setAttribute("style", "display:none");
+                    dojo.byId('textarea').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -734,12 +774,19 @@ if (window.addEventListener) {
                     invalidate();
                     mainDraw();
                     ev_tool_change("line");
+                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Line Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').setAttribute("style", "display:none");
+                    dojo.byId('italic').setAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').setAttribute("style", "display:none");
+                    dojo.byId('separator').setAttribute("style", "display:none");
+                    dojo.byId('separator1').setAttribute("style", "display:none");
+                    dojo.byId('textarea').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -754,12 +801,19 @@ if (window.addEventListener) {
                     invalidate();
                     mainDraw();
                     ev_tool_change("rect");
+                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').setAttribute("style", "display:none");
+                    dojo.byId('italic').setAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').setAttribute("style", "display:none");
+                    dojo.byId('separator').setAttribute("style", "display:none");
+                    dojo.byId('separator1').setAttribute("style", "display:none");
+                    dojo.byId('textarea').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -774,6 +828,7 @@ if (window.addEventListener) {
                     invalidate();
                     mainDraw();
                     ev_tool_change("circle");
+                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
@@ -782,6 +837,12 @@ if (window.addEventListener) {
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').setAttribute("style", "display:none");
+                    dojo.byId('italic').setAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').setAttribute("style", "display:none");
+                    dojo.byId('separator').setAttribute("style", "display:none");
+                    dojo.byId('separator1').setAttribute("style", "display:none");
+                    dojo.byId('textarea').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
@@ -796,6 +857,7 @@ if (window.addEventListener) {
                     invalidate();
                     mainDraw();
                     ev_tool_change("ellipse");
+                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
@@ -804,10 +866,45 @@ if (window.addEventListener) {
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').setAttribute("style", "display:none");
+                    dojo.byId('italic').setAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').setAttribute("style", "display:none");
+                    dojo.byId('separator').setAttribute("style", "display:none");
+                    dojo.byId('separator1').setAttribute("style", "display:none");
+                    dojo.byId('textarea').setAttribute("style", "display:none");
                     bc.resize();
                 }
             });
-            var items = [pointerButton, pencilButton, brushButton, lineButton, rectangleButton, circleButton, ellipseButton];
+            textButton = new dijit.form.Button({
+                iconClass: "icons iconText",
+                showLabel: false,
+                onClick: function(){
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
+                    ev_tool_change("text");
+                    eraserActive=false;
+                    dojo.byId('sizeLabel').removeAttribute("style", "display:none");
+                    dojo.byId('sizeLabel').innerHTML = "Text Size";
+                    dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+                    dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width) / 2 - 10);
+                    dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
+                    dojo.byId('fillDrop').removeAttribute("style", "display:none");
+                    dojo.byId('brushDrop').setAttribute("style", "display:none");
+                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('bold').removeAttribute("style", "display:none");
+                    dojo.byId('italic').removeAttribute("style", "display:none");
+                    dojo.byId('widget_fonts').removeAttribute("style", "display:none");
+                    dojo.byId('separator').removeAttribute("style", "display:none");
+                    dojo.byId('separator1').removeAttribute("style", "display:none");
+                    dojo.byId('textarea').removeAttribute("style", "display:none");
+                    bc.resize();
+                }
+            });
+            var items = [pointerButton, pencilButton, brushButton, lineButton, rectangleButton, circleButton, ellipseButton, textButton];
             var counter = 0;
             var row = 0;
             dojo.forEach(items, function(data){

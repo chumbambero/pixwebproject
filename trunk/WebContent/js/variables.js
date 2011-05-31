@@ -12,6 +12,10 @@ var line_width = 1;
 var hasStroke = true;
 var hasFill = false;
 var brush_type = 'circleBrush';
+var font_type = "Verdana";
+var bold = false;
+var italic = false;
+var text_content = "Hello World";
 var eraserActive = false;
 var afterRotation = false;
 var resizing = false;
@@ -25,7 +29,7 @@ var rotateImg = new Image();
 rotateImg.src = "CSS/images/icons/rotate.png";
 
 // The active tool instance.
-var name_default = 'undefined';
+var name_default = 'new image';
 var tool;
 var tool_default = 'pencil';
 var color_stroke = '#000';
@@ -85,5 +89,5 @@ var selectionHandles = [];
 //This object holds the implementation of each drawing tool.
 var tools = {};
 
-var pointerButton, pencilButton, lineButton, rectangleButton, circleButton, ellipseButton;
+var pointerButton, pencilButton, lineButton, rectangleButton, circleButton, ellipseButton, textButton;
 var selected_tool = tool_default;
