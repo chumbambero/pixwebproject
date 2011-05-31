@@ -39,4 +39,4 @@ dojo.require("dijit.Toolbar");
 dojo.require("dojo.parser");
 dojo.require("dijit.form.NumberSpinner");
 
-dojo.require("dojox.grid.DataGrid");
+dojo.require("dijit.form.SimpleTextarea");

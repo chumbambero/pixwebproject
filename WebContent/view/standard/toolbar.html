@@ -1,37 +1,61 @@
 <div id="toolbar" dojoType="dijit.Toolbar">
-	<div dojoType="dijit.form.ToggleButton" id="ereaser" iconClass="icons iconEraser" showLabel="false" onClick="eraserActive=!eraserActive;">
-        Eraser
-    </div>
-    <label id="sizeLabel" for="size">
-    </label>
-    <div dojoType="dijit.form.NumberSpinner" intermediateChanges="true" id="sizeSpinner" constraints="{min:1,max:250}" value="1">
-        <script type="dojo/connect" event="onChange">
-            setLineWidth(this.getValue());
-        </script>
-    </div>
-    <div dojoType="dijit.form.ComboButton" id="fillDrop">
-        <span>FILL STYLE</span>
-        <div dojoType="dijit.Menu" id="fillMenu">
-            <div dojoType="dijit.MenuItem" id="stroke" onClick="hasStroke=true; hasFill=false;">
-                <img src="CSS/images/icons/iconStroke.png"/>
-            </div>
-            <div dojoType="dijit.MenuItem" id="fill" onClick="hasFill=true; hasStroke=false;">
-                <img src="CSS/images/icons/iconFill.png"/>
-            </div>
-            <div dojoType="dijit.MenuItem" id="strokeFill" onClick="hasStroke = true; hasFill = true;">
-                <img src="CSS/images/icons/iconStrokeFill.png"/>
-            </div>
+    <div dojoType="dijit.form.ToggleButton" id="ereaser" iconClass="icons iconEraser" showLabel="false" onClick="eraserActive=!eraserActive;">Eraser
+</div>
+<label id="sizeLabel" for="size">
+</label>
+<div dojoType="dijit.form.NumberSpinner" intermediateChanges="true" id="sizeSpinner" constraints="{min:1,max:250}" value="1">
+    <script type="dojo/connect" event="onChange">
+        setLineWidth(this.getValue());
+    </script>
+</div>
+<div dojoType="dijit.form.ComboButton" id="fillDrop">
+    <span>FILL STYLE</span>
+    <div dojoType="dijit.Menu" id="fillMenu">
+        <div dojoType="dijit.MenuItem" id="stroke" onClick="hasStroke=true; hasFill=false;">
+            <img src="CSS/images/icons/iconStroke.png"/>
+        </div>
+        <div dojoType="dijit.MenuItem" id="fill" onClick="hasFill=true; hasStroke=false;">
+            <img src="CSS/images/icons/iconFill.png"/>
+        </div>
+        <div dojoType="dijit.MenuItem" id="strokeFill" onClick="hasStroke = true; hasFill = true;">
+            <img src="CSS/images/icons/iconStrokeFill.png"/>
         </div>
     </div>
-    <div dojoType="dijit.form.ComboButton" id="brushDrop">
-        <span>STROKE TYPE</span>
-        <div dojoType="dijit.Menu" id="brushMenu">
-            <div dojoType="dijit.MenuItem" id="circleBrush" onClick="brush_type='circleBrush';">
-                <img src="CSS/images/icons/circleBrush.png"/>
-            </div>
-            <div dojoType="dijit.MenuItem" id="squareBrush" onClick="brush_type='squareBrush';">
-                <img src="CSS/images/icons/squareBrush.png"/>
-            </div>
+</div>
+<div dojoType="dijit.form.ComboButton" id="brushDrop">
+    <span>STROKE TYPE</span>
+    <div dojoType="dijit.Menu" id="brushMenu">
+        <div dojoType="dijit.MenuItem" id="circleBrush" onClick="brush_type='circleBrush';">
+            <img src="CSS/images/icons/circleBrush.png"/>
+        </div>
+        <div dojoType="dijit.MenuItem" id="squareBrush" onClick="brush_type='squareBrush';">
+            <img src="CSS/images/icons/squareBrush.png"/>
         </div>
     </div>
+</div><span dojoType="dijit.ToolbarSeparator" id="separator"></span>
+<div dojoType="dijit.form.ToggleButton" id="bold" iconClass="dijitEditorIcon dijitEditorIconBold" showLabel="false" onClick="bold=!bold;"> Bold
+</div><div dojoType="dijit.form.ToggleButton" id="italic" iconClass="dijitEditorIcon dijitEditorIconItalic" showLabel="false" onClick="italic=!italic;"> Italic
+</div>
+<select dojoType="dijit.form.ComboBox" id="fonts" name="fonts">
+    <option>Arial</option>
+    <option selected>Verdana</option>
+    <option>Geneva</option>
+    <option>Helvetica</option>
+    <option>sans-serif</option>
+    <option>Georgia</option>
+    <option>Times New Roman</option>
+    <option>Times</option>
+    <option>serif</option>
+    <option>Courier New</option>
+    <option>Courier</option>
+    <option>monospace</option>
+    <option>cursive</option>
+    <option>fantasy</option>
+    <script type="dojo/connect" event="onChange">
+        setFont(this.getValue());
+    </script>
+</select>
+<span dojoType="dijit.ToolbarSeparator" id="separator1"></span>
+<textarea id="textarea" name="textarea" dojoType="dijit.form.SimpleTextarea" rows="1" cols="50" style="width:auto;" onChange="setTxt(this);">Hello World</textarea>
+
 </div>

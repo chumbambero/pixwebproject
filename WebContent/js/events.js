@@ -67,6 +67,8 @@ function ev_tool_change(value) {
 				circleButton.attr('disabled', false);
 			} else if (selected_tool == 'ellipse') {
 				ellipseButton.attr('disabled', false);
+			} else if (selected_tool == 'text') {
+				textButton.attr('disabled', false);
 			}
 			if (value == 'pointer') {
 				pointerButton.attr('disabled', true);
@@ -82,6 +84,8 @@ function ev_tool_change(value) {
 				circleButton.attr('disabled', true);
 			} else if (value == 'ellipse') {
 				ellipseButton.attr('disabled', true);
+			} else if (value == 'text') {
+				textButton.attr('disabled', true);
 			}
 			selected_tool = value;
 		}

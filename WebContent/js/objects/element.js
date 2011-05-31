@@ -25,6 +25,7 @@ function Element() {
 	this.final_angle = 0;
 	this.angle_changing = false;
 	this.shape = null;
+	this.text = null; 
 	this.strokesize = null;
 	this.strokecolor = null;
 	this.fillcolor = null;
@@ -165,12 +166,13 @@ Element.prototype = {
 
 // add en element to elements
 function addElement(mousedownx, mousedowny, mouseupx, mouseupy, strokesize,
-		strokecolor, fillcolor, shape, img, obj) {
+		strokecolor, fillcolor, shape, img, txt, obj) {
 	var el = new Element;
 	el.strokesize = strokesize;
 	el.strokecolor = strokecolor;
 	el.fillcolor = fillcolor;
 	el.shape = shape;
+	el.text = txt;
 	el.obj = obj;
 	if (mousedownx <= mouseupx && mousedowny <= mouseupy) {
 		el.x = el.new_x = el.selection.x = mousedownx - Math.ceil(el.strokesize / 2);

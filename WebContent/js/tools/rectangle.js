@@ -61,7 +61,7 @@ tools.rect = function() {
 			tool.mouseupx = ev._x;
 			tool.mouseupy = ev._y;
 			addElement(tool.x, tool.y, tool.x + tool.w, tool.y + tool.h,
-					line_width, tool.stroke, tool.fill, true, false, new Rectangle());
+					line_width, tool.stroke, tool.fill, true, false, false, new Rectangle());
 			img_update();
 		}
 	};
