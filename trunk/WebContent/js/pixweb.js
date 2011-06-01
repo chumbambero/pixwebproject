@@ -281,6 +281,8 @@ if (window.addEventListener) {
             
             dojo.byId('sizeLabel').setAttribute("style", "display:none");
             dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
+			dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+			dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
             dojo.byId('fillDrop').setAttribute("style", "display:none");
             dojo.byId('brushDrop').setAttribute("style", "display:none");
             dojo.byId('eraser').setAttribute("style", "display:none");
@@ -736,6 +738,8 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
+					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");	
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -763,6 +767,8 @@ if (window.addEventListener) {
                     ev_tool_change("pencil");
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
+					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -790,6 +796,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Brush Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').removeAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -817,6 +825,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Line Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -844,6 +854,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -871,8 +883,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-                    dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width) / 2 - 10);
-                    dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
+					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -900,8 +912,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-                    dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width) / 2 - 10);
-                    dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
+					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -927,8 +939,10 @@ if (window.addEventListener) {
                     eraserActive = false;
                     ev_tool_change("text");
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
-                    dojo.byId('sizeLabel').innerHTML = "Text Size";
+                    dojo.byId('sizeLabel').innerHTML = "Stroke Size";
+					dojo.byId('font_sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
+					dojo.byId('widget_font_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width) / 2 - 10);
                     dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");

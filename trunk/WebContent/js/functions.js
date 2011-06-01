@@ -41,7 +41,8 @@ function mainDraw() {
 		// draw all elements
 		var l = elements.length;
 		for ( var i = 0; i < l; i++) {
-			if (i == mySelIndex && (eraserActive || afterRotation || pointer_changing)) {
+			if (i == mySelIndex
+					&& (eraserActive || afterRotation || pointer_changing)) {
 				elements[i].draw(context);
 			} else {
 				elements[i].draw(contexto);
@@ -76,7 +77,8 @@ function getMouse(ev) {
 }
 
 function adjustDrawingTemp(ctx, element) {
-	if (element.new_w != element.w || element.new_h != element.h || pointer_changing) {
+	if (element.new_w != element.w || element.new_h != element.h
+			|| pointer_changing) {
 		pointer_changing = false;
 		// if (element.new_x > element.x || element.new_y > element.y) {
 		// if (element.new_x >= element.x + element.w - (1 +
@@ -96,7 +98,7 @@ function adjustDrawingTemp(ctx, element) {
 		// if (element.new_h <= 1 + element.strokesize * 2) {
 		// element.new_h = 1 + element.strokesize * 2;
 		// }
-		if (element.shape) { // element.shape&&element.final_angle==0
+		if (element.shape || element.text) { // element.shape&&element.final_angle==0
 			ghostcontext.strokeStyle = element.strokecolor;
 			ghostcontext.fillStyle = element.fillcolor;
 			ghostcontext.lineWidth = element.strokesize;
@@ -104,70 +106,86 @@ function adjustDrawingTemp(ctx, element) {
 			element.y = element.new_y;
 			element.w = element.new_w;
 			element.h = element.new_h;
-			if (element.obj.type == 'rectangle') {
-				ghostcontext.fillRect(element.x, element.y, element.w,
-						element.h);
-				ghostcontext.strokeRect(element.x + element.strokesize / 2,
-						element.y + element.strokesize / 2, element.w
-								- element.strokesize, element.h
-								- element.strokesize);
-			}
-			if (element.obj.type == 'line') {
-				ghostcontext.beginPath();
-				if (element.obj.sy == element.obj.ey) {
-					element.obj.sx = element.x;
-					element.obj.ex = element.x + element.w;
-					element.obj.sy = element.obj.ey = element.y + element.h;
-				} else if (element.obj.sx == element.obj.ex) {
-					element.obj.sy = element.y;
-					element.obj.ey = element.y + element.h;
-					element.obj.sx = element.obj.ex = element.x + element.w;
-				} else if (element.obj.sx < element.obj.ex
-						&& element.obj.sy < element.obj.ey) {
-					element.obj.sx = element.x;
-					element.obj.sy = element.y;
-					element.obj.ex = element.x + element.w;
-					element.obj.ey = element.y + element.h;
-				} else {
-					element.obj.sx = element.x;
-					element.obj.sy = element.y + element.h;
-					element.obj.ex = element.x + element.w;
-					element.obj.ey = element.y;
+			if (element.shape) {
+				if (element.obj.type == 'rectangle') {
+					ghostcontext.fillRect(element.x, element.y, element.w,
+							element.h);
+					ghostcontext.strokeRect(element.x + element.strokesize / 2,
+							element.y + element.strokesize / 2, element.w
+									- element.strokesize, element.h
+									- element.strokesize);
 				}
-				ghostcontext.moveTo(element.obj.sx, element.obj.sy);
-				ghostcontext.lineTo(element.obj.ex, element.obj.ey);
-				ghostcontext.stroke();
-				ghostcontext.fill();
-				ghostcontext.closePath();
-			}
-			if (element.obj.type == 'circle') {
-				var r = Math.min(element.w, element.h) / 2;
-				ghostcontext.beginPath();
-				if (element.strokecolor != 'rgba(0, 0, 0, 0)') {
-					ghostcontext.arc(element.x + r, element.y + r, r
-							- Math.ceil(element.strokesize / 2), 0,
-							Math.PI * 2, true);
-				} else {
-					ghostcontext.arc(element.x + r, element.y + r, r, 0,
-							Math.PI * 2, true);
+				if (element.obj.type == 'line') {
+					ghostcontext.beginPath();
+					if (element.obj.sy == element.obj.ey) {
+						element.obj.sx = element.x;
+						element.obj.ex = element.x + element.w;
+						element.obj.sy = element.obj.ey = element.y + element.h;
+					} else if (element.obj.sx == element.obj.ex) {
+						element.obj.sy = element.y;
+						element.obj.ey = element.y + element.h;
+						element.obj.sx = element.obj.ex = element.x + element.w;
+					} else if (element.obj.sx < element.obj.ex
+							&& element.obj.sy < element.obj.ey) {
+						element.obj.sx = element.x;
+						element.obj.sy = element.y;
+						element.obj.ex = element.x + element.w;
+						element.obj.ey = element.y + element.h;
+					} else {
+						element.obj.sx = element.x;
+						element.obj.sy = element.y + element.h;
+						element.obj.ex = element.x + element.w;
+						element.obj.ey = element.y;
+					}
+					ghostcontext.moveTo(element.obj.sx, element.obj.sy);
+					ghostcontext.lineTo(element.obj.ex, element.obj.ey);
+					ghostcontext.stroke();
+					ghostcontext.fill();
+					ghostcontext.closePath();
 				}
-				ghostcontext.closePath();
-				ghostcontext.fill();
-				ghostcontext.stroke();
-			}
-			if (element.obj.type == 'ellipse') {
-				if (element.strokecolor != 'rgba(0, 0, 0, 0)') {
-					drawEllipse(element.x + Math.ceil(element.strokesize / 2),
-							element.y + Math.ceil(element.strokesize / 2),
-							element.x + element.w
-									- Math.ceil(element.strokesize / 2),
-							element.y + element.h
-									- Math.ceil(element.strokesize / 2),
-							ghostcontext);
-				} else {
-					drawEllipse(element.x, element.y, element.x + element.w,
-							element.y + element.h, ghostcontext);
+				if (element.obj.type == 'circle') {
+					var r = Math.min(element.w, element.h) / 2;
+					ghostcontext.beginPath();
+					if (element.strokecolor != 'rgba(0, 0, 0, 0)') {
+						ghostcontext.arc(element.x + r, element.y + r, r
+								- Math.ceil(element.strokesize / 2), 0,
+								Math.PI * 2, true);
+					} else {
+						ghostcontext.arc(element.x + r, element.y + r, r, 0,
+								Math.PI * 2, true);
+					}
+					ghostcontext.closePath();
+					ghostcontext.fill();
+					ghostcontext.stroke();
 				}
+				if (element.obj.type == 'ellipse') {
+					if (element.strokecolor != 'rgba(0, 0, 0, 0)') {
+						drawEllipse(element.x
+								+ Math.ceil(element.strokesize / 2), element.y
+								+ Math.ceil(element.strokesize / 2),
+								element.x + element.w
+										- Math.ceil(element.strokesize / 2),
+								element.y + element.h
+										- Math.ceil(element.strokesize / 2),
+								ghostcontext);
+					} else {
+						drawEllipse(element.x, element.y,
+								element.x + element.w, element.y + element.h,
+								ghostcontext);
+					}
+				}
+			} else if (element.text) {
+				var style = "";
+				if(element.obj.bold){
+					style += "bold ";
+				}
+				if(element.obj.italic){
+					style += "italic ";
+				}
+				style += element.obj.size + "px "+ element.obj.font;
+				ghostcontext.font = style;
+				ghostcontext.fillText(element.obj.text, element.x-mySelPadding, element.y+element.h-mySelPadding);
+				ghostcontext.strokeText(element.obj.text, element.x-mySelPadding, element.y+element.h-mySelPadding);
 			}
 			if (element.angle != 0) {
 				ghostcontexto.drawImage(ghostcanvas, 0, 0);

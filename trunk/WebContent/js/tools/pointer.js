@@ -117,6 +117,10 @@ tools.pointer = function() {
 					dojo.byId('sizeLabel').innerHTML = "Eraser Size";
 					dojo.byId('widget_sizeSpinner').removeAttribute("style",
 							"display:none");
+					dojo.byId('font_sizeLabel').setAttribute("style",
+							"display:none");
+					dojo.byId('widget_font_sizeSpinner').setAttribute("style",
+							"display:none");
 					dojo.byId('fillDrop').setAttribute("style", "display:none");
 					dojo.byId('brushDrop').removeAttribute("style",
 							"display:none");
@@ -139,6 +143,10 @@ tools.pointer = function() {
 								"display:none");
 						dojo.byId('widget_sizeSpinner').setAttribute("style",
 								"display:none");
+						dojo.byId('font_sizeLabel').setAttribute("style",
+								"display:none");
+						dojo.byId('widget_font_sizeSpinner').setAttribute(
+								"style", "display:none");
 						dojo.byId('fillDrop').setAttribute("style",
 								"display:none");
 						dojo.byId('brushDrop').setAttribute("style",
@@ -173,8 +181,12 @@ tools.pointer = function() {
 									"display:none");
 							dojo.byId('sizeLabel').removeAttribute("style",
 									"display:none");
-							dojo.byId('sizeLabel').innerHTML = "Text Size";
+							dojo.byId('sizeLabel').innerHTML = "Stroke Size";
 							dojo.byId('widget_sizeSpinner').removeAttribute(
+									"style", "display:none");
+							dojo.byId('font_sizeLabel').setAttribute("style",
+									"display:none");
+							dojo.byId('widget_font_sizeSpinner').setAttribute(
 									"style", "display:none");
 							dojo.byId('fillDrop').removeAttribute("style",
 									"display:none");
@@ -184,13 +196,13 @@ tools.pointer = function() {
 									"display:none");
 							dojo.byId('italic').removeAttribute("style",
 									"display:none");
-							dojo.byId('widget_fonts').removeAttribute("style",
+							dojo.byId('widget_fonts').setAttribute("style",
 									"display:none");
 							dojo.byId('separator').removeAttribute("style",
 									"display:none");
-							dojo.byId('separator1').removeAttribute("style",
+							dojo.byId('separator1').setAttribute("style",
 									"display:none");
-							dojo.byId('textarea').removeAttribute("style",
+							dojo.byId('textarea').setAttribute("style",
 									"display:none");
 							bc.resize();
 						} else {
@@ -208,6 +220,10 @@ tools.pointer = function() {
 										"display:none");
 							}
 							dojo.byId('widget_sizeSpinner').removeAttribute(
+									"style", "display:none");
+							dojo.byId('font_sizeLabel').setAttribute("style",
+									"display:none");
+							dojo.byId('widget_font_sizeSpinner').setAttribute(
 									"style", "display:none");
 							dojo.byId('brushDrop').setAttribute("style",
 									"display:none");
@@ -254,6 +270,9 @@ tools.pointer = function() {
 		dojo.byId('eraser').setAttribute("style", "display:none");
 		dojo.byId('sizeLabel').setAttribute("style", "display:none");
 		dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
+		dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+		dojo.byId('widget_font_sizeSpinner').setAttribute("style",
+				"display:none");
 		dojo.byId('fillDrop').setAttribute("style", "display:none");
 		dojo.byId('brushDrop').setAttribute("style", "display:none");
 		dojo.byId('bold').setAttribute("style", "display:none");
@@ -877,6 +896,9 @@ tools.pointer = function() {
 			dojo.byId('eraser').setAttribute("style", "display:none");
 			dojo.byId('sizeLabel').setAttribute("style", "display:none");
 			dojo.byId('widget_sizeSpinner').setAttribute("style",
+					"display:none");
+			dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+			dojo.byId('widget_font_sizeSpinner').setAttribute("style",
 					"display:none");
 			dojo.byId('fillDrop').setAttribute("style", "display:none");
 			dojo.byId('brushDrop').setAttribute("style", "display:none");

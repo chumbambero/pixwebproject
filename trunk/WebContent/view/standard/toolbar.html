@@ -45,6 +45,12 @@
         </div>
     </div>
 </div><span dojoType="dijit.ToolbarSeparator" id="separator"></span>
+<label id="font_sizeLabel" for="font_size">Font Size</label>
+<div dojoType="dijit.form.NumberSpinner" intermediateChanges="true" id="font_sizeSpinner" value="1">
+    <script type="dojo/connect" event="onChange">
+        font_size = this.getValue();
+    </script>
+</div>
 <div dojoType="dijit.form.ToggleButton" id="bold" iconClass="dijitEditorIcon dijitEditorIconBold" showLabel="false" onClick="bold=!bold;"> Bold
 </div><div dojoType="dijit.form.ToggleButton" id="italic" iconClass="dijitEditorIcon dijitEditorIconItalic" showLabel="false" onClick="italic=!italic;"> Italic
 </div>
@@ -68,6 +74,6 @@
     </script>
 </select>
 <span dojoType="dijit.ToolbarSeparator" id="separator1"></span>
-<textarea id="textarea" name="textarea" dojoType="dijit.form.SimpleTextarea" rows="1" cols="50" style="width:auto;" onChange="setTxt(this);">Hello World</textarea>
+<textarea id="textarea" name="textarea" dojoType="dijit.form.SimpleTextarea" rows="1" cols="40" style="width:auto;" onChange="setTxt(this);">Hello World</textarea>
 
 </div>
