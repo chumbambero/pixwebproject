@@ -3,11 +3,9 @@
  *
  * This file is part of PixWeb.
  */
-
 /**
  * @author Alessandro Trombini
  */
-
 function IncludeJavaScript(jsFile){
     document.write('<script type="text/javascript" src="' +
     jsFile +
@@ -185,12 +183,12 @@ if (window.addEventListener) {
             pSubMenuItem3 = new dijit.MenuItem({
                 label: "Save Image",
                 onClick: function(ev){
-            		mySel = null;
-            		clear(context);
-            		clear(ghostcontext);
-            		clear(ghostcontexto);
-            		invalidate();
-            		mainDraw();
+                    mySel = null;
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
                     window.open(canvaso.toDataURL("image/png"));
                     ev.preventDefault();
                 }
@@ -278,14 +276,14 @@ if (window.addEventListener) {
             // put the top level widget into the document, and then call
             // startup()
             document.getElementById('pixWeb').appendChild(bc.domNode);
-//            document.body.appendChild(bc.domNode);
+            //            document.body.appendChild(bc.domNode);
             bc.startup();
             
             dojo.byId('sizeLabel').setAttribute("style", "display:none");
             dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
             dojo.byId('fillDrop').setAttribute("style", "display:none");
             dojo.byId('brushDrop').setAttribute("style", "display:none");
-            dojo.byId('ereaser').setAttribute("style", "display:none");
+            dojo.byId('eraser').setAttribute("style", "display:none");
             dojo.byId('bold').setAttribute("style", "display:none");
             dojo.byId('italic').setAttribute("style", "display:none");
             dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -303,7 +301,7 @@ if (window.addEventListener) {
                 })
             });
             document.getElementById('pixWeb').appendChild(f1.domNode);
-//            document.body.appendChild(f1.domNode);
+            //            document.body.appendChild(f1.domNode);
             // create the load image dialog form and then append the dialog
             // to the body
             f2 = new dijit.Dialog({
@@ -314,7 +312,7 @@ if (window.addEventListener) {
                 })
             });
             document.getElementById('pixWeb').appendChild(f2.domNode);
-//            document.body.appendChild(f2.domNode);
+            //            document.body.appendChild(f2.domNode);
             // create the load image from an URL dialog form and then append
             // the dialog to the body
             f3 = new dijit.Dialog({
@@ -325,7 +323,7 @@ if (window.addEventListener) {
                 })
             });
             document.getElementById('pixWeb').appendChild(f3.domNode);
-//            document.body.appendChild(f3.domNode);
+            //            document.body.appendChild(f3.domNode);
             // create the load image from the google search engine dialog
             // form and then append the dialog to the body
             f4 = new dijit.Dialog({
@@ -336,7 +334,7 @@ if (window.addEventListener) {
                 })
             });
             document.getElementById('pixWeb').appendChild(f4.domNode);
-//            document.body.appendChild(f4.domNode);
+            //            document.body.appendChild(f4.domNode);
             // create the resize canvas dialog form and then append the dialog
             // to the body
             f5 = new dijit.Dialog({
@@ -347,7 +345,7 @@ if (window.addEventListener) {
                 })
             });
             document.getElementById('pixWeb').appendChild(f5.domNode);
-//            document.body.appendChild(f5.domNode);
+            //            document.body.appendChild(f5.domNode);
             
             init();
         });
@@ -606,32 +604,32 @@ if (window.addEventListener) {
                             }
                         }
                     }
-//                    var kw = {
-//                    		url: "../upload_file.php",
-//                    		load: function(data){
-//                    	    context.putImageData(data);
-//                    		},
-//                    		error: function(data){
-//                    		console.log("An error occurred: " + data);
-//                    		},
-//                    		timeout: 2000,
-//                    		form: "urlFile"
-//                    		};
-//                    		dojo.xhrPost(kw);
-//                    var xhrArgs = {
-//                    		url: "uploads",
-//                            postData: "some text",
-//                            handleAs: "text",
-//                            load: function(data) {
-//                    			console.log(data);
-//                            },
-//                            error: function(data) {
-//                            	console.log("An error occurred: " + data);
-//                            }
-//                        };
-//                        //Call the asynchronous xhrPost
-//                        console.log("Form being sent...");
-//                        dojo.xhrPost(xhrArgs);
+                    //                    var kw = {
+                    //                    		url: "../upload_file.php",
+                    //                    		load: function(data){
+                    //                    	    context.putImageData(data);
+                    //                    		},
+                    //                    		error: function(data){
+                    //                    		console.log("An error occurred: " + data);
+                    //                    		},
+                    //                    		timeout: 2000,
+                    //                    		form: "urlFile"
+                    //                    		};
+                    //                    		dojo.xhrPost(kw);
+                    //                    var xhrArgs = {
+                    //                    		url: "uploads",
+                    //                            postData: "some text",
+                    //                            handleAs: "text",
+                    //                            load: function(data) {
+                    //                    			console.log(data);
+                    //                            },
+                    //                            error: function(data) {
+                    //                            	console.log("An error occurred: " + data);
+                    //                            }
+                    //                        };
+                    //                        //Call the asynchronous xhrPost
+                    //                        console.log("Form being sent...");
+                    //                        dojo.xhrPost(xhrArgs);
                     // transfer image to context
                     context.drawImage(img, 0, 0, w, h);
                     addElement(0, 0, w, h, 0, '#000', "#000", false, true, null);
@@ -665,11 +663,41 @@ if (window.addEventListener) {
                         color_stroke = val;
                         context.strokeStyle = val;
                         document.getElementById("selectedStrokeColor").setAttribute("style", "background:" + val);
+                        if (mySel != null) {
+                            if ((mySel.shape && (mySel.final_angle == 0 || (mySel.final_angle * (360 / (2 * Math.PI))) == 180)) ||
+                            (mySel.text && (mySel.final_angle == 0 || (mySel.final_angle * (360 / (2 * Math.PI))) == 180))) {
+                                if (mySel.strokecolor != 'rgba(0, 0, 0, 0)') {
+                                    mySel.strokecolor = color_stroke;
+                                    pointer_changing = true;
+                                    invalidate();
+                                    mainDraw();
+                                    mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h);
+                                    clear(context);
+                                    invalidate();
+                                    mainDraw();
+                                }
+                            }
+                        }
                     }
                     else {
                         color_fill = val;
                         context.fillStyle = val;
                         document.getElementById("selectedFillColor").setAttribute("style", "background:" + val);
+                        if (mySel != null) {
+                            if ((mySel.shape && (mySel.final_angle == 0 || (mySel.final_angle * (360 / (2 * Math.PI))) == 180)) ||
+                            (mySel.text && (mySel.final_angle == 0 || (mySel.final_angle * (360 / (2 * Math.PI))) == 180))) {
+                                if (mySel.fillcolor != 'rgba(0, 0, 0, 0)') {
+                                    mySel.fillcolor = color_fill;
+                                    pointer_changing = true;
+                                    invalidate();
+                                    mainDraw();
+                                    mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h);
+                                    clear(context);
+                                    invalidate();
+                                    mainDraw();
+                                }
+                            }
+                        }
                     }
                 }
             }, "placeHolder");
@@ -690,16 +718,27 @@ if (window.addEventListener) {
                 iconClass: "icons iconPointer",
                 showLabel: false,
                 onClick: function(){
-                    ev_tool_change("pointer");
-                    eraserActive=false;
+                    mySel = null;
                     clear(context);
-            		clear(ghostcontext);
-            		clear(ghostcontexto);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
+                    invalidate();
+                    mainDraw();
+                    if (!document.getElementById("eraser").checked) {
+                        eraserActive = false;
+                    }
+                    else {
+                        eraserActive = true;
+                    }
+                    ev_tool_change("pointer");
+                    clear(context);
+                    clear(ghostcontext);
+                    clear(ghostcontexto);
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').setAttribute("style", "display:none");
                     dojo.byId('italic').setAttribute("style", "display:none");
                     dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -720,13 +759,13 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     invalidate();
                     mainDraw();
+                    eraserActive = false;
                     ev_tool_change("pencil");
-                    eraserActive=false;
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').setAttribute("style", "display:none");
                     dojo.byId('italic').setAttribute("style", "display:none");
                     dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -746,14 +785,14 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     invalidate();
                     mainDraw();
+                    eraserActive = false;
                     ev_tool_change("brush");
-                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Brush Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').removeAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').setAttribute("style", "display:none");
                     dojo.byId('italic').setAttribute("style", "display:none");
                     dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -773,14 +812,14 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     invalidate();
                     mainDraw();
+                    eraserActive = false;
                     ev_tool_change("line");
-                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Line Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').setAttribute("style", "display:none");
                     dojo.byId('italic').setAttribute("style", "display:none");
                     dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -800,14 +839,14 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     invalidate();
                     mainDraw();
+                    eraserActive = false;
                     ev_tool_change("rect");
-                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').setAttribute("style", "display:none");
                     dojo.byId('italic').setAttribute("style", "display:none");
                     dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -827,8 +866,8 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     invalidate();
                     mainDraw();
+                    eraserActive = false;
                     ev_tool_change("circle");
-                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
@@ -836,7 +875,7 @@ if (window.addEventListener) {
                     dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').setAttribute("style", "display:none");
                     dojo.byId('italic').setAttribute("style", "display:none");
                     dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -856,8 +895,8 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     invalidate();
                     mainDraw();
+                    eraserActive = false;
                     ev_tool_change("ellipse");
-                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
@@ -865,7 +904,7 @@ if (window.addEventListener) {
                     dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').setAttribute("style", "display:none");
                     dojo.byId('italic').setAttribute("style", "display:none");
                     dojo.byId('widget_fonts').setAttribute("style", "display:none");
@@ -885,8 +924,8 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     invalidate();
                     mainDraw();
+                    eraserActive = false;
                     ev_tool_change("text");
-                    eraserActive=false;
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Text Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
@@ -894,7 +933,7 @@ if (window.addEventListener) {
                     dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
-                    dojo.byId('ereaser').setAttribute("style", "display:none");
+                    dojo.byId('eraser').setAttribute("style", "display:none");
                     dojo.byId('bold').removeAttribute("style", "display:none");
                     dojo.byId('italic').removeAttribute("style", "display:none");
                     dojo.byId('widget_fonts').removeAttribute("style", "display:none");
