@@ -83,6 +83,6 @@ function drawEllipse(x1, y1, x2, y2, ctx) {
 	ctx.bezierCurveTo(cx - rx, cy - (KAPPA * ry), cx - (KAPPA * rx), cy - ry, cx, cy - ry); 
 	ctx.closePath();
 
-	ctx.stroke();
 	ctx.fill();
+	ctx.stroke();
 }

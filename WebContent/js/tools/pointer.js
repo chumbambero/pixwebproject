@@ -11,10 +11,10 @@
 // the pointer
 tools.pointer = function() {
 	var tool = this;
-	if (!eraserActive) {
-		this.started = false;
-	} else {
+	if (eraserActive && mySel != null) {
 		this.started = true;
+	} else {
+		this.started = false;
 	}
 	this.isDrag = false;
 	this.isResizeDrag = false;
@@ -40,7 +40,7 @@ tools.pointer = function() {
 			elements.remove(mySelIndex);
 			mySel = null;
 			mySelIndex = -1;
-			dojo.byId('ereaser').setAttribute("style", "display:none");
+			dojo.byId('eraser').setAttribute("style", "display:none");
 			// clear the ghost canvas for next time
 			clear(context);
 			clear(ghostcontext);
@@ -110,8 +110,8 @@ tools.pointer = function() {
 				mySel = elements[i];
 				mySelIndex = i;
 				if ((!mySel.shape) && (!mySel.text)) {
-					dojo.byId('ereaser').removeAttribute("style",
-							"display:none");
+					dojo.byId('eraser')
+							.removeAttribute("style", "display:none");
 					dojo.byId('sizeLabel').removeAttribute("style",
 							"display:none");
 					dojo.byId('sizeLabel').innerHTML = "Eraser Size";
@@ -128,63 +128,103 @@ tools.pointer = function() {
 							.setAttribute("style", "display:none");
 					dojo.byId('separator1').setAttribute("style",
 							"display:none");
-					dojo.byId('textarea').setAttribute("style",
-					"display:none");
+					dojo.byId('textarea').setAttribute("style", "display:none");
 					bc.resize();
 				} else {
-					if (!mySel.shape) {
-						dojo.byId('ereaser').setAttribute("style",
+					if ((mySel.shape && (mySel.final_angle != 0 && (mySel.final_angle * (360 / (2 * Math.PI))) != 180))
+							|| (mySel.text && (mySel.final_angle != 0 && (mySel.final_angle * (360 / (2 * Math.PI))) != 180))) {
+						dojo.byId('eraser').setAttribute("style",
 								"display:none");
-						dojo.byId('sizeLabel').removeAttribute("style",
+						dojo.byId('sizeLabel').setAttribute("style",
 								"display:none");
-						dojo.byId('sizeLabel').innerHTML = "Text Size";
-						dojo.byId('widget_sizeSpinner').removeAttribute(
-								"style", "display:none");
+						dojo.byId('widget_sizeSpinner').setAttribute("style",
+								"display:none");
 						dojo.byId('fillDrop').setAttribute("style",
 								"display:none");
 						dojo.byId('brushDrop').setAttribute("style",
 								"display:none");
-						dojo.byId('bold').removeAttribute("style",
-								"display:none");
-						dojo.byId('italic').removeAttribute("style",
-								"display:none");
-						dojo.byId('widget_fonts').removeAttribute("style",
-								"display:none");
-						dojo.byId('separator').removeAttribute("style",
-								"display:none");
-						dojo.byId('separator1').removeAttribute("style",
-								"display:none");
-						dojo.byId('textarea').removeAttribute("style",
-								"display:none");
-					} else {
-						dojo.byId('ereaser').setAttribute("style",
-								"display:none");
-						dojo.byId('sizeLabel').removeAttribute("style",
-								"display:none");
-						if (mySel.obj.type != "line") {
-							dojo.byId('sizeLabel').innerHTML = "Stroke Size";
-							dojo.byId('fillDrop').removeAttribute("style",
-									"display:none");
-						} else {
-							dojo.byId('sizeLabel').innerHTML = "Line Size";
-							dojo.byId('fillDrop').setAttribute("style",
-									"display:none");
-						}
-						dojo.byId('widget_sizeSpinner').removeAttribute(
-								"style", "display:none");
-						dojo.byId('brushDrop').setAttribute("style",
-								"display:none");
 						dojo.byId('bold').setAttribute("style", "display:none");
-						dojo.byId('italic').setAttribute("style", "display:none");
+						dojo.byId('italic').setAttribute("style",
+								"display:none");
 						dojo.byId('widget_fonts').setAttribute("style",
 								"display:none");
-						dojo.byId('separator')
-								.setAttribute("style", "display:none");
+						dojo.byId('separator').setAttribute("style",
+								"display:none");
 						dojo.byId('separator1').setAttribute("style",
 								"display:none");
 						dojo.byId('textarea').setAttribute("style",
 								"display:none");
 						bc.resize();
+					} else {
+						if (mySel.strokecolor != 'rgba(0, 0, 0, 0)') {
+							document.getElementById('selectedStrokeColor')
+									.setAttribute('style',
+											'background:' + mySel.strokecolor);
+							color_stroke = mySel.strokecolor;
+						}
+						if (mySel.fillcolor != 'rgba(0, 0, 0, 0)') {
+							document.getElementById('selectedFillColor')
+									.setAttribute('style',
+											'background:' + mySel.fillcolor);
+							color_fill = mySel.fillcolor;
+						}
+						if (!mySel.shape) {
+							dojo.byId('eraser').setAttribute("style",
+									"display:none");
+							dojo.byId('sizeLabel').removeAttribute("style",
+									"display:none");
+							dojo.byId('sizeLabel').innerHTML = "Text Size";
+							dojo.byId('widget_sizeSpinner').removeAttribute(
+									"style", "display:none");
+							dojo.byId('fillDrop').removeAttribute("style",
+									"display:none");
+							dojo.byId('brushDrop').setAttribute("style",
+									"display:none");
+							dojo.byId('bold').removeAttribute("style",
+									"display:none");
+							dojo.byId('italic').removeAttribute("style",
+									"display:none");
+							dojo.byId('widget_fonts').removeAttribute("style",
+									"display:none");
+							dojo.byId('separator').removeAttribute("style",
+									"display:none");
+							dojo.byId('separator1').removeAttribute("style",
+									"display:none");
+							dojo.byId('textarea').removeAttribute("style",
+									"display:none");
+							bc.resize();
+						} else {
+							dojo.byId('eraser').setAttribute("style",
+									"display:none");
+							dojo.byId('sizeLabel').removeAttribute("style",
+									"display:none");
+							if (mySel.obj.type != "line") {
+								dojo.byId('sizeLabel').innerHTML = "Stroke Size";
+								dojo.byId('fillDrop').removeAttribute("style",
+										"display:none");
+							} else {
+								dojo.byId('sizeLabel').innerHTML = "Line Size";
+								dojo.byId('fillDrop').setAttribute("style",
+										"display:none");
+							}
+							dojo.byId('widget_sizeSpinner').removeAttribute(
+									"style", "display:none");
+							dojo.byId('brushDrop').setAttribute("style",
+									"display:none");
+							dojo.byId('bold').setAttribute("style",
+									"display:none");
+							dojo.byId('italic').setAttribute("style",
+									"display:none");
+							dojo.byId('widget_fonts').setAttribute("style",
+									"display:none");
+							dojo.byId('separator').setAttribute("style",
+									"display:none");
+							dojo.byId('separator1').setAttribute("style",
+									"display:none");
+							dojo.byId('textarea').setAttribute("style",
+									"display:none");
+							bc.resize();
+						}
 					}
 				}
 				tool.selectionoffsetx = mx - mySel.selection.x;
@@ -211,7 +251,7 @@ tools.pointer = function() {
 		// haven't returned means we have selected nothing
 		mySel = null;
 		mySelIndex = -1;
-		dojo.byId('ereaser').setAttribute("style", "display:none");
+		dojo.byId('eraser').setAttribute("style", "display:none");
 		dojo.byId('sizeLabel').setAttribute("style", "display:none");
 		dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
 		dojo.byId('fillDrop').setAttribute("style", "display:none");
@@ -239,7 +279,7 @@ tools.pointer = function() {
 	// Happens when the mouse is moving inside the canvas
 	this.mousemove = function(ev) {
 		if (tool.started) {
-			if (tool.isDrag) {
+			if (tool.isDrag && (!eraserActive)) {
 				getMouse(ev);
 				mySel.selection.x = mx - tool.selectionoffsetx;
 				mySel.selection.y = my - tool.selectionoffsety;
@@ -347,12 +387,6 @@ tools.pointer = function() {
 					case 0:
 						mySel.new_y = mySel.selection.y + mySelPadding;
 						mySel.new_h = mySel.selection.h - mySelPadding * 2;
-						// console.log("x: "+mySel.x, "selextion.x:
-						// "+mySel.selection.x, "y: "+mySel.y, "selection.y:
-						// "+mySel.selection.y, "w: "+mySel.w, "selection.w:
-						// "+mySel.selection.w, "h: "+mySel.h, "selection.h:
-						// "+mySel.selection.h, mySel.angle, mySel.tmp_angle,
-						// mySel.selection.angle);
 						break;
 					case 1:
 						mySel.new_y = mySel.selection.y + mySelPadding;
@@ -647,9 +681,6 @@ tools.pointer = function() {
 				}
 				compute_selection(mySel, mySel.selection.x + mySel.selection.w
 						/ 2, mySel.selection.y + mySel.selection.h / 2);
-				// console.log(tool.expectResize, expectRotation,
-				// mySel.selection.x, mySel.selection.y, mySel.x, mySel.y,
-				// (oldx-mx), (oldy-my));
 				invalidate();
 			} else if (tool.isRotateStart) {
 				getMouse(ev);
@@ -692,51 +723,54 @@ tools.pointer = function() {
 			// if there's a selection see if we grabbed one of the
 			// selection handles
 			if (mySel !== null && !tool.isResizeDrag) {
-				for ( var i = 0; i < 8; i++) {
-					// 0 1 2
-					// 3 4
-					// 5 6 7
-					var cur = selectionHandles[i];
-					// we don't need to use the temp context because
-					// selection handles will always be rectangles
-					if (mx >= cur.x && mx <= cur.x + mySelBoxSize
-							&& my >= cur.y && my <= cur.y + mySelBoxSize) {
-						// we found one!
-						tool.expectResize = i;
-						invalidate();
-						switch (i) {
-						case 0:
-							canvas.style.cursor = 'nw-resize';
-							break;
-						case 1:
-							canvas.style.cursor = 'n-resize';
-							break;
-						case 2:
-							canvas.style.cursor = 'ne-resize';
-							break;
-						case 3:
-							canvas.style.cursor = 'w-resize';
-							break;
-						case 4:
-							canvas.style.cursor = 'e-resize';
-							break;
-						case 5:
-							canvas.style.cursor = 'sw-resize';
-							break;
-						case 6:
-							canvas.style.cursor = 's-resize';
-							break;
-						case 7:
-							canvas.style.cursor = 'se-resize';
-							break;
+				if (((!mySel.shape) && (!mySel.text) && (!eraserActive))
+						|| (mySel.shape && (mySel.final_angle == 0 || (mySel.final_angle * (360 / (2 * Math.PI))) == 180))) {
+					for ( var i = 0; i < 8; i++) {
+						// 0 1 2
+						// 3 4
+						// 5 6 7
+						var cur = selectionHandles[i];
+						// we don't need to use the temp context because
+						// selection handles will always be rectangles
+						if (mx >= cur.x && mx <= cur.x + mySelBoxSize
+								&& my >= cur.y && my <= cur.y + mySelBoxSize) {
+							// we found one!
+							tool.expectResize = i;
+							invalidate();
+							switch (i) {
+							case 0:
+								canvas.style.cursor = 'nw-resize';
+								break;
+							case 1:
+								canvas.style.cursor = 'n-resize';
+								break;
+							case 2:
+								canvas.style.cursor = 'ne-resize';
+								break;
+							case 3:
+								canvas.style.cursor = 'w-resize';
+								break;
+							case 4:
+								canvas.style.cursor = 'e-resize';
+								break;
+							case 5:
+								canvas.style.cursor = 'sw-resize';
+								break;
+							case 6:
+								canvas.style.cursor = 's-resize';
+								break;
+							case 7:
+								canvas.style.cursor = 'se-resize';
+								break;
+							}
+							return;
 						}
-						return;
 					}
 				}
 				if (mx > mySel.selection.x && my > mySel.selection.y
 						&& mx < (mySel.selection.x + mySel.selection.w)
 						&& my < (mySel.selection.y + mySel.selection.h)
-						&& !eraserActive) {
+						&& (!eraserActive)) {
 					canvas.style.cursor = 'move';
 				} else {
 					canvas.style.cursor = 'crosshair';
@@ -748,14 +782,14 @@ tools.pointer = function() {
 			}
 			if (mySel !== null && mx >= deleteImgx && my >= deleteImgy
 					&& mx <= deleteImgx + deleteImg.width
-					&& my <= deleteImgy + deleteImg.height) {
+					&& my <= deleteImgy + deleteImg.height && (!eraserActive)) {
 				tool.isDelete = true;
 			} else {
 				tool.isDelete = false;
 			}
 			if (mySel !== null && mx >= rotateImgx && my >= rotateImgy
 					&& mx <= rotateImgx + rotateImg.width
-					&& my <= rotateImgy + rotateImg.height) {
+					&& my <= rotateImgy + rotateImg.height && (!eraserActive)) {
 				tool.isRotate = true;
 			} else {
 				tool.isRotate = false;
@@ -766,8 +800,7 @@ tools.pointer = function() {
 	this.mouseup = function(ev) {
 		tool.isDrag = false;
 		if (tool.isResizeDrag) {
-			if (!mySel.shape) { // ((!mySel.shape) ||
-				// (mySel.shape&&mySel.final_angle!=0))
+			if (!mySel.shape) {
 				mySel.data = mySel.tmp_data;
 				mySel.x = mySel.new_x;
 				mySel.y = mySel.new_y;
@@ -785,8 +818,8 @@ tools.pointer = function() {
 			mySel.angle = mySel.tmp_angle;
 			mySel.final_angle = mySel.tmp_angle;
 			compute_selection(mySel, vertex_x, vertex_y);
-			if (!mySel.shape) { // ((!mySel.shape) ||
-				// (mySel.shape&&mySel.final_angle!=0))
+			if ((!mySel.shape) || (!mySel.text)
+					|| (mySel.shape && mySel.final_angle != 0)) {
 				clearInterval(mainDraw);
 				afterRotation = true;
 				invalidate();
@@ -815,8 +848,6 @@ tools.pointer = function() {
 						}
 					}
 				}
-//				console.log("x: " + mySel.x, "y: " + mySel.y, "w: " + mySel.w,
-//						"h: " + mySel.h);
 				mySel.new_x = mySel.x = Math.min.apply(null, row);
 				mySel.new_y = mySel.y = Math.min.apply(null, col);
 				mySel.new_w = mySel.w = Math.max.apply(null, row) - mySel.x;
@@ -843,6 +874,19 @@ tools.pointer = function() {
 				setInterval(mainDraw, INTERVAL);
 			}
 			invalidate();
+			dojo.byId('eraser').setAttribute("style", "display:none");
+			dojo.byId('sizeLabel').setAttribute("style", "display:none");
+			dojo.byId('widget_sizeSpinner').setAttribute("style",
+					"display:none");
+			dojo.byId('fillDrop').setAttribute("style", "display:none");
+			dojo.byId('brushDrop').setAttribute("style", "display:none");
+			dojo.byId('bold').setAttribute("style", "display:none");
+			dojo.byId('italic').setAttribute("style", "display:none");
+			dojo.byId('widget_fonts').setAttribute("style", "display:none");
+			dojo.byId('separator').setAttribute("style", "display:none");
+			dojo.byId('separator1').setAttribute("style", "display:none");
+			dojo.byId('textarea').setAttribute("style", "display:none");
+			bc.resize();
 		}
 	};
 };

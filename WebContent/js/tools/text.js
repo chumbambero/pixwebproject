@@ -12,7 +12,7 @@
 tools.text = function() {
 	var tool = this;
 	this.started = false;
-	var x, y, w, h, stroke, fill, style, size, font, text, bold, italic;
+	var x, y, w, h, stroke, fill, style, size, font, text, b, i;
 	// This is called when you start holding down the mouse
 	// button.
 	this.mousedown = function(ev) {
@@ -40,13 +40,13 @@ tools.text = function() {
 			context.fillStyle = tool.fill;
 			tool.size = line_width;
 			tool.font = font_type;
-			tool.bold = bold;
-			tool.italic = italic;
+			tool.b = bold;
+			tool.i = italic;
 			tool.style = "";
-			if(tool.bold){
+			if(tool.b){
 				tool.style += "bold ";
 			}
-			if(tool.italic){
+			if(tool.i){
 				tool.style += "italic ";
 			}
 			tool.style += tool.size + "px "+ tool.font;
@@ -54,8 +54,6 @@ tools.text = function() {
 			tool.text = text_content;
 			context.fillText(tool.text, mx, my);
 			context.strokeText(tool.text, mx, my);
-			console.log(bold);
-			console.log(italic);
 		}
 	};
 	// This is called when you release the mouse button.
@@ -76,19 +74,20 @@ tools.text = function() {
 			context.fillStyle = tool.fill;
 			tool.size = line_width;
 			tool.font = font_type;
-			tool.bold = bold;
-			tool.italic = italic;
+			tool.b = bold;
+			tool.i = italic;
 			tool.style = "";
-			if(tool.bold){
+			if(tool.b){
 				tool.style += "bold ";
 			}
-			if(tool.italic){
+			if(tool.i){
 				tool.style += "italic ";
 			}
 			tool.style += tool.size + "px "+ tool.font;
 			context.font = tool.style;
 			tool.text = text_content;
 			context.fillText(tool.text, tool.x, tool.y);
+			context.strokeText(tool.text, tool.x, tool.y);
 			var row = [];
 			var col = [];
 			for ( var j = 0; j < canvas.width; j++) {
@@ -117,7 +116,7 @@ tools.text = function() {
 			tool.h = Math.max.apply(null, col) - tool.y;
 			addElement(tool.x, tool.y, tool.x + tool.w, tool.y + tool.h,
 					line_width, tool.stroke, tool.fill, false, false, true, 
-					new Text(tool.size, tool.font, tool.text, tool.bold, tool.italic));
+					new Text(tool.size, tool.font, tool.text, tool.b, tool.i));
 			img_update();
 		}
 	};

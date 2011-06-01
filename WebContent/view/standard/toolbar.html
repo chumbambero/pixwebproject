@@ -1,23 +1,35 @@
 <div id="toolbar" dojoType="dijit.Toolbar">
-    <div dojoType="dijit.form.ToggleButton" id="ereaser" iconClass="icons iconEraser" showLabel="false" onClick="eraserActive=!eraserActive;">Eraser
+    <div dojoType="dijit.form.ToggleButton" id="eraser" iconClass="icons iconEraser" showLabel="false" onClick="eraserActive=!eraserActive; clear(context), clear(ghostcontext); invalidate(); mainDraw();">Eraser
 </div>
 <label id="sizeLabel" for="size">
 </label>
 <div dojoType="dijit.form.NumberSpinner" intermediateChanges="true" id="sizeSpinner" constraints="{min:1,max:250}" value="1">
     <script type="dojo/connect" event="onChange">
         setLineWidth(this.getValue());
+		if(mySel!=null){
+			if(mySel.strokecolor != 'rgba(0, 0, 0, 0)'){
+				mySel.strokesize = line_width;
+				pointer_changing = true;
+           	    invalidate();
+                mainDraw();
+                mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h);
+                clear(context);
+                invalidate();
+                mainDraw();
+			}
+		}
     </script>
 </div>
 <div dojoType="dijit.form.ComboButton" id="fillDrop">
     <span>FILL STYLE</span>
     <div dojoType="dijit.Menu" id="fillMenu">
-        <div dojoType="dijit.MenuItem" id="stroke" onClick="hasStroke=true; hasFill=false;">
+        <div dojoType="dijit.MenuItem" id="stroke" onClick="hasStroke=true; hasFill=false; if(mySel!=null){mySel.strokecolor = color_stroke; mySel.fillcolor = 'rgba(0, 0, 0, 0)'; pointer_changing = true; invalidate(); mainDraw(); mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h); clear(context); invalidate(); mainDraw();};">
             <img src="CSS/images/icons/iconStroke.png"/>
         </div>
-        <div dojoType="dijit.MenuItem" id="fill" onClick="hasFill=true; hasStroke=false;">
+        <div dojoType="dijit.MenuItem" id="fill" onClick="hasFill=true; hasStroke=false; if(mySel!=null){mySel.strokecolor = 'rgba(0, 0, 0, 0)'; mySel.fillcolor = color_fill; pointer_changing = true; invalidate(); mainDraw(); mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h); clear(context); invalidate(); mainDraw();};">
             <img src="CSS/images/icons/iconFill.png"/>
         </div>
-        <div dojoType="dijit.MenuItem" id="strokeFill" onClick="hasStroke = true; hasFill = true;">
+        <div dojoType="dijit.MenuItem" id="strokeFill" onClick="hasStroke = true; hasFill = true; if(mySel!=null){mySel.strokecolor = color_stroke; mySel.fillcolor = color_fill; pointer_changing = true; invalidate(); mainDraw(); mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h); clear(context); invalidate(); mainDraw();};">
             <img src="CSS/images/icons/iconStrokeFill.png"/>
         </div>
     </div>

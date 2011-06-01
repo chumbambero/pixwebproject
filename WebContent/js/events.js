@@ -52,42 +52,40 @@ function ev_colorFill_click(ev) {
 function ev_tool_change(value) {
 	if (tools[value]) {
 		tool = new tools[value]();
-		if (!eraserActive) {
-			if (selected_tool == 'pointer') {
-				pointerButton.attr('disabled', false);
-			} else if (selected_tool == 'pencil') {
-				pencilButton.attr('disabled', false);
-			} else if (selected_tool == 'brush') {
-				brushButton.attr('disabled', false);
-			} else if (selected_tool == 'line') {
-				lineButton.attr('disabled', false);
-			} else if (selected_tool == 'rect') {
-				rectangleButton.attr('disabled', false);
-			} else if (selected_tool == 'circle') {
-				circleButton.attr('disabled', false);
-			} else if (selected_tool == 'ellipse') {
-				ellipseButton.attr('disabled', false);
-			} else if (selected_tool == 'text') {
-				textButton.attr('disabled', false);
-			}
-			if (value == 'pointer') {
-				pointerButton.attr('disabled', true);
-			} else if (value == 'pencil') {
-				pencilButton.attr('disabled', true);
-			} else if (value == 'brush') {
-				brushButton.attr('disabled', true);
-			} else if (value == 'line') {
-				lineButton.attr('disabled', true);
-			} else if (value == 'rect') {
-				rectangleButton.attr('disabled', true);
-			} else if (value == 'circle') {
-				circleButton.attr('disabled', true);
-			} else if (value == 'ellipse') {
-				ellipseButton.attr('disabled', true);
-			} else if (value == 'text') {
-				textButton.attr('disabled', true);
-			}
-			selected_tool = value;
+		if (selected_tool == 'pointer' && (!eraserActive)) {
+			pointerButton.attr('disabled', false);
+		} else if (selected_tool == 'pencil') {
+			pencilButton.attr('disabled', false);
+		} else if (selected_tool == 'brush') {
+			brushButton.attr('disabled', false);
+		} else if (selected_tool == 'line') {
+			lineButton.attr('disabled', false);
+		} else if (selected_tool == 'rect') {
+			rectangleButton.attr('disabled', false);
+		} else if (selected_tool == 'circle') {
+			circleButton.attr('disabled', false);
+		} else if (selected_tool == 'ellipse') {
+			ellipseButton.attr('disabled', false);
+		} else if (selected_tool == 'text') {
+			textButton.attr('disabled', false);
 		}
+		if (value == 'pointer' || (selected_tool == 'brush' && eraserActive)) {
+			pointerButton.attr('disabled', true);
+		} else if (value == 'pencil') {
+			pencilButton.attr('disabled', true);
+		} else if (value == 'brush' && (!eraserActive)) {
+			brushButton.attr('disabled', true);
+		} else if (value == 'line') {
+			lineButton.attr('disabled', true);
+		} else if (value == 'rect') {
+			rectangleButton.attr('disabled', true);
+		} else if (value == 'circle') {
+			circleButton.attr('disabled', true);
+		} else if (value == 'ellipse') {
+			ellipseButton.attr('disabled', true);
+		} else if (value == 'text') {
+			textButton.attr('disabled', true);
+		}
+		selected_tool = value;
 	}
 }

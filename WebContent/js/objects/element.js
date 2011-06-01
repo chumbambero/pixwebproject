@@ -58,6 +58,10 @@ Element.prototype = {
 				ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
 				ctx.rotate(this.tmp_angle);
 			}
+			if (this.final_angle!=0 && pointer_changing) {
+				ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
+				ctx.rotate(this.final_angle);
+			}
 			adjustDrawingTemp(ctx, this);
 			ctx.restore();
 			ctx.strokeStyle = mySelColor;
@@ -69,7 +73,11 @@ Element.prototype = {
 				ctx.strokeRect(0 - this.selection.w / 2, 0 - this.selection.h / 2, this.selection.w, this.selection.h);
 			} else {
 //				ctx.restore();
-				ctx.strokeRect(this.selection.x, this.selection.y, this.selection.w, this.selection.h);
+				if(eraserActive){
+					ghostcontext.strokeRect(this.selection.x, this.selection.y, this.selection.w, this.selection.h);
+				} else {
+					ctx.strokeRect(this.selection.x, this.selection.y, this.selection.w, this.selection.h);
+				}
 			}
 			// draw the boxes
 			var half = mySelBoxSize / 2;
@@ -121,10 +129,20 @@ Element.prototype = {
 				selectionHandles[7].y = this.selection.y + this.selection.h - half;
 			}
 
-			ctx.fillStyle = mySelBoxColor;
+			if (eraserActive) {
+				ghostcontext.fillStyle = mySelBoxColor;
+			} else {
+				ctx.fillStyle = mySelBoxColor;
+			}
 			for ( var i = 0; i < 8; i++) {
 				var cur = selectionHandles[i];
-				ctx.fillRect(cur.x, cur.y, mySelBoxSize, mySelBoxSize);
+				if (eraserActive) {
+					ghostcontext.fillStyle = mySelBoxColor;
+					ghostcontext.fillRect(cur.x, cur.y, mySelBoxSize, mySelBoxSize);
+				} else {
+					ctx.fillStyle = mySelBoxColor;
+					ctx.fillRect(cur.x, cur.y, mySelBoxSize, mySelBoxSize);
+				}
 			}
 			if (eraserActive) {
 				ctx.fillStyle = 'rgba(0, 0, 0, 0)';
@@ -141,10 +159,15 @@ Element.prototype = {
 //				ctx.restore();
 				deleteImgx = this.selection.x + this.selection.w / 2 - Math.ceil(deleteImg.width / 2);
 				deleteImgy = this.selection.y + this.selection.h;
-				ctx.drawImage(deleteImg, deleteImgx, deleteImgy);
 				rotateImgx = this.selection.x + this.selection.w / 2 - Math.ceil(rotateImg.width / 2);
 				rotateImgy = this.selection.y - rotateImg.height;
-				ctx.drawImage(rotateImg, rotateImgx, rotateImgy);
+				if (eraserActive) {
+					ghostcontext.drawImage(deleteImg, deleteImgx, deleteImgy);
+					ghostcontext.drawImage(rotateImg, rotateImgx, rotateImgy);
+				} else {
+					ctx.drawImage(deleteImg, deleteImgx, deleteImgy);
+					ctx.drawImage(rotateImg, rotateImgx, rotateImgy);
+				}
 			}
 			if (this.angle_changing) {
 				ctx.restore();
