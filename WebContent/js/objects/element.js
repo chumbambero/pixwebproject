@@ -58,10 +58,10 @@ Element.prototype = {
 				ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
 				ctx.rotate(this.tmp_angle);
 			}
-			if (this.final_angle!=0 && pointer_changing) {
-				ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
-				ctx.rotate(this.final_angle);
-			}
+//			if (this.final_angle!=0 && pointer_changing) {
+//				ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
+//				ctx.rotate(this.final_angle);
+//			}
 			adjustDrawingTemp(ctx, this);
 			ctx.restore();
 			ctx.strokeStyle = mySelColor;

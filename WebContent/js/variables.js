@@ -13,6 +13,7 @@ var hasStroke = true;
 var hasFill = false;
 var brush_type = 'circleBrush';
 var font_type = "Verdana";
+var font_size = 1;
 var bold = false;
 var italic = false;
 var text_content = "Hello World";

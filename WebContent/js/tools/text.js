@@ -38,7 +38,8 @@ tools.text = function() {
 			}
 			context.strokeStyle = tool.stroke;
 			context.fillStyle = tool.fill;
-			tool.size = line_width;
+			context.lineWidth = line_width;
+			tool.size = font_size;
 			tool.font = font_type;
 			tool.b = bold;
 			tool.i = italic;
@@ -72,7 +73,8 @@ tools.text = function() {
 			}
 			context.strokeStyle = tool.stroke;
 			context.fillStyle = tool.fill;
-			tool.size = line_width;
+			context.lineWidth = line_width;
+			tool.size = font_size;
 			tool.font = font_type;
 			tool.b = bold;
 			tool.i = italic;
