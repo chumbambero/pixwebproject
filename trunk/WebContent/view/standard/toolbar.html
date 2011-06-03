@@ -24,13 +24,13 @@
     <span>FILL STYLE</span>
     <div dojoType="dijit.Menu" id="fillMenu">
         <div dojoType="dijit.MenuItem" id="stroke" onClick="hasStroke=true; hasFill=false; if(mySel!=null){mySel.strokecolor = color_stroke; mySel.fillcolor = 'rgba(0, 0, 0, 0)'; pointer_changing = true; invalidate(); mainDraw(); mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h); clear(context); invalidate(); mainDraw();};">
-            <img src="CSS/images/icons/iconStroke.png"/>
+            <img src="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/images/icons/iconStroke.png"/>
         </div>
         <div dojoType="dijit.MenuItem" id="fill" onClick="hasFill=true; hasStroke=false; if(mySel!=null){mySel.strokecolor = 'rgba(0, 0, 0, 0)'; mySel.fillcolor = color_fill; pointer_changing = true; invalidate(); mainDraw(); mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h); clear(context); invalidate(); mainDraw();};">
-            <img src="CSS/images/icons/iconFill.png"/>
+            <img src="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/images/icons/iconFill.png"/>
         </div>
         <div dojoType="dijit.MenuItem" id="strokeFill" onClick="hasStroke = true; hasFill = true; if(mySel!=null){mySel.strokecolor = color_stroke; mySel.fillcolor = color_fill; pointer_changing = true; invalidate(); mainDraw(); mySel.data = context.getImageData(mySel.x, mySel.y, mySel.w, mySel.h); clear(context); invalidate(); mainDraw();};">
-            <img src="CSS/images/icons/iconStrokeFill.png"/>
+            <img src="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/images/icons/iconStrokeFill.png"/>
         </div>
     </div>
 </div>
@@ -38,10 +38,10 @@
     <span>STROKE TYPE</span>
     <div dojoType="dijit.Menu" id="brushMenu">
         <div dojoType="dijit.MenuItem" id="circleBrush" onClick="brush_type='circleBrush';">
-            <img src="CSS/images/icons/circleBrush.png"/>
+            <img src="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/images/icons/circleBrush.png"/>
         </div>
         <div dojoType="dijit.MenuItem" id="squareBrush" onClick="brush_type='squareBrush';">
-            <img src="CSS/images/icons/squareBrush.png"/>
+            <img src="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/images/icons/squareBrush.png"/>
         </div>
     </div>
 </div><span dojoType="dijit.ToolbarSeparator" id="separator"></span>
