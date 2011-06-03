@@ -6,45 +6,76 @@
 /**
  * @author Alessandro Trombini
  */
-var loadCSS = function(file){
-    var link = document.createElement('link');
-    link.href = file;
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    document.getElementsByTagName('head')[0].appendChild(link);
-};
+//var loadCSS = function(file){
+//    var link = document.createElement('link');
+//    link.href = file;
+//    link.rel = 'stylesheet';
+//    link.type = 'text/css';
+//    document.getElementsByTagName('head')[0].appendChild(link);
+//};
+//
+//var loadJS = function(file){
+//    var script = document.createElement('script');
+//    script.src = file;
+//    script.type = 'text/javascript';
+//    document.getElementsByTagName('head')[0].appendChild(script);
+//};
+//
+//loadCSS('http://atelier.inf.usi.ch/~minellir/PixWeb/CSS/dojoClaro.css');
+//loadCSS('http://atelier.inf.usi.ch/~minellir/PixWeb/CSS/dojoClaro.css');
 
-var loadJS = function(file){
-    var script = document.createElement('script');
-    script.src = file;
-    script.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(script);
-};
+function IncludeJavaScript(jsFile){
+    document.write('<script type="text/javascript" src="' +
+    jsFile +
+    '"></scr' +
+    'ipt>');
+}
 
-//loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
-//loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
+document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
+document.write('<link rel="stylesheet" type="text/css" href="http://atelier.inf.usi.ch/~minellir/PixWeb/CSS/main.css"/>');
+document.write('<link rel="stylesheet" type="text/css" href="http://atelier.inf.usi.ch/~minellir/PixWeb/CSS/dojoClaro.css"/>');
 
-loadJS('http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js');
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/dojo_requires.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/box.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/element.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/rectangle.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/line.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/circle.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/ellipse.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/selection.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/text.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pointer.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pencil.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/brush.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/line.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/rectangle.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/circle.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/ellipse.js");
-loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/text.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/variables.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/events.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/functions.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/dojo_requires.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/box.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/element.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/rectangle.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/line.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/circle.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/ellipse.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/selection.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/text.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/pointer.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/pencil.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/brush.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/line.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/rectangle.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/circle.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/ellipse.js");
+IncludeJavaScript("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/text.js");
+
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/variables.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/events.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/functions.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/dojo_requires.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/box.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/element.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/rectangle.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/line.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/circle.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/ellipse.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/selection.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/objects/text.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/pointer.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/pencil.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/brush.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/line.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/rectangle.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/circle.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/ellipse.js");
+//loadJS("http://atelier.inf.usi.ch/~minellir/PixWeb/js/tools/text.js");
 
 function init(){
 
@@ -248,7 +279,7 @@ if (window.addEventListener) {
             // BorderContainer
             cp2 = new dijit.layout.ContentPane({
                 region: "leading",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/menu.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/menu.html"), {
                     sanitize: true
                 })
             });
@@ -258,7 +289,7 @@ if (window.addEventListener) {
             // BorderContainer
             cp3 = new dijit.layout.ContentPane({
                 region: "center",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/canvas.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/canvas.html"), {
                     sanitize: true
                 })
             });
@@ -269,7 +300,7 @@ if (window.addEventListener) {
             cp4 = new dijit.layout.ContentPane({
                 region: "top",
                 style: "padding: 0px",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/toolbar.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/toolbar.html"), {
                     sanitize: true
                 })
             });
@@ -305,7 +336,7 @@ if (window.addEventListener) {
             f1 = new dijit.Dialog({
                 title: "New Image",
                 id: "newDialog",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/new_img_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/form/new_img_form.html"), {
                     sanitize: true
                 })
             });
@@ -316,7 +347,7 @@ if (window.addEventListener) {
             f2 = new dijit.Dialog({
                 title: "Load Image",
                 id: "loadDialog",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/load_img_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/form/load_img_form.html"), {
                     sanitize: true
                 })
             });
@@ -327,7 +358,7 @@ if (window.addEventListener) {
             f3 = new dijit.Dialog({
                 title: "Load Image From URL",
                 id: "urlDialog",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/load_img_url_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/form/load_img_url_form.html"), {
                     sanitize: true
                 })
             });
@@ -338,7 +369,7 @@ if (window.addEventListener) {
             f4 = new dijit.Dialog({
                 title: "Load Image From Google Image Seach",
                 id: "googleDialog",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/load_img_google_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/form/load_img_google_form.html"), {
                     sanitize: true
                 })
             });
@@ -349,7 +380,7 @@ if (window.addEventListener) {
             f5 = new dijit.Dialog({
                 title: "Resize Canvas",
                 id: "resizeCanvasDialog",
-                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/resize_canvas_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://atelier.inf.usi.ch/~minellir/PixWeb/view/standard/form/resize_canvas_form.html"), {
                     sanitize: true
                 })
             });
@@ -357,9 +388,6 @@ if (window.addEventListener) {
             //            document.body.appendChild(f5.domNode);
             
             init();
-            
-            loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
-            loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
         });
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // LAYOUT END
