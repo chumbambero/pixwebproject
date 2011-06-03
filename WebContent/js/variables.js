@@ -26,9 +26,9 @@ var canvas, context, canvaso, contexto, ghostcanvas, ghostcontext, ghostcanvaso,
 var deleteImgx, deleteImgy, rotateImgx, rotateImgy;
 var ghostImage = new Image();
 var deleteImg = new Image();
-deleteImg.src = "CSS/images/icons/delete.png";
+deleteImg.src = "http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/images/icons/delete.png";
 var rotateImg = new Image();
-rotateImg.src = "CSS/images/icons/rotate.png";
+rotateImg.src = "http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/images/icons/rotate.png";
 
 // The active tool instance.
 var name_default = 'new image';
