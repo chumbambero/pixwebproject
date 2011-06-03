@@ -13,31 +13,31 @@ function IncludeJavaScript(jsFile){
     'ipt>');
 }
 
-document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
-document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/main.css"/>');
-document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css"/>');
-
-//include the others javascripts
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/dojo_requires.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/box.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/element.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/rectangle.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/line.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/circle.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/ellipse.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/selection.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/text.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pointer.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pencil.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/brush.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/line.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/rectangle.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/circle.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/ellipse.js");
-IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/text.js");
+//document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
+//document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/main.css"/>');
+//document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css"/>');
+//
+////include the others javascripts
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/dojo_requires.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/box.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/element.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/rectangle.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/line.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/circle.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/ellipse.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/selection.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/text.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pointer.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pencil.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/brush.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/line.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/rectangle.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/circle.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/ellipse.js");
+//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/text.js");
 
 function init(){
 
@@ -148,6 +148,32 @@ function init(){
 if (window.addEventListener) {
     window.addEventListener("load", function(){
     
+        document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
+        document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/main.css"/>');
+        document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css"/>');
+        
+        //include the others javascripts
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/dojo_requires.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/box.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/element.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/rectangle.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/line.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/circle.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/ellipse.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/selection.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/text.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pointer.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pencil.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/brush.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/line.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/rectangle.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/circle.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/ellipse.js");
+        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/text.js");
+        
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // LAYOUT START
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,8 +307,8 @@ if (window.addEventListener) {
             
             dojo.byId('sizeLabel').setAttribute("style", "display:none");
             dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
-			dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-			dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
+            dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+            dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
             dojo.byId('fillDrop').setAttribute("style", "display:none");
             dojo.byId('brushDrop').setAttribute("style", "display:none");
             dojo.byId('eraser').setAttribute("style", "display:none");
@@ -738,8 +764,8 @@ if (window.addEventListener) {
                     clear(ghostcontexto);
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
-					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");	
+                    dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -767,8 +793,8 @@ if (window.addEventListener) {
                     ev_tool_change("pencil");
                     dojo.byId('sizeLabel').setAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').setAttribute("style", "display:none");
-					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
+                    dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -796,8 +822,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Brush Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
+                    dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').removeAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -825,8 +851,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Line Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
+                    dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').setAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -854,8 +880,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
+                    dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -883,8 +909,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
+                    dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -912,8 +938,8 @@ if (window.addEventListener) {
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-					dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
+                    dojo.byId('font_sizeLabel').setAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').setAttribute("style", "display:none");
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
                     dojo.byId('brushDrop').setAttribute("style", "display:none");
                     dojo.byId('eraser').setAttribute("style", "display:none");
@@ -940,9 +966,9 @@ if (window.addEventListener) {
                     ev_tool_change("text");
                     dojo.byId('sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('sizeLabel').innerHTML = "Stroke Size";
-					dojo.byId('font_sizeLabel').removeAttribute("style", "display:none");
+                    dojo.byId('font_sizeLabel').removeAttribute("style", "display:none");
                     dojo.byId('widget_sizeSpinner').removeAttribute("style", "display:none");
-					dojo.byId('widget_font_sizeSpinner').removeAttribute("style", "display:none");
+                    dojo.byId('widget_font_sizeSpinner').removeAttribute("style", "display:none");
                     dojo.byId('sizeSpinner').setAttribute("aria-valuemax", Math.min(canvas.height, canvas.width) / 2 - 10);
                     dojo.byId('sizeSpinner').setAttribute("aria-valuenow", 1);
                     dojo.byId('fillDrop').removeAttribute("style", "display:none");
