@@ -13,31 +13,31 @@ function IncludeJavaScript(jsFile){
     'ipt>');
 }
 
-document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
 document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/main.css"/>');
 document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css"/>');
+document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
 
-////include the others javascripts
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/dojo_requires.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/box.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/element.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/rectangle.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/line.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/circle.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/ellipse.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/selection.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/text.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pointer.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pencil.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/brush.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/line.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/rectangle.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/circle.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/ellipse.js");
-//IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/text.js");
+//include the others javascripts
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/dojo_requires.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/box.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/element.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/rectangle.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/line.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/circle.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/ellipse.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/selection.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/text.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pointer.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pencil.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/brush.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/line.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/rectangle.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/circle.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/ellipse.js");
+IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/text.js");
 
 function init(){
 
@@ -147,28 +147,6 @@ function init(){
 //Keep everything in anonymous function, called on window load.
 if (window.addEventListener) {
     window.addEventListener("load", function(){
-        
-        //include the others javascripts
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/dojo_requires.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/box.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/element.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/rectangle.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/line.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/circle.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/ellipse.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/selection.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/objects/text.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pointer.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/pencil.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/brush.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/line.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/rectangle.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/circle.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/ellipse.js");
-        IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/tools/text.js");
         
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // LAYOUT START
