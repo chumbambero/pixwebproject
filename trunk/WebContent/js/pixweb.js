@@ -241,7 +241,7 @@ if (window.addEventListener) {
             // BorderContainer
             cp2 = new dijit.layout.ContentPane({
                 region: "leading",
-                content: dojo["cache"](new dojo._Url("view/standard/menu.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/menu.html"), {
                     sanitize: true
                 })
             });
@@ -251,7 +251,7 @@ if (window.addEventListener) {
             // BorderContainer
             cp3 = new dijit.layout.ContentPane({
                 region: "center",
-                content: dojo["cache"](new dojo._Url("view/standard/canvas.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/canvas.html"), {
                     sanitize: true
                 })
             });
@@ -262,7 +262,7 @@ if (window.addEventListener) {
             cp4 = new dijit.layout.ContentPane({
                 region: "top",
                 style: "padding: 0px",
-                content: dojo["cache"](new dojo._Url("view/standard/toolbar.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/toolbar.html"), {
                     sanitize: true
                 })
             });
@@ -298,7 +298,7 @@ if (window.addEventListener) {
             f1 = new dijit.Dialog({
                 title: "New Image",
                 id: "newDialog",
-                content: dojo["cache"](new dojo._Url("view/standard/form/new_img_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/new_img_form.html"), {
                     sanitize: true
                 })
             });
@@ -309,7 +309,7 @@ if (window.addEventListener) {
             f2 = new dijit.Dialog({
                 title: "Load Image",
                 id: "loadDialog",
-                content: dojo["cache"](new dojo._Url("view/standard/form/load_img_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/load_img_form.html"), {
                     sanitize: true
                 })
             });
@@ -320,7 +320,7 @@ if (window.addEventListener) {
             f3 = new dijit.Dialog({
                 title: "Load Image From URL",
                 id: "urlDialog",
-                content: dojo["cache"](new dojo._Url("view/standard/form/load_img_url_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/load_img_url_form.html"), {
                     sanitize: true
                 })
             });
@@ -331,7 +331,7 @@ if (window.addEventListener) {
             f4 = new dijit.Dialog({
                 title: "Load Image From Google Image Seach",
                 id: "googleDialog",
-                content: dojo["cache"](new dojo._Url("view/standard/form/load_img_google_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/load_img_google_form.html"), {
                     sanitize: true
                 })
             });
@@ -342,7 +342,7 @@ if (window.addEventListener) {
             f5 = new dijit.Dialog({
                 title: "Resize Canvas",
                 id: "resizeCanvasDialog",
-                content: dojo["cache"](new dojo._Url("view/standard/form/resize_canvas_form.html"), {
+                content: dojo["cache"](new dojo._Url("http://pixwebproject.googlecode.com/svn/trunk/WebContent/view/standard/form/resize_canvas_form.html"), {
                     sanitize: true
                 })
             });
