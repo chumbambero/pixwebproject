@@ -21,10 +21,10 @@ var loadJS = function(file) {
 	document.getElementsByTagName('head')[0].appendChild(script);
 };
 
-//loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
-//loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
-//
-//loadJS('http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js');
+loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
+loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
+
+loadJS('http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js');
 loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
 loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
 loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/functions.js");
@@ -152,8 +152,8 @@ function init(){
 
 
 //Keep everything in anonymous function, called on window load.
-if (window.addEventListener) {
-    window.addEventListener("load", function(){
+//if (window.addEventListener) {
+//    window.addEventListener("load", function(){
         
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // LAYOUT START
@@ -984,5 +984,5 @@ if (window.addEventListener) {
         // //////////////////////////////////////////////////////////////////////////////////////////////
         // TOOLS MENU END
         // //////////////////////////////////////////////////////////////////////////////////////////////   
-    }, false);
-}
+//    }, false);
+//}
