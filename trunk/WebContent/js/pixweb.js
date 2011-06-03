@@ -13,10 +13,10 @@ function IncludeJavaScript(jsFile){
     'ipt>');
 }
 
-//document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
-//document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/main.css"/>');
-//document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css"/>');
-//
+document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
+document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/main.css"/>');
+document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css"/>');
+
 ////include the others javascripts
 //IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
 //IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/events.js");
@@ -147,10 +147,6 @@ function init(){
 //Keep everything in anonymous function, called on window load.
 if (window.addEventListener) {
     window.addEventListener("load", function(){
-    
-        document.write('<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>');
-        document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/main.css"/>');
-        document.write('<link rel="stylesheet" type="text/css" href="http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css"/>');
         
         //include the others javascripts
         IncludeJavaScript("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
