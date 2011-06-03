@@ -6,23 +6,23 @@
 /**
  * @author Alessandro Trombini
  */
-var loadCSS = function(file) {
-	var link = document.createElement('link');
-	link.href = file;
-	link.rel = 'stylesheet';
-	link.type = 'text/css';
-	document.getElementsByTagName('head')[0].appendChild(link);
+var loadCSS = function(file){
+    var link = document.createElement('link');
+    link.href = file;
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    document.getElementsByTagName('head')[0].appendChild(link);
 };
 
-var loadJS = function(file) {
-	var script = document.createElement('script');
-	script.src = file;
-	script.type = 'text/javascript';
-	document.getElementsByTagName('head')[0].appendChild(script);
+var loadJS = function(file){
+    var script = document.createElement('script');
+    script.src = file;
+    script.type = 'text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(script);
 };
 
-loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
-loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
+//loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
+//loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
 
 loadJS('http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js');
 loadJS("http://pixwebproject.googlecode.com/svn/trunk/WebContent/js/variables.js");
@@ -154,7 +154,7 @@ function init(){
 //Keep everything in anonymous function, called on window load.
 if (window.addEventListener) {
     window.addEventListener("load", function(){
-        
+    
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // LAYOUT START
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -357,6 +357,9 @@ if (window.addEventListener) {
             //            document.body.appendChild(f5.domNode);
             
             init();
+            
+            loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
+            loadCSS('http://pixwebproject.googlecode.com/svn/trunk/WebContent/CSS/dojoClaro.css');
         });
         // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // LAYOUT END
